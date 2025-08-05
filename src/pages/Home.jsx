@@ -12,6 +12,7 @@ const Home = () => {
             <h1 className="text-3xl font-bold underline">
                 Home
             </h1>
+            <div className="text-3xl font-bold dark:p-20">Hello im dark</div>
         </div>
     );
 };

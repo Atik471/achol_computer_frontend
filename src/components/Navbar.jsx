@@ -1,4 +1,4 @@
-import React from "react";
+import ThemeComponent from "./ThemeComponent";
 
 const Navbar = () => {
   return (
@@ -71,7 +71,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <ThemeComponent />
       </div>
     </div>
   );
