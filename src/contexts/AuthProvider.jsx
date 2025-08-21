@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await authService.logout(); // backend clears refresh token cookie
+      localStorage.removeItem("accessToken"); // clear local access token
     } finally {
       setUser(null);
       setAccessToken(null);

@@ -5,10 +5,21 @@ import { AuthContext } from "../contexts/AuthProvider";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+  const [showToast, setShowToast] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setShowToast(true); // show toast
+      setTimeout(() => setShowToast(false), 3000); // hide after 3s
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -82,35 +93,43 @@ const Navbar = () => {
       </div>
       <div className="navbar-end gap-3">
         <ThemeComponent />
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar placeholder"
-            onClick={toggleDropdown}
-          >
-            <div className="bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center">
-              <FaUserCircle className="w-8 h-8" />
-            </div>
-          </div>
-
-          {isDropdownOpen && (
-            <ul
+        {user &&
+          <div className="dropdown dropdown-end">
+            <div
               tabIndex={0}
-              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border"
+              role="button"
+              className="btn btn-ghost btn-circle avatar placeholder"
+              onClick={toggleDropdown}
             >
-              <li className="menu-title">
-                <span>{user?.name}</span>
-                <span className="text-xs text-gray-500">{user?.email}</span>
-              </li>
-              <li><a>Profile</a></li>
-              <li><a>Settings</a></li>
-              {/* <li><a>Billing</a></li> */}
-              <li className="border-t mt-2 pt-2"><a>Logout</a></li>
-            </ul>
-          )}
-        </div>
+              <div className="bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center">
+                <FaUserCircle className="w-8 h-8" />
+              </div>
+            </div>
+
+            {isDropdownOpen && (
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border"
+              >
+                <li className="menu-title">
+                  <span>{user?.name}</span>
+                  <span className="text-xs text-gray-500">{user?.email}</span>
+                </li>
+                <li><a>Profile</a></li>
+                <li><a>Settings</a></li>
+                {/* <li><a>Billing</a></li> */}
+                <li className="border-t mt-2 pt-2" onClick={handleLogout}><a>Logout</a></li>
+              </ul>
+            )}
+          </div>}
       </div>
+      {showToast && (
+        <div className="toast toast-top toast-end">
+          <div className="alert alert-success">
+            <span>Logout successful</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
