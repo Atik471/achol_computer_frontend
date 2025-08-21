@@ -15,11 +15,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, setUser, setAccessToken } = useContext(AuthContext);
 
-  const onSubmit = (data) => {
-    loginMutation.mutate(data);
+  const onSubmit = async (credentials) => {
+    try {
+      const data = await loginMutation.mutateAsync(credentials);
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+    } catch (err) {
+      throw err;
+    }
   };
+
+  console.log(user);
 
   // Redirect + toast on success
   useEffect(() => {
@@ -59,9 +67,8 @@ const Login = () => {
                   </span>
                 </label>
                 <div
-                  className={`flex items-center gap-2 w-full ${
-                    errors.email ? "input-error" : ""
-                  }`}
+                  className={`flex items-center gap-2 w-full ${errors.email ? "input-error" : ""
+                    }`}
                 >
                   <div className="relative w-full">
                     <FaEnvelope className="absolute z-10 left-3 top-1/2 transform -translate-y-1/2 text-base-content/60 w-4 h-4" />
@@ -97,9 +104,8 @@ const Login = () => {
                   </span>
                 </label>
                 <div
-                  className={`flex items-center gap-2 w-full ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`flex items-center gap-2 w-full ${errors.password ? "input-error" : ""
+                    }`}
                 >
                   <div className="relative w-full">
                     <FaLock className="absolute z-10 left-3 top-1/2 transform -translate-y-1/2 text-base-content/60 w-4 h-4" />

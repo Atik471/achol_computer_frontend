@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const { user } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -98,8 +100,8 @@ const Navbar = () => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border"
             >
               <li className="menu-title">
-                <span>John Doe</span>
-                <span className="text-xs text-gray-500">john.doe@company.com</span>
+                <span>{user?.name}</span>
+                <span className="text-xs text-gray-500">{user?.email}</span>
               </li>
               <li><a>Profile</a></li>
               <li><a>Settings</a></li>

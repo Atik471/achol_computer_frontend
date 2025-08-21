@@ -1,82 +1,84 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../services/authServices.js";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
+  
 
-    const [user, setUser] = useState(null);
-    const [accessToken, setAccessToken] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false); // to avoid double /auth/me calls
 
-    // Try to fetch user on mount
-    useEffect(() => {
-        const init = async () => {
-            try {
-                // Try refresh first
-                await refreshAccessToken(); // refreshAccessToken calls /auth/refresh using cookie
-                const data = await authService.getCurrentUser();
-                setUser(data.user);
-            } catch (err) {
-                setUser(null); // no valid token
-            } finally {
-                setLoading(false);
-            }
-        };
-        init();
-    }, []);
-
-    // Login
-    const login = async (credentials) => {
-        const data = await authService.login(credentials);
+  // Init auth on mount
+  useEffect(() => {
+    const initAuth = async () => {
+      if (initialized) return;
+      setInitialized(true);
+      try {
+        // Try refresh token (backend should send new access token if refresh cookie is valid)
+        const data = await authService.getCurrentUser(); 
         setUser(data.user);
         setAccessToken(data.accessToken);
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-        return data;
-    };
-
-    // Logout
-    const logout = async () => {
-        await authService.logout();
+      } catch {
         setUser(null);
         setAccessToken(null);
-        queryClient.clear();
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Refresh access token
-    const refreshAccessToken = async () => {
-        try {
-            const data = await authService.getCurrentUser(); // backend should refresh token if cookie is valid
-            setAccessToken(data.accessToken);
-            setUser(data.user);
-            return data.accessToken;
-        } catch (err) {
-            logout();
-            throw err;
-        }
-    };
+    initAuth();
+  }, [initialized]);
 
-    if(loading) return <span className="loading loading-spinner text-info"></span>;
+  // Logout
+  const logout = async () => {
+    try {
+      await authService.logout(); // backend clears refresh token cookie
+    } finally {
+      setUser(null);
+      setAccessToken(null);
+      queryClient.clear();
+    }
+  };
 
-    return (
-        <AuthContext.Provider
-            value={{
-                user,
-                accessToken,
-                login,
-                logout,
-                refreshAccessToken,
-                loading,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+  // Refresh access token manually (if needed)
+  const refreshAccessToken = async () => {
+    try {
+      const data = await authService.getCurrentUser(); // backend uses refresh cookie
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+      return data.accessToken;
+    } catch {
+      logout();
+      throw new Error("Refresh failed");
+    } 
+  };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        accessToken,
+        setAccessToken,
+        logout,
+        refreshAccessToken,
+        loading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 // Custom hook
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
