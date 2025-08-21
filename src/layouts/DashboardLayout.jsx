@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fi';
 import ThemeComponent from '../components/ThemeComponent';
 import { Link } from 'react-router';
+import { Outlet } from "react-router"
 
 const DashboardLayout = () => {
     return (
@@ -40,9 +41,7 @@ const DashboardLayout = () => {
 
                 {/* Page Content */}
                 <div className="p-6">
-                    <h2 className="text-2xl font-semibold">
-                        Dashboard Overview
-                    </h2>
+                    <Outlet />
                     {/* Add your dashboard content here */}
                 </div>
             </div>
@@ -62,7 +61,7 @@ const DashboardLayout = () => {
                         </li>
                         <li>
                             <Link
-                                to="/inventory"
+                                to="/dashboard/inventory"
                                 className="flex items-center gap-2"
                             >
                                 <FiBox /> Inventory

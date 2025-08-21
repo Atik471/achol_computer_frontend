@@ -2,7 +2,7 @@ import ThemeComponent from "./ThemeComponent";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar  bg-base-200 text-base-content shadow-sm px-2 md:px-8">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -24,7 +24,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-200 text-base-contentrounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
               <a>Item 1</a>
