@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
     FiHome,
     FiBox,
@@ -6,93 +6,212 @@ import {
     FiFileText,
     FiShoppingCart,
     FiMenu,
+    FiChevronDown,
+    FiLogOut,
+    FiSettings,
+    FiUser,
+    FiX
 } from 'react-icons/fi';
 import ThemeComponent from '../components/ThemeComponent';
-import { Link } from 'react-router';
-import { Outlet } from "react-router"
+import { Link, useLocation } from 'react-router';
+import { Outlet } from "react-router";
+import { AuthContext } from '../contexts/AuthProvider';
 
 const DashboardLayout = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const location = useLocation();
+    const { user, logout } = useContext(AuthContext);
+
+    // Simple mapping of routes to page titles
+    const pageTitles = {
+        "/dashboard": "Dashboard",
+        "/dashboard/inventory": "Inventory",
+        "/dashboard/orders": "Orders",
+        "/dashboard/users": "Users",
+        "/dashboard/reports": "Reports",
+        "/settings": "Settings",
+        "/profile": "Profile"
+    };
+
+    const currentTitle = pageTitles[location.pathname] || "Dashboard";
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setShowToast(true); // show toast
+            setTimeout(() => setShowToast(false), 3000); // hide after 3s
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
+
     return (
-        <div className="drawer lg:drawer-open">
-            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-
-            {/* Main Content */}
-            <div className="drawer-content flex flex-col">
-                {/* Navbar */}
-                <div className="w-full navbar bg-base-200 shadow-md px-4">
-                    <div className="flex-none lg:hidden">
-                        <label
-                            htmlFor="my-drawer"
-                            className="btn btn-square btn-ghost drawer-button"
-                        >
-                            <FiMenu size={22} />
-                        </label>
+        <div className="min-h-screen bg-base-100 flex">
+            {/* Sidebar for desktop */}
+            <div className="hidden lg:flex lg:flex-shrink-0 bg-base-200">
+                <div className="w-64 flex flex-col">
+                    <div className="flex-1 flex flex-col min-h-0 border-r border-base-300">
+                        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                            <div className="flex items-center flex-shrink-0 px-4">
+                                <Link to={"/"} className="text-2xl font-bold text-blue-600 ml-4">
+                                    Achol Computer
+                                </Link>
+                            </div>
+                            <nav className="mt-8 flex-1 px-4 space-y-1">
+                                {/* Removed Dashboard link */}
+                                <Link
+                                    to="/dashboard/inventory"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                >
+                                    <FiBox className="mr-3 h-5 w-5" />
+                                    Inventory
+                                </Link>
+                                <Link
+                                    to="/dashboard/orders"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                >
+                                    <FiShoppingCart className="mr-3 h-5 w-5" />
+                                    Orders
+                                </Link>
+                                <Link
+                                    to="/dashboard/users"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                >
+                                    <FiUsers className="mr-3 h-5 w-5" />
+                                    Users
+                                </Link>
+                                <Link
+                                    to="/dashboard/reports"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                >
+                                    <FiFileText className="mr-3 h-5 w-5" />
+                                    Reports
+                                </Link>
+                            </nav>
+                        </div>
+                        {/* Logout button instead of admin info */}
+                        <div className="flex-shrink-0 border-t border-base-300 p-4">
+                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" onClick={handleLogout}>
+                                <FiLogOut className="mr-2" />
+                                Logout
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex-1">
-                        <h1 className="text-xl font-bold">
-                            Achol Computer Admin
-                        </h1>
-                    </div>
-                    <div className="flex-none">
-                        {/* Theme Toggle Button (Placeholder) */}
-                        <ThemeComponent />
-                    </div>
-                </div>
-
-                {/* Page Content */}
-                <div className="p-6">
-                    <Outlet />
-                    {/* Add your dashboard content here */}
                 </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="drawer-side">
-                <label htmlFor="my-drawer" className="drawer-overlay"></label>
-                <aside className="bg-base-100 w-48 min-h-full border-r">
-                    <ul className="menu p-4 text-base">
-                        <li>
-                            <Link
-                                to="/dashboard"
-                                className="flex items-center gap-2"
+            {/* Mobile sidebar */}
+            {sidebarOpen && (
+                <div className="lg:hidden fixed inset-0 flex z-40">
+                    <div className="fixed inset-0" onClick={toggleSidebar}>
+                        <div className="absolute inset-0 opacity-75 bg-base-content"></div>
+                    </div>
+                    <div className="relative flex-1 flex flex-col w-64 max-w-xs pt-5 pb-4 bg-base-100">
+                        <div className="absolute top-0 right-0 -mr-12 pt-2">
+                            <button
+                                className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none"
+                                onClick={toggleSidebar}
                             >
-                                <FiHome /> Dashboard
+                                <FiX className="h-6 w-6 text-base-content" />
+                            </button>
+                        </div>
+                        <div className="flex-shrink-0 flex items-center px-4">
+                            <Link to={"/"} className="text-xl font-bold text-blue-500 ml-4">
+                                Achol Computer
                             </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/dashboard/inventory"
-                                className="flex items-center gap-2"
-                            >
-                                <FiBox /> Inventory
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                // to="/orders"
-                                className="flex items-center gap-2"
-                            >
-                                <FiShoppingCart /> Orders
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                // to="/users"
-                                className="flex items-center gap-2"
-                            >
-                                <FiUsers /> Users
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                // to="/reports"
-                                className="flex items-center gap-2"
-                            >
-                                <FiFileText /> Reports
-                            </Link>
-                        </li>
-                    </ul>
-                </aside>
+                        </div>
+                        <div className="mt-8 flex-1 h-0 overflow-y-auto">
+                            <nav className="px-4 space-y-1">
+                                <Link
+                                    to="/dashboard/inventory"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
+                                    onClick={toggleSidebar}
+                                >
+                                    <FiBox className="mr-3 h-5 w-5" />
+                                    Inventory
+                                </Link>
+                                <Link
+                                    to="/dashboard/orders"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
+                                    onClick={toggleSidebar}
+                                >
+                                    <FiShoppingCart className="mr-3 h-5 w-5" />
+                                    Orders
+                                </Link>
+                                <Link
+                                    to="/dashboard/users"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
+                                    onClick={toggleSidebar}
+                                >
+                                    <FiUsers className="mr-3 h-5 w-5" />
+                                    Users
+                                </Link>
+                                <Link
+                                    to="/dashboard/reports"
+                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
+                                    onClick={toggleSidebar}
+                                >
+                                    <FiFileText className="mr-3 h-5 w-5" />
+                                    Reports
+                                </Link>
+                            </nav>
+                        </div>
+                        <div className="p-4 border-t border-base-300">
+                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+                                <FiLogOut className="mr-2" onClick={handleLogout} />
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Main content */}
+            <div className="flex flex-col w-0 flex-1 overflow-hidden">
+                {/* Top navigation */}
+                <div className="relative z-10 flex-shrink-0 flex h-16 bg-base-300 border-b border-base-300">
+                    <button
+                        className="px-4 border-r border-base-300 focus:outline-none lg:hidden"
+                        onClick={toggleSidebar}
+                    >
+                        <span className="sr-only">Open sidebar</span>
+                        <FiMenu className="h-6 w-6" />
+                    </button>
+                    <div className="flex-1 px-4 flex justify-between items-center">
+                        {/* Title instead of search bar */}
+                        <h1 className="text-xl font-bold mt-2">{currentTitle}</h1>
+                        <div className="ml-4 flex items-center lg:ml-6">
+                            <ThemeComponent />
+                            <div className="ml-3 relative">
+                                <div>
+                                    <button
+                                        className="max-w-xs flex items-center text-sm rounded-full focus:outline-none"
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    >
+                                        <div className="h-8 w-8 m-2 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold tooltip tooltip-bottom" data-tip={user?.name}>
+                                            AC
+                                        </div>
+                                        
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Page content */}
+                <main className="flex-1 relative overflow-y-auto focus:outline-none">
+                    <div className="py-6">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <Outlet />
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
@@ -21,6 +22,7 @@ const Navbar = () => {
       console.error(err);
     }
   };
+
 
   return (
     <div className="navbar bg-base-200 text-base-content shadow-sm px-2 md:px-8 flex justify-between items-center">
@@ -115,8 +117,11 @@ const Navbar = () => {
                   <span>{user?.name}</span>
                   <span className="text-xs text-gray-500">{user?.email}</span>
                 </li>
-                <li><a>Profile</a></li>
-                <li><a>Settings</a></li>
+                <li>
+                  <Link to={"/dashboard"}>Dashboard</Link>
+                </li>
+                {/* <li><a>Profile</a></li> */}
+                {/* <li><a>Settings</a></li> */}
                 {/* <li><a>Billing</a></li> */}
                 <li className="border-t mt-2 pt-2" onClick={handleLogout}><a>Logout</a></li>
               </ul>
