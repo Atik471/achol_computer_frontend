@@ -1,7 +1,17 @@
 import { useState } from "react";
+import { useProducts } from "../hooks/useProducts.js";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
+  const { data: products, isLoading, error } = useProducts();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div className="text-error">Failed to load products</div>;
+
+  // Optional: search filter
+  const filteredProducts = products?.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-6 space-y-6">
@@ -9,19 +19,28 @@ export default function Inventory() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Total Products</div>
-          <div className="stat-value">128</div>
+          <div className="stat-value">{products?.length || 0}</div>
         </div>
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Low Stock</div>
-          <div className="stat-value text-warning">14</div>
+          <div className="stat-value text-warning">
+            {products?.filter((p) => p.stock > 0 && p.stock < 10).length}
+          </div>
         </div>
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Out of Stock</div>
-          <div className="stat-value text-error">6</div>
+          <div className="stat-value text-error">
+            {products?.filter((p) => p.quantity === 0).length}
+          </div>
         </div>
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Inventory Value</div>
-          <div className="stat-value">$12.4k</div>
+          <div className="stat-value">
+            $
+            {products
+              ?.reduce((acc, p) => acc + p.price * p.stock, 0)
+              .toLocaleString()}
+          </div>
         </div>
       </div>
 
@@ -68,26 +87,41 @@ export default function Inventory() {
             </tr>
           </thead>
           <tbody>
-            {[...Array(5)].map((_, i) => (
-              <tr key={i}>
+            {filteredProducts?.map((p) => (
+              <tr key={p._id}>
                 <td>
                   <img
-                    src={`https://picsum.photos/40?${i}`}
-                    alt="product"
+                    src={p.image || `https://picsum.photos/40?random=${p._id}`}
+                    alt={p.name}
                     className="w-10 h-10 rounded"
                   />
                 </td>
-                <td>Product {i + 1}</td>
-                <td>SKU-{1000 + i}</td>
-                <td>Category</td>
-                <td>$99</td>
-                <td>24</td>
+                <td>{p.name}</td>
+                <td>{p.sku}</td>
                 <td>
-                  <span className="badge badge-success">In Stock</span>
+                  {p.category?.name}
+                  {p.category?.subcategory
+                    ? ` / ${p.category.subcategory.name}`
+                    : ""}
+                </td>
+                <td>${p.price}</td>
+                <td>{p.stock}</td>
+                <td>
+                  {p.quantity === 0 ? (
+                    <span className="badge badge-error">Out of Stock</span>
+                  ) : p.quantity < 10 ? (
+                    <span className="badge badge-warning">Low Stock</span>
+                  ) : (
+                    <span className="badge badge-success">In Stock</span>
+                  )}
                 </td>
                 <td className="space-x-2">
-                  <button className="btn btn-sm btn-outline btn-info">Update</button>
-                  <button className="btn btn-sm btn-outline btn-error">Delete</button>
+                  <button className="btn btn-sm btn-outline btn-info">
+                    Update
+                  </button>
+                  <button className="btn btn-sm btn-outline btn-error">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -95,11 +129,11 @@ export default function Inventory() {
         </table>
       </div>
 
-      {/* Pagination */}
+      {/* Pagination (static for now) */}
       <div className="join flex justify-center">
         <button className="join-item btn">«</button>
-        <button className="join-item btn">1</button>
-        <button className="join-item btn btn-active">2</button>
+        <button className="join-item btn btn-active">1</button>
+        <button className="join-item btn">2</button>
         <button className="join-item btn">3</button>
         <button className="join-item btn">»</button>
       </div>
