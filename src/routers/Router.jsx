@@ -6,11 +6,12 @@ import Inventory from '../pages/Inventory'
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import MainLayout from '../layouts/MainLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <MainLayout />,
     children: [
       {
         path: 'home',

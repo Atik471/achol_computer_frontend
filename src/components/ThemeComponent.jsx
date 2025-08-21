@@ -34,7 +34,7 @@ const ThemeComponent = () => {
     <label className="toggle text-base-content">
       <input
         type="checkbox"
-        value="business"
+        checked={theme === "business"}
         className="theme-controller"
         onChange={toggleTheme}
       />

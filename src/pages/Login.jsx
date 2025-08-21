@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { useLogin } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Login = () => {
   const {
@@ -14,6 +15,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const onSubmit = (data) => {
     loginMutation.mutate(data);
