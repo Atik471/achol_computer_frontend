@@ -7,6 +7,9 @@ import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import MainLayout from '../layouts/MainLayout';
+import Orders from '../pages/Orders';
+import Users from '../pages/Users';
+import Transactions from '../pages/Transactions';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +34,18 @@ const router = createBrowserRouter([
         path: 'inventory',
         element: <Inventory />,
       },
+      {
+        path: 'orders',
+        element: <Orders />,
+      },
+      {
+        path: 'users',
+        element: <Users />
+      },
+      {
+        path: 'transactions',
+        element: <Transactions />
+      }
     ],
   },
   {

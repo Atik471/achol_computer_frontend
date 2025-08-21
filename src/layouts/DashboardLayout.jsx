@@ -6,14 +6,13 @@ import {
     FiFileText,
     FiShoppingCart,
     FiMenu,
-    FiChevronDown,
     FiLogOut,
-    FiSettings,
-    FiUser,
+    FiCreditCard,
+    FiBarChart,
     FiX
 } from 'react-icons/fi';
 import ThemeComponent from '../components/ThemeComponent';
-import { Link, useLocation } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { Outlet } from "react-router";
 import { AuthContext } from '../contexts/AuthProvider';
 
@@ -51,9 +50,9 @@ const DashboardLayout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-base-100 flex">
+        <div className="min-h-screen bg-base-100 flex h-screen">
             {/* Sidebar for desktop */}
-            <div className="hidden lg:flex lg:flex-shrink-0 bg-base-200">
+            <div className="hidden lg:flex lg:flex-shrink-0 bg-base-200 ">
                 <div className="w-64 flex flex-col">
                     <div className="flex-1 flex flex-col min-h-0 border-r border-base-300">
                         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -63,35 +62,57 @@ const DashboardLayout = () => {
                                 </Link>
                             </div>
                             <nav className="mt-8 flex-1 px-4 space-y-1">
-                                {/* Removed Dashboard link */}
-                                <Link
+                                <NavLink
+                                    to="/dashboard"
+                                    end 
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
+                                >
+                                    <FiBarChart className="mr-3 h-5 w-5" />
+                                    Dashboard
+                                </NavLink>
+                                <NavLink
                                     to="/dashboard/inventory"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiBox className="mr-3 h-5 w-5" />
                                     Inventory
-                                </Link>
-                                <Link
+                                </NavLink>
+                                <NavLink
                                     to="/dashboard/orders"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiShoppingCart className="mr-3 h-5 w-5" />
                                     Orders
-                                </Link>
-                                <Link
+                                </NavLink>
+                                <NavLink
                                     to="/dashboard/users"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiUsers className="mr-3 h-5 w-5" />
                                     Users
-                                </Link>
-                                <Link
-                                    to="/dashboard/reports"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-300"
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard/transactions"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
-                                    <FiFileText className="mr-3 h-5 w-5" />
-                                    Reports
-                                </Link>
+                                    <FiCreditCard className="mr-3 h-5 w-5" />
+                                    Transactions
+                                </NavLink>
                             </nav>
                         </div>
                         {/* Logout button instead of admin info */}
@@ -127,38 +148,62 @@ const DashboardLayout = () => {
                         </div>
                         <div className="mt-8 flex-1 h-0 overflow-y-auto">
                             <nav className="px-4 space-y-1">
-                                <Link
+                                <NavLink
+                                    to="/dashboard"
+                                    end 
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
+                                >
+                                    <FiBarChart className="mr-3 h-5 w-5" />
+                                    Dashboard
+                                </NavLink>
+
+                                <NavLink
                                     to="/dashboard/inventory"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
-                                    onClick={toggleSidebar}
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiBox className="mr-3 h-5 w-5" />
                                     Inventory
-                                </Link>
-                                <Link
+                                </NavLink>
+
+                                <NavLink
                                     to="/dashboard/orders"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
-                                    onClick={toggleSidebar}
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiShoppingCart className="mr-3 h-5 w-5" />
                                     Orders
-                                </Link>
-                                <Link
+                                </NavLink>
+
+                                <NavLink
                                     to="/dashboard/users"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
-                                    onClick={toggleSidebar}
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
                                     <FiUsers className="mr-3 h-5 w-5" />
                                     Users
-                                </Link>
-                                <Link
-                                    to="/dashboard/reports"
-                                    className="flex items-center px-4 py-2 rounded-lg group hover:bg-base-200"
-                                    onClick={toggleSidebar}
+                                </NavLink>
+
+                                <NavLink
+                                    to="/dashboard/transactions"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        }`
+                                    }
                                 >
-                                    <FiFileText className="mr-3 h-5 w-5" />
-                                    Reports
-                                </Link>
+                                    <FiCreditCard className="mr-3 h-5 w-5" />
+                                    Transactions
+                                </NavLink>
+
                             </nav>
                         </div>
                         <div className="p-4 border-t border-base-300">
@@ -174,7 +219,7 @@ const DashboardLayout = () => {
             {/* Main content */}
             <div className="flex flex-col w-0 flex-1 overflow-hidden">
                 {/* Top navigation */}
-                <div className="relative z-10 flex-shrink-0 flex h-16 bg-base-300 border-b border-base-300">
+                <div className="relative z-10 flex-shrink-0 flex h-16 bg-base-200 border-b border-base-300">
                     <button
                         className="px-4 border-r border-base-300 focus:outline-none lg:hidden"
                         onClick={toggleSidebar}
@@ -196,7 +241,7 @@ const DashboardLayout = () => {
                                         <div className="h-8 w-8 m-2 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold tooltip tooltip-bottom" data-tip={user?.name}>
                                             AC
                                         </div>
-                                        
+
                                     </button>
                                 </div>
                             </div>

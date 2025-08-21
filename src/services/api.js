@@ -45,6 +45,7 @@ api.interceptors.response.use(
         });
 
         const newToken = refreshRes.data.accessToken;
+        console.log("Authorized")
         err.config.headers["Authorization"] = `Bearer ${newToken}`;
 
         // retry original request

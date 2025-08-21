@@ -1,74 +1,93 @@
-import React from "react";
+import { useState } from "react";
 
-const Inventory = () => {
+export default function Inventory() {
+  const [search, setSearch] = useState("");
+
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-      <h1 className="text-4xl font-extrabold mb-8 text-gray-900 dark:text-white">
-        Inventory
-      </h1>
-
-      {/* Search and Filter */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-        <input
-          type="text"
-          placeholder="Search items..."
-          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-        />
-        <select
-          className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-        >
-          <option>All Categories</option>
-          <option>Electronics</option>
-          <option>Accessories</option>
-          <option>Components</option>
-        </select>
+    <div className="p-6 space-y-6">
+      {/* Header / Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="stat bg-base-200 rounded-xl shadow">
+          <div className="stat-title">Total Products</div>
+          <div className="stat-value">128</div>
+        </div>
+        <div className="stat bg-base-200 rounded-xl shadow">
+          <div className="stat-title">Low Stock</div>
+          <div className="stat-value text-warning">14</div>
+        </div>
+        <div className="stat bg-base-200 rounded-xl shadow">
+          <div className="stat-title">Out of Stock</div>
+          <div className="stat-value text-error">6</div>
+        </div>
+        <div className="stat bg-base-200 rounded-xl shadow">
+          <div className="stat-title">Inventory Value</div>
+          <div className="stat-value">$12.4k</div>
+        </div>
       </div>
 
-      {/* Inventory Table */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+      {/* Toolbar */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="flex gap-2 w-full md:w-auto">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="input input-bordered w-full md:w-64"
+          />
+          <select className="select select-bordered">
+            <option disabled>Filter</option>
+            <option>All</option>
+            <option>In Stock</option>
+            <option>Low Stock</option>
+            <option>Out of Stock</option>
+          </select>
+          <select className="select select-bordered">
+            <option>Sort by</option>
+            <option>Name</option>
+            <option>Price</option>
+            <option>Quantity</option>
+          </select>
+        </div>
+        <button className="btn btn-primary">+ Add Product</button>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
+        <table className="table">
+          <thead>
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Item Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                SKU
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Quantity
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price (৳)
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Supplier
-              </th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-            {[1, 2, 3, 4].map((item) => (
-              <tr key={item} className="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
-                <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white font-semibold">
-                  Sample Item {item}
+          <tbody>
+            {[...Array(5)].map((_, i) => (
+              <tr key={i}>
+                <td>
+                  <img
+                    src={`https://picsum.photos/40?${i}`}
+                    alt="product"
+                    className="w-10 h-10 rounded"
+                  />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
-                  SKU-000{item}
+                <td>Product {i + 1}</td>
+                <td>SKU-{1000 + i}</td>
+                <td>Category</td>
+                <td>$99</td>
+                <td>24</td>
+                <td>
+                  <span className="badge badge-success">In Stock</span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
-                  Electronics
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-gray-900 dark:text-white">
-                  {Math.floor(Math.random() * 100)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-gray-900 dark:text-white">
-                  {Math.floor(Math.random() * 10000) + 500}৳
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
-                  Achol Supplier
+                <td className="space-x-2">
+                  <button className="btn btn-sm btn-outline btn-info">Update</button>
+                  <button className="btn btn-sm btn-outline btn-error">Delete</button>
                 </td>
               </tr>
             ))}
@@ -76,12 +95,14 @@ const Inventory = () => {
         </table>
       </div>
 
-      {/* Footer or Summary */}
-      <div className="mt-6 text-right text-sm text-gray-500 dark:text-gray-400">
-        Showing 4 of 100+ items
+      {/* Pagination */}
+      <div className="join flex justify-center">
+        <button className="join-item btn">«</button>
+        <button className="join-item btn">1</button>
+        <button className="join-item btn btn-active">2</button>
+        <button className="join-item btn">3</button>
+        <button className="join-item btn">»</button>
       </div>
     </div>
   );
-};
-
-export default Inventory;
+}
