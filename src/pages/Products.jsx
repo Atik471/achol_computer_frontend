@@ -1,59 +1,61 @@
-import ProductCard from "../components/Product";
 import { useProducts } from "../hooks/useProducts";
-import { EmptyState } from "../components/EmptyState";
-
-// Loading State Component
-const LoadingState = () => (
-    <div className="flex justify-center items-center min-h-[50vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-);
-
-// Error State Component
-const ErrorState = () => (
-    <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="alert alert-error shadow-lg w-fit">
-            <span>⚠️ Failed to load products. Please try again.</span>
-        </div>
-    </div>
-);
-
-
+import { ErrorState } from "../components/ErrorState";
+import LoadingSpinner from "../components/LoadingSpinner";
+import Breadcrumbs from "../components/Breadcrumbs";
+import FilterSidebar from "../components/FilterSidebar";
+import ProductList from "../components/ProductList";
 
 const ProductsPage = () => {
-    const { data: products, isLoading, error } = useProducts();
+  const { data: products, isLoading, error } = useProducts();
 
-    if (isLoading) return <LoadingState />;
-    if (error) return <ErrorState />;
+  const breadcrumbPaths = [
+    { label: "Home", href: "/" },
+    { label: "All categories", href: "/categories" },
+    { label: "KEYBOARD" }, // current category
+  ];
 
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorState />;
 
-    return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Page Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-                <h1 className="text-3xl font-bold">Electronics</h1>
-                {/* Sorting (optional dropdown) */}
-                <select className="select select-bordered w-full sm:w-48">
-                    <option disabled selected>Sort By</option>
-                    <option>Newest</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Best Rated</option>
-                </select>
-            </div>
+  return (
+    <div className="p-4 lg:p-6">
+      <Breadcrumbs paths={breadcrumbPaths} />
 
-            {/* Product Grid */}
-            {products?.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
-            ) : (
-                <EmptyState />
-            )}
-        </div>
-    );
+      {/* Top controls */}
+      <div className="flex flex-wrap items-center justify-between mb-4 gap-2">
+        {/* Brand filter */}
+        <select className="select select-bordered">
+          <option disabled selected>Filter by brand</option>
+          <option>Logitech</option>
+          <option>A4Tech</option>
+          <option>HP</option>
+          <option>Micropack</option>
+        </select>
+
+        {/* Sort */}
+        <select className="select select-bordered">
+          <option disabled selected>Sort by</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Newest</option>
+        </select>
+      </div>
+
+      <div className="flex gap-6">
+        {/* Sidebar */}
+        <FilterSidebar
+          onCategoryChange={(cat) => console.log("Category:", cat)}
+          onPriceChange={(range) => console.log("Price range:", range)}
+          onSearch={(q) => console.log("Search:", q)}
+        />
+
+        {/* Products */}
+        <main className="flex-1">
+          <ProductList products={products} />
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default ProductsPage;
