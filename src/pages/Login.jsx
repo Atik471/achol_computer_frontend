@@ -27,8 +27,6 @@ const Login = () => {
     }
   };
 
-  console.log(user);
-
   // Redirect + toast on success
   useEffect(() => {
     if (loginMutation.isSuccess) {
