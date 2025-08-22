@@ -1,36 +1,59 @@
-import Product from "../components/Product";
+import ProductCard from "../components/Product";
 import { useProducts } from "../hooks/useProducts";
+import { EmptyState } from "../components/EmptyState";
 
-const Products = () => {
+// Loading State Component
+const LoadingState = () => (
+    <div className="flex justify-center items-center min-h-[50vh]">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+);
+
+// Error State Component
+const ErrorState = () => (
+    <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="alert alert-error shadow-lg w-fit">
+            <span>⚠️ Failed to load products. Please try again.</span>
+        </div>
+    </div>
+);
+
+
+
+const ProductsPage = () => {
     const { data: products, isLoading, error } = useProducts();
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div className="text-error">Failed to load products</div>;
-
-    // search filter
-    // const filteredProducts = products?.filter((p) =>
-    //     p.name.toLowerCase().includes(search?.toLowerCase())
-    // );
-
-    console.log(products)
+    if (isLoading) return <LoadingState />;
+    if (error) return <ErrorState />;
 
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold underline">
-                Products Page
-            </h1>
+        <div className="container mx-auto px-4 py-8">
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <h1 className="text-3xl font-bold">Electronics</h1>
+                {/* Sorting (optional dropdown) */}
+                <select className="select select-bordered w-full sm:w-48">
+                    <option disabled selected>Sort By</option>
+                    <option>Newest</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Best Rated</option>
+                </select>
+            </div>
+
+            {/* Product Grid */}
             {products?.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {products.map((product) => (
-                        <Product key={product.id} product={product} />
+                        <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
             ) : (
-                <div>No products found</div>
+                <EmptyState />
             )}
         </div>
     );
 };
 
-export default Products;
+export default ProductsPage;
