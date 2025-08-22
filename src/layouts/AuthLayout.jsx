@@ -9,7 +9,7 @@ const AuthLayout = () => {
 
         <div className="min-h-screen">
             {/* Navbar */}
-            <div className="navbar bg-base-100 shadow-sm px-2 md:px-8">
+            <div className="navbar bg-[#468A9A] dark:bg-[#393E46] text-white shadow-sm px-2 md:px-8">
                 <div className="navbar-start">
                     <Link to="/" className="btn btn-ghost text-xl">Achol Computer</Link>
                 </div>

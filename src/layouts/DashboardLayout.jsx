@@ -52,12 +52,12 @@ const DashboardLayout = () => {
     return (
         <div className="min-h-screen bg-base-100 flex h-screen">
             {/* Sidebar for desktop */}
-            <div className="hidden lg:flex lg:flex-shrink-0 bg-base-200 ">
+            <div className="hidden lg:flex lg:flex-shrink-0 bg-[#468A9A] dark:bg-[#393E46]">
                 <div className="w-64 flex flex-col">
-                    <div className="flex-1 flex flex-col min-h-0 border-r border-base-300">
+                    <div className="flex-1 flex flex-col min-h-0 ">
                         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
                             <div className="flex items-center flex-shrink-0 px-4">
-                                <Link to={"/"} className="text-2xl font-bold text-blue-600 ml-4">
+                                <Link to={"/"} className="text-2xl font-bold text-white dark:text-gray-200  ml-4">
                                     Achol Computer
                                 </Link>
                             </div>
@@ -66,7 +66,7 @@ const DashboardLayout = () => {
                                     to="/dashboard"
                                     end 
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -76,7 +76,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/inventory"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -86,7 +86,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/orders"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : "text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -96,7 +96,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/users"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : "text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -106,7 +106,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/transactions"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : "text-white dark:text-gray-300 "
                                         }`
                                     }
                                 >
@@ -116,8 +116,8 @@ const DashboardLayout = () => {
                             </nav>
                         </div>
                         {/* Logout button instead of admin info */}
-                        <div className="flex-shrink-0 border-t border-base-300 p-4">
-                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" onClick={handleLogout}>
+                        <div className="flex-shrink-0 border-t border-[#697565] p-4">
+                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-black hover:bg-gray-200 font-semibold transition-all duration-200" onClick={handleLogout}>
                                 <FiLogOut className="mr-2" />
                                 Logout
                             </button>
@@ -132,7 +132,7 @@ const DashboardLayout = () => {
                     <div className="fixed inset-0" onClick={toggleSidebar}>
                         <div className="absolute inset-0 opacity-75 bg-base-content"></div>
                     </div>
-                    <div className="relative flex-1 flex flex-col w-64 max-w-xs pt-5 pb-4 bg-base-100">
+                    <div className="relative flex-1 flex flex-col w-64 max-w-xs pt-5 pb-4 bg-[#468A9A] dark:bg-[#393E46]">
                         <div className="absolute top-0 right-0 -mr-12 pt-2">
                             <button
                                 className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none"
@@ -142,7 +142,7 @@ const DashboardLayout = () => {
                             </button>
                         </div>
                         <div className="flex-shrink-0 flex items-center px-4">
-                            <Link to={"/"} className="text-xl font-bold text-blue-500 ml-4">
+                            <Link to={"/"} className="text-2xl font-bold text-white dark:text-gray-200  ml-4">
                                 Achol Computer
                             </Link>
                         </div>
@@ -152,7 +152,7 @@ const DashboardLayout = () => {
                                     to="/dashboard"
                                     end 
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -163,7 +163,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/inventory"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -174,7 +174,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/orders"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -185,7 +185,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/users"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -196,7 +196,7 @@ const DashboardLayout = () => {
                                 <NavLink
                                     to="/dashboard/transactions"
                                     className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 rounded-lg group hover:bg-base-300 ${isActive ? "bg-base-200 text-blue-500 font-semibold" : ""
+                                        `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
                                     }
                                 >
@@ -207,8 +207,8 @@ const DashboardLayout = () => {
                             </nav>
                         </div>
                         <div className="p-4 border-t border-base-300">
-                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
-                                <FiLogOut className="mr-2" onClick={handleLogout} />
+                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-black hover:bg-gray-200 font-semibold transition-all duration-200" onClick={handleLogout}>
+                                <FiLogOut className="mr-2" />
                                 Logout
                             </button>
                         </div>
@@ -219,7 +219,7 @@ const DashboardLayout = () => {
             {/* Main content */}
             <div className="flex flex-col w-0 flex-1 overflow-hidden">
                 {/* Top navigation */}
-                <div className="relative z-10 flex-shrink-0 flex h-16 bg-base-200 border-b border-base-300">
+                <div className="relative z-10 flex-shrink-0 flex h-16 text-white dark:text-gray-200 bg-[#468A9A] dark:bg-[#393E46]">
                     <button
                         className="px-4 border-r border-base-300 focus:outline-none lg:hidden"
                         onClick={toggleSidebar}
@@ -229,7 +229,7 @@ const DashboardLayout = () => {
                     </button>
                     <div className="flex-1 px-4 flex justify-between items-center">
                         {/* Title instead of search bar */}
-                        <h1 className="text-xl font-bold mt-2">{currentTitle}</h1>
+                        <h1 className="text-xl font-bold">{currentTitle}</h1>
                         <div className="ml-4 flex items-center lg:ml-6">
                             <ThemeComponent />
                             <div className="ml-3 relative">

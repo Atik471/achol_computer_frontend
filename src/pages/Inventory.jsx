@@ -8,7 +8,7 @@ export default function Inventory() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div className="text-error">Failed to load products</div>;
 
-  // Optional: search filter
+  // search filter
   const filteredProducts = products?.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );

@@ -1,14 +1,15 @@
 import { Outlet } from "react-router";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const MainLayout = () => {
     return (
         <div>
             <Navbar />
-            <h1 className="text-3xl font-bold underline">
-                Main Layout
-            </h1>
-            <Outlet />
+            <div className="min-h-[calc(100vh-200px)]">
+                <Outlet />
+            </div>
+            <Footer />
         </div>
     );
 };

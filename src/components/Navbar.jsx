@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
@@ -25,7 +25,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="navbar bg-base-200 text-base-content shadow-sm px-2 md:px-8 flex justify-between items-center">
+    <div className="navbar bg-[#468A9A] dark:bg-[#393E46] text-white shadow-sm px-2 md:px-8 flex justify-between items-center">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -50,46 +50,46 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-200 text-base-content rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Products</a>
+              <NavLink to="/products">Products</NavLink>
             </li>
             <li>
               <details>
                 <summary>Our Shops</summary>
                 <ul className="p-2">
-                  <li><a>Submenu 1</a></li>
-                  <li><a>Submenu 2</a></li>
+                  <li><NavLink to="/products">Submenu 1</NavLink></li>
+                  <li><NavLink to="/products">Submenu 2</NavLink></li>
                 </ul>
               </details>
             </li>
             <li>
-              <a>About Us</a>
+              <NavLink to="/about">About Us</NavLink>
             </li>
             <li>
-              <a>Contact</a>
+              <NavLink to="/contact">Contact</NavLink>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Achol Computer</a>
+        <a className="cursor-pointer font-bold text-xl">Achol Computer</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Products</a>
+            <NavLink to="/products">Products</NavLink>
           </li>
           <li>
             <details>
               <summary>Our Shops</summary>
-              <ul className="p-2">
-                <li><a>Submenu 1</a></li>
-                <li><a>Submenu 2</a></li>
+              <ul className="p-2 text-black dark:text-white shadow-lg">
+                <li><NavLink to="/products">Submenu 1</NavLink></li>
+                <li><NavLink to="/products">Submenu 2</NavLink></li>
               </ul>
             </details>
           </li>
           <li>
-            <a>About Us</a>
+            <NavLink to="/about">About Us</NavLink>
           </li>
           <li>
-            <a>Contact</a>
+            <NavLink to="/contact">Contact</NavLink>
           </li>
         </ul>
       </div>
@@ -113,7 +113,7 @@ const Navbar = () => {
                 tabIndex={0}
                 className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border"
               >
-                <li className="menu-title">
+                <li className="menu-title text-blue-500">
                   <span>{user?.name}</span>
                   <span className="text-xs text-gray-500">{user?.email}</span>
                 </li>

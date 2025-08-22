@@ -10,6 +10,7 @@ import MainLayout from '../layouts/MainLayout';
 import Orders from '../pages/Orders';
 import Users from '../pages/Users';
 import Transactions from '../pages/Transactions';
+import Products from '../pages/Products';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
         path: 'home',
         element: <Home />,
       },
+      {
+        path: 'products',
+        element: <Products />,
+      }
     ],
   },
   {
