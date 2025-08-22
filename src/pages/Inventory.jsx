@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useProducts } from "../hooks/useProducts.js";
+import Pagination from "../components/Pagination.jsx";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
@@ -129,14 +130,7 @@ export default function Inventory() {
         </table>
       </div>
 
-      {/* Pagination (static for now) */}
-      <div className="join flex justify-center">
-        <button className="join-item btn">«</button>
-        <button className="join-item btn btn-active">1</button>
-        <button className="join-item btn">2</button>
-        <button className="join-item btn">3</button>
-        <button className="join-item btn">»</button>
-      </div>
+      <Pagination />
     </div>
   );
 }

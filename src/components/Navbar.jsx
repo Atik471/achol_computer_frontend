@@ -111,22 +111,23 @@ const Navbar = () => {
             {isDropdownOpen && (
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border"
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-200 text-base-content"
               >
-                <li className="menu-title text-blue-500">
-                  <span>{user?.name}</span>
-                  <span className="text-xs text-gray-500">{user?.email}</span>
+                <li className="menu-title text-base-content">
+                  <span className="font-semibold text-blue-500">{user?.name}</span>
+                  <span className="text-xs opacity-70">{user?.email}</span>
                 </li>
                 <li>
                   <Link to={"/dashboard"}>Dashboard</Link>
                 </li>
-                {/* <li><a>Profile</a></li> */}
-                {/* <li><a>Settings</a></li> */}
-                {/* <li><a>Billing</a></li> */}
-                <li className="border-t mt-2 pt-2" onClick={handleLogout}><a>Logout</a></li>
+                <li className="border-t border-base-200 dark:border-gray-600 mt-2 pt-2" onClick={handleLogout}>
+                  <a>Logout</a>
+                </li>
               </ul>
             )}
-          </div>}
+          </div>
+
+        }
       </div>
       {showToast && (
         <div className="toast toast-top toast-end">

@@ -9,10 +9,14 @@ const Product = ({ product }) => {
     ratings = { average: 0, count: 0 },
     price,
     discountPrice,
+    specifications = {}, // expecting { key: value }
   } = product;
 
+  // Pick only 2–3 specs to show in card
+  const previewSpecs = Object.entries(specifications).slice(0, 3);
+
   return (
-    <div className="card w-80 bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
       {/* Product Image */}
       <figure className="bg-base-200 h-48 flex items-center justify-center">
         <img
@@ -57,20 +61,36 @@ const Product = ({ product }) => {
         <div className="mt-2">
           {discountPrice ? (
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-primary">
+              <span className="text-xl font-bold dark:text-gray-200 text-black">
                 ${discountPrice}
               </span>
-              <span className="line-through text-gray-400">${price}</span>
+              <span className="line-through text-gray-500 dark:text-gray-400">
+                ${price}
+              </span>
             </div>
           ) : (
             <span className="text-xl font-bold text-primary">${price}</span>
           )}
         </div>
 
+        {/* Specifications Preview */}
+        {previewSpecs.length > 0 && (
+          <ul className="mt-2 text-sm text-black-300 dark:text-gray-300 space-y-1">
+            {previewSpecs.map(([key, value]) => (
+              <li key={key}>
+                <span className="font-medium">{key}:</span> {value}
+              </li>
+            ))}
+          </ul>
+        )}
+
         {/* Action */}
-        <div className="card-actions mt-4">
+        <div className="card-actions mt-2 grid grid-cols-2 gap-2 w-full">
+          <button className="btn btn-outline w-full">View Details</button>
           <button className="btn btn-primary w-full">Add to Cart</button>
         </div>
+
+
       </div>
     </div>
   );

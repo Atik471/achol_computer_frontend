@@ -32,21 +32,7 @@ const FilterSidebar = ({ onCategoryChange, onPriceChange, onSearch }) => {
   };
 
   return (
-    <aside className="w-64 hidden lg:block p-4 bg-base-200 dark:bg-base-300 rounded-2xl shadow-sm">
-      {/* Search */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="input input-bordered w-full"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            onSearch(e.target.value);
-          }}
-        />
-      </div>
-
+    <aside className="w-64 hidden lg:block p-4 bg-base-200 dark:bg-base-300 rounded-2xl shadow-sm h-screen sticky top-6">
       {/* Categories */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Categories</h3>

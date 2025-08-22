@@ -1,6 +1,6 @@
 const Breadcrumb = ({ category }) => {
   return (
-    <div className="text-sm breadcrumbs mb-4">
+    <div className="text-sm breadcrumbs mb-4 inline">
       <ul>
         <li>
           <a className="hover:underline">Home</a>
