@@ -7,6 +7,8 @@ import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
 import { useSearchParams } from "react-router";
 import SearchInput from "../components/SearchInput";
+import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 const ProductsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +17,10 @@ const ProductsPage = () => {
     const currentSort = searchParams.get("sort") || "";
 
     const { data, isLoading, error } = useProducts(params);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
 
     if (isLoading) return <LoadingSpinner />;
     if (error) return <ErrorState />;
@@ -51,8 +57,14 @@ const ProductsPage = () => {
         setSearchParams(searchParams);
     };
 
+    
+
     return (
         <div className="p-4 lg:p-6 ">
+            {/* <Helmet>
+                <title>Achol Computer | Products</title>
+                <meta name="description" content="Trusted electronics store in Bangladesh." />
+            </Helmet> */}
             <div className="flex items-center justify-between">
                 <Breadcrumbs />
 

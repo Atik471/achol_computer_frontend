@@ -1,4 +1,6 @@
+import { Link } from "react-router";
 import productimg from "../assets/product.png";
+import { useEffect } from "react";
 
 const Product = ({ product }) => {
   const {
@@ -14,6 +16,10 @@ const Product = ({ product }) => {
 
   // Pick only 2–3 specs to show in card
   const previewSpecs = Object.entries(specifications).slice(0, 3);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
@@ -85,9 +91,11 @@ const Product = ({ product }) => {
         )}
 
         {/* Action */}
-        <div className="card-actions mt-2 grid grid-cols-2 gap-2 w-full">
-          <button className="btn btn-outline w-full">View Details</button>
-          <button className="btn btn-primary w-full">Add to Cart</button>
+        <div className="card-actions mt-2 grid grid-cols-1 gap-2 w-full">
+          <Link to={`/products/${product.slug}`}>
+            <button className="btn btn-outline w-full">View Details</button>
+          </Link>
+          {/* <button className="btn btn-primary w-full">Add to Cart</button> */}
         </div>
 
 

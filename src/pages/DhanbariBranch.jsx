@@ -1,8 +1,19 @@
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp, FaFacebook, FaEnvelope, FaClock } from "react-icons/fa";
 
 export default function DhanbariBranch() {
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4">
+      {/* <Helmet>
+        <title>Achol Computer | Dhanbari</title>
+        <meta name="description" content="Trusted electronics store in Bangladesh." />
+      </Helmet> */}
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -52,7 +63,7 @@ export default function DhanbariBranch() {
                       <h2 className="card-title text-base-content mb-2">Contact</h2>
                       <div className="space-y-3 text-base-content/90">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold min-w-[60px]">Phone:</span> 
+                          <span className="font-semibold min-w-[60px]">Phone:</span>
                           <span className="font-medium">01712076011, 01868944455</span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -90,7 +101,7 @@ export default function DhanbariBranch() {
                       <h2 className="card-title text-base-content mb-2">Facebook</h2>
                       <p className="text-base-content/90 mb-3">Follow us for updates, offers & more</p>
                       <a
-                        href="https://www.facebook.com/share/16m3MctQ6g/"
+                        href="https://www.facebook.com/sabuz.ahme?rdid=HtJGhBuogmOv8Lde&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F16oADisM53%2F#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm bg-[#1877F2] text-white border-0 hover:bg-[#166FE5] transition-colors"
@@ -134,7 +145,7 @@ export default function DhanbariBranch() {
               <div className="card-body">
                 <h2 className="card-title text-base-content mb-4">Find Us Here</h2>
                 <div className="rounded-lg overflow-hidden h-96 border border-base-300">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3625.456534473334!2d89.94972497507536!3d24.67682825258156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd89efd405070f%3A0x7e01914e53bf95bb!2sDhanbari%20Bus%20Terminal!5e0!3m2!1sen!2sbd!4v1755925455108!5m2!1sen!2sbd" width="500" height="450" style={{border:0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3625.456534473334!2d89.94972497507536!3d24.67682825258156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd89efd405070f%3A0x7e01914e53bf95bb!2sDhanbari%20Bus%20Terminal!5e0!3m2!1sen!2sbd!4v1755925455108!5m2!1sen!2sbd" width="500" height="450" style={{ border: 0 }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
               </div>
             </div>

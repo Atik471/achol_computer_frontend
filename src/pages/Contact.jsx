@@ -1,8 +1,19 @@
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp, FaFacebook, FaEnvelope, FaClock, FaCreditCard, FaMoneyBill, FaShoppingCart } from "react-icons/fa";
 
 export default function ContactUs() {
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4">
+      {/* <Helmet>
+        <title>Achol Computer | Contact</title>
+        <meta name="description" content="Trusted electronics store in Bangladesh." />
+      </Helmet> */}
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -17,7 +28,7 @@ export default function ContactUs() {
           <div className="flex-1">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Phone Numbers */}
-              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -27,11 +38,11 @@ export default function ContactUs() {
                       <h2 className="card-title text-gray-800 dark:text-white mb-2">Phone Numbers</h2>
                       <div className="space-y-2 text-gray-700 dark:text-gray-300">
                         <p className="flex items-center gap-2">
-                          <span className="font-semibold">Primary:</span> 
+                          <span className="font-semibold">Primary:</span>
                           <span className="font-medium">01712-076011</span>
                         </p>
                         <p className="flex items-center gap-2">
-                          <span className="font-semibold">Secondary:</span> 
+                          <span className="font-semibold">Secondary:</span>
                           <span className="font-medium">01868-944455</span>
                         </p>
                       </div>
@@ -41,7 +52,7 @@ export default function ContactUs() {
               </div>
 
               {/* WhatsApp */}
-              <div className="card bg-gradient-to-br from-green-50 to-teal-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-green-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-green-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
@@ -64,7 +75,7 @@ export default function ContactUs() {
               </div>
 
               {/* Email */}
-              <div className="card bg-gradient-to-br from-purple-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-purple-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-purple-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
@@ -85,7 +96,7 @@ export default function ContactUs() {
               </div>
 
               {/* Facebook */}
-              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -135,13 +146,13 @@ export default function ContactUs() {
 
           {/* Right Column - Payment Information */}
           <div className="flex-1">
-            <div className="card bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg h-full border border-teal-100 dark:border-gray-700">
+            <div className="card bg-gradient-to-br from-blue-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg h-full border border-teal-100 dark:border-gray-700">
               <div className="card-body">
                 <h2 className="card-title text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                   <FaShoppingCart className="text-teal-600 dark:text-teal-400" />
                   Payment & Purchase Information
                 </h2>
-                
+
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">

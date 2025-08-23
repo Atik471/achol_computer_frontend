@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useProducts } from "../hooks/useProducts.js";
 import Pagination from "../components/Pagination.jsx";
+import { Helmet } from "react-helmet-async";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
@@ -16,6 +17,10 @@ export default function Inventory() {
 
   return (
     <div className="p-6 space-y-6">
+      {/* <Helmet>
+        <title>Achol Computer | Inventory</title>
+        <meta name="description" content="Trusted electronics store in Bangladesh." />
+      </Helmet> */}
       {/* Header / Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="stat bg-base-200 rounded-xl shadow">

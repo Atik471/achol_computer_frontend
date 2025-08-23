@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const {
@@ -40,6 +41,10 @@ const Login = () => {
 
   return (
     <div className="card bg-base-100 dark:bg-base-200 shadow-xl rounded-2xl p-6 mx-auto max-w-md my-8 mb-[5rem]">
+      {/* <Helmet>
+        <title>Achol Computer | Login</title>
+        <meta name="description" content="Trusted electronics store in Bangladesh." />
+      </Helmet> */}
       <div className="flex justify-center items-start ">
         <div className="w-full max-w-md bg-transparent shadow-none">
           <div className="p-6 md:p-8 flex flex-col items-center">

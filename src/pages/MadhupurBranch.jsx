@@ -1,8 +1,20 @@
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp, FaFacebook, FaEnvelope, FaClock } from "react-icons/fa";
 
 export default function MadhupurBranch() {
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4">
+      {/* <Helmet>
+        <title>Achol Computer | Madhupur</title>
+        <meta name="description" content="Trusted electronics store in Bangladesh." />
+      </Helmet> */}
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -54,7 +66,7 @@ export default function MadhupurBranch() {
                       <h2 className="card-title text-base-content mb-2">Contact</h2>
                       <div className="space-y-3 text-base-content/90">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold min-w-[60px]">Phone:</span> 
+                          <span className="font-semibold min-w-[60px]">Phone:</span>
                           <span className="font-medium">01712076011, 01868944455</span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -92,7 +104,7 @@ export default function MadhupurBranch() {
                       <h2 className="card-title text-base-content mb-2">Facebook</h2>
                       <p className="text-base-content/90 mb-3">Follow us for updates, offers & more</p>
                       <a
-                        href="https://www.facebook.com/share/16m3MctQ6g/"
+                        href="https://www.facebook.com/sabuz.ahme?rdid=HtJGhBuogmOv8Lde&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F16oADisM53%2F#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm bg-[#1877F2] text-white border-0 hover:bg-[#166FE5] transition-colors"
@@ -136,13 +148,13 @@ export default function MadhupurBranch() {
               <div className="card-body">
                 <h2 className="card-title text-base-content mb-4">Find Us Here</h2>
                 <div className="rounded-lg overflow-hidden h-96 border border-base-300">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3627.450481263813!2d90.0296418!3d24.608154000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375620d042afaf91%3A0xdf5fedaeb3b60a47!2sAchal%20Computer!5e0!3m2!1sen!2sbd!4v1755923754344!5m2!1sen!2sbd" 
-                    width="100%" 
-                    height="100%" 
-                    style={{border: 0}} 
-                    allowFullScreen="" 
-                    loading="lazy" 
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3627.450481263813!2d90.0296418!3d24.608154000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375620d042afaf91%3A0xdf5fedaeb3b60a47!2sAchal%20Computer!5e0!3m2!1sen!2sbd!4v1755923754344!5m2!1sen!2sbd"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title="Achal Computer Location"
                     className="rounded-lg"
