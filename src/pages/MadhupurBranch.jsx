@@ -6,7 +6,7 @@ export default function MadhupurBranch() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-blue-500 mb-4">Madhupur Branch</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">Madhupur Branch</h1>
           <p className="text-lg md:text-xl text-base-content/90 max-w-2xl mx-auto">
             Visit our Madhupur branch for the best electronics and accessories with expert service and support
           </p>

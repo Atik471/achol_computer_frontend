@@ -17,7 +17,7 @@ export default function ContactUs() {
           <div className="flex-1">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Phone Numbers */}
-              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -41,7 +41,7 @@ export default function ContactUs() {
               </div>
 
               {/* WhatsApp */}
-              <div className="card bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-green-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-green-50 to-teal-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-green-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
@@ -64,7 +64,7 @@ export default function ContactUs() {
               </div>
 
               {/* Email */}
-              <div className="card bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-purple-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-purple-50 to-pink-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-purple-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
@@ -85,7 +85,7 @@ export default function ContactUs() {
               </div>
 
               {/* Facebook */}
-              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
+              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -108,7 +108,7 @@ export default function ContactUs() {
               </div>
 
               {/* Hours */}
-              <div className="card bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 md:col-span-2 border border-orange-100 dark:border-gray-700">
+              {/* <div className="card bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 md:col-span-2 border border-orange-100 dark:border-gray-700">
                 <div className="card-body">
                   <div className="flex items-start space-x-4">
                     <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
@@ -129,13 +129,13 @@ export default function ContactUs() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Right Column - Payment Information */}
           <div className="flex-1">
-            <div className="card bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-gray-800 dark:to-gray-900 shadow-lg h-full border border-teal-100 dark:border-gray-700">
+            <div className="card bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg h-full border border-teal-100 dark:border-gray-700">
               <div className="card-body">
                 <h2 className="card-title text-gray-800 dark:text-white mb-4 flex items-center gap-2">
                   <FaShoppingCart className="text-teal-600 dark:text-teal-400" />
@@ -159,10 +159,10 @@ export default function ContactUs() {
                       Payment Methods
                     </h3>
                     <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
-                      <li>Cash on Delivery</li>
+                      {/* <li>Cash on Delivery</li> */}
                       <li>Mobile Banking (bKash, Nagad, Rocket)</li>
-                      <li>Bank Transfer</li>
-                      <li>Credit/Debit Cards</li>
+                      {/* <li>Bank Transfer</li> */}
+                      {/* <li>Credit/Debit Cards</li> */}
                     </ul>
                   </div>
 
@@ -196,7 +196,7 @@ export default function ContactUs() {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">Our Branches</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {/* Madhupur Branch */}
-            <div className="card bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="card bg-gradient-to-br from-gray-50 to-blue-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg border border-gray-200 dark:border-gray-700">
               <div className="card-body">
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -221,7 +221,7 @@ export default function ContactUs() {
             </div>
 
             {/* Dhanbari Branch */}
-            <div className="card bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-800 dark:to-gray-900 shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="card bg-gradient-to-br from-gray-50 to-green-50 dark:from-[#393E46] dark:to-[#2D3238] shadow-lg border border-gray-200 dark:border-gray-700">
               <div className="card-body">
                 <div className="flex items-start space-x-4">
                   <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
@@ -233,7 +233,7 @@ export default function ContactUs() {
                       Jamalpur Road (Purba Pash), Dhanbari Bus stand, Tangail
                     </p>
                     <a
-                      href="https://maps.google.com/?q=Achal+Computer,+Jamalpur+Road,+Dhanbari+Bus+stand,+Tangail"
+                      href="https://maps.app.goo.gl/3MrtQxCqWnrdhTnf9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-sm btn-outline border-green-600 text-green-600 hover:bg-green-600 hover:text-white dark:border-green-400 dark:text-green-400 dark:hover:bg-green-400 dark:hover:text-gray-900"

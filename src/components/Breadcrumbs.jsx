@@ -1,14 +1,70 @@
-const Breadcrumb = ({ category }) => {
+import { Link, useLocation } from "react-router";
+
+const Breadcrumb = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const category = searchParams.get("category");
+  const subcategory = searchParams.get("subcategory");
+  const productName = searchParams.get("product");
+
+  // Helper: convert slug to readable text
+  const formatName = (str) =>
+    str ? str.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
+
   return (
-    <div className="text-sm breadcrumbs mb-4 inline">
-      <ul>
+    <div className="text-sm breadcrumbs mb-4">
+      <ul className="flex items-center space-x-2">
+        {/* Home */}
         <li>
-          <a className="hover:underline">Home</a>
+          <Link
+            to="/"
+            className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors"
+          >
+            Home
+          </Link>
         </li>
+
+        {/* All Categories */}
         <li>
-          <a className="hover:underline">All Categories</a>
+          <Link
+            to="/products"
+            className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors"
+          >
+            All Categories
+          </Link>
         </li>
-        <li className="font-semibold text-primary">{category}</li>
+
+        {/* Category */}
+        {category && (
+          <li>
+            <Link
+              to={`/products?category=${category}`}
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors"
+            >
+              {formatName(category)}
+            </Link>
+          </li>
+        )}
+
+        {/* Subcategory */}
+        {subcategory && (
+          <li>
+            <Link
+              to={`/products?category=${category}&subcategory=${subcategory}`}
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors"
+            >
+              {formatName(subcategory)}
+            </Link>
+          </li>
+        )}
+
+        {/* Product */}
+        {productName && (
+          <li className="text-primary font-semibold">
+            {formatName(productName)}
+          </li>
+        )}
       </ul>
     </div>
   );

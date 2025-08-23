@@ -13,12 +13,17 @@ import Transactions from '../pages/Transactions';
 import Products from '../pages/Products';
 import MadhupurBranch from '../pages/MadhupurBranch';
 import DhanbariBranch from '../pages/DhanbariBranch';
+import ContactUs from '../pages/Contact';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
+      {
+        path: '',
+        element: <Home />,
+      },
       {
         path: 'home',
         element: <Home />,
@@ -34,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'dhanbari',
         element: <DhanbariBranch />
+      },
+      {
+        path: 'contact',
+        element: <ContactUs />
       }
     ],
   },
