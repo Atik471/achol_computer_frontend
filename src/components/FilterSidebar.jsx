@@ -22,6 +22,21 @@ const FilterSidebar = ({ maxPrice }) => {
     }
   };
 
+
+  // Inside your component
+  const clearFilters = () => {
+    // Clear URL params
+    setSearchParams({});
+
+    // Reset price state
+    setPrice([0, maxPrice]);
+    setTempPrice([0, maxPrice]);
+
+    // Optionally, reset other local states if you have any filters like category/subcategory
+    // setSelectedCategory("all");
+    // setSelectedSubcategory(null);
+  };
+
   const handleSubcategorySelect = (parentSlug, subSlug) => {
     setSearchParams({ category: parentSlug, subcategory: subSlug });
   };
@@ -162,7 +177,12 @@ const FilterSidebar = ({ maxPrice }) => {
           Apply
         </button>
       </div>
-
+      <button
+        className="btn btn-sm btn-accent mt-2"
+        onClick={clearFilters}
+      >
+        Clear Filters
+      </button>
 
     </aside>
   );
