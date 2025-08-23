@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useCategories } from "../hooks/useCategories";
 import { useSearchParams } from "react-router";
 
-const FilterSidebar = ({ onPriceChange }) => {
+const FilterSidebar = ({ maxPrice }) => {
   const { data: categories = [], isLoading } = useCategories();
-  const [price, setPrice] = useState([0, 500000]);
+  const [price, setPrice] = useState([0, maxPrice]);
 
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const currentMaxPrice = searchParams.get("maxPrice") || maxPrice;
+  const currentMinPrice = searchParams.get("minPrice") || 0;
   const selectedCategory = searchParams.get("category") || "all";
   const selectedSubcategory = searchParams.get("subcategory") || null;
+
+  const [tempPrice, setTempPrice] = useState([currentMinPrice, currentMaxPrice]);
 
   const handleCategorySelect = (slug) => {
     if (slug === "all") {
@@ -23,23 +26,28 @@ const FilterSidebar = ({ onPriceChange }) => {
     setSearchParams({ category: parentSlug, subcategory: subSlug });
   };
 
-
-
+  // Update temp values with validation
   const handlePriceChange = (e, index) => {
     const value = Number(e.target.value);
-    setPrice((prev) => {
+    setTempPrice((prev) => {
       const updated = [...prev];
 
       if (index === 0) {
-        // updating lower bound
-        updated[0] = Math.min(value, prev[1]); // clamp to not exceed upper
+        updated[0] = Math.min(value, prev[1]);
       } else {
-        // updating upper bound
-        updated[1] = Math.max(value, prev[0]); // clamp to not go below lower
+        updated[1] = Math.max(value, prev[0]);
       }
 
       return updated;
     });
+  };
+
+  // Apply filter only when button clicked
+  const applyPriceFilter = () => {
+    setPrice(tempPrice);
+    searchParams.set("minPrice", tempPrice[0]);
+    searchParams.set("maxPrice", tempPrice[1]);
+    setSearchParams(searchParams);
   };
 
   return (
@@ -55,8 +63,8 @@ const FilterSidebar = ({ onPriceChange }) => {
             <li>
               <button
                 className={`w-full text-left rounded-md p-1 text-sm ${selectedCategory === "all"
-                    ? "bg-primary text-white"
-                    : "hover:bg-base-300"
+                  ? "bg-primary text-white"
+                  : "hover:bg-base-300"
                   }`}
                 onClick={() => handleCategorySelect("all")}
               >
@@ -70,8 +78,8 @@ const FilterSidebar = ({ onPriceChange }) => {
                 <li key={cat._id}>
                   <button
                     className={`w-full text-left rounded-md p-1 text-sm ${isCategorySelected
-                        ? "bg-primary text-white"
-                        : "hover:bg-base-300"
+                      ? "bg-primary text-white"
+                      : "hover:bg-base-300"
                       }`}
                     onClick={() => handleCategorySelect(cat.slug)}
                   >
@@ -85,8 +93,8 @@ const FilterSidebar = ({ onPriceChange }) => {
                         <li key={sub._id}>
                           <button
                             className={`w-full text-left rounded-md p-1 text-xs ${selectedSubcategory === sub.slug
-                                ? "bg-primary text-white"
-                                : "hover:bg-base-300"
+                              ? "bg-primary text-white"
+                              : "hover:bg-base-300"
                               }`}
                             onClick={() =>
                               handleSubcategorySelect(cat.slug, sub.slug)
@@ -108,40 +116,54 @@ const FilterSidebar = ({ onPriceChange }) => {
       {/* Price Range */}
       <div>
         <h3 className="font-semibold mb-2">Price Range</h3>
+
+        {/* Number inputs */}
         <div className="flex items-center gap-2">
           <input
             type="number"
             className="input input-bordered w-20 text-sm"
-            value={price[0]}
+            value={tempPrice[0]} // <-- bind to tempPrice
             onChange={(e) => handlePriceChange(e, 0)}
           />
           <span>-</span>
           <input
             type="number"
             className="input input-bordered w-20 text-sm"
-            value={price[1]}
+            value={tempPrice[1]} // <-- bind to tempPrice
             onChange={(e) => handlePriceChange(e, 1)}
           />
         </div>
+
+        {/* Range sliders */}
         <input
           type="range"
           min="0"
-          max="100000"
+          max={maxPrice}
           step="100"
-          value={price[0]}
+          value={tempPrice[0]} // <-- bind to tempPrice
           onChange={(e) => handlePriceChange(e, 0)}
           className="range range-xs mt-2"
         />
         <input
           type="range"
           min="0"
-          max="100000"
+          max={maxPrice}
           step="100"
-          value={price[1]}
+          value={tempPrice[1]} // <-- bind to tempPrice
           onChange={(e) => handlePriceChange(e, 1)}
           className="range range-xs"
         />
+
+        {/* Apply button */}
+        <button
+          className="btn btn-primary btn-sm mt-2"
+          onClick={applyPriceFilter}
+        >
+          Apply
+        </button>
       </div>
+
+
     </aside>
   );
 };

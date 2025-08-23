@@ -5,23 +5,29 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import FilterSidebar from "../components/FilterSidebar";
 import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
+import { useSearchParams } from "react-router";
 
 const ProductsPage = () => {
-    const { data: products, isLoading, error } = useProducts();
+    const [searchParams] = useSearchParams();
+    // convert search params to object
+    const params = Object.fromEntries([...searchParams]);
 
-    const breadcrumbPaths = [
-        { label: "Home", href: "/" },
-        { label: "All categories", href: "/categories" },
-        { label: "KEYBOARD" }, // current category
-    ];
+    const { data, isLoading, error } = useProducts(params);
 
     if (isLoading) return <LoadingSpinner />;
     if (error) return <ErrorState />;
 
+    const products = data.data;
+    const totalCount = data.totalCount;
+    // const minPrice = data.minPrice;
+    const maxPrice = data.maxPrice;
+
+    console.log(data);
+
     return (
         <div className="p-4 lg:p-6 ">
             <div className="flex items-center justify-between">
-                <Breadcrumbs paths={breadcrumbPaths} />
+                <Breadcrumbs />
 
                 {/* Top controls */}
                 <div className="flex  items-center justify-end mb-4 gap-2">
@@ -39,13 +45,13 @@ const ProductsPage = () => {
                         />
                     </div>
                     {/* Brand filter */}
-                    <select className="select select-bordered max-w-[16rem]">
+                    {/* <select className="select select-bordered max-w-[16rem]">
                         <option disabled selected>Filter by brand</option>
                         <option>Logitech</option>
                         <option>A4Tech</option>
                         <option>HP</option>
                         <option>Micropack</option>
-                    </select>
+                    </select> */}
 
                     {/* Sort */}
                     <select className="select select-bordered max-w-[16rem]">
@@ -60,15 +66,15 @@ const ProductsPage = () => {
             <div className="flex gap-6">
                 {/* Sidebar */}
                 <FilterSidebar
-                    onCategoryChange={(cat) => console.log("Category:", cat)}
-                    onPriceChange={(range) => console.log("Price range:", range)}
-                    onSearch={(q) => console.log("Search:", q)}
+                    maxPrice={maxPrice}
                 />
 
                 {/* Products */}
                 <main className="flex-1">
                     <ProductList products={products} />
-                    <Pagination />
+                    {
+                        products?.length > 0 && <Pagination />
+                    }
                 </main>
             </div>
 

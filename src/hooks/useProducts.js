@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../services/productServices";
 
-export const useProducts = () => {
+export const useProducts = (params) => {
   return useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
+    queryKey: ["products", params], // cache based on params
+    queryFn: () => getProducts(params),
   });
 };
