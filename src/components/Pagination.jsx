@@ -35,62 +35,65 @@ const Pagination = ({ totalCount, limit = 12, maxButtons = 5 }) => {
 
     
   return (
-    <div className="join flex justify-center my-4 md:my-8">
-      {/* First Page */}
-      <button
-        className="join-item btn btn-sm md:btn-md"
-        onClick={() => setPage(1)}
-        disabled={currentPage === 1}
-        aria-label="First page"
-      >
-        ««
-      </button>
+    <div className="join flex justify-center my-6 md:my-16 rounded-lg overflow-hidden ">
+  {/* First Page */}
+  <button
+    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
+    onClick={() => setPage(1)}
+    disabled={currentPage === 1}
+    aria-label="First page"
+  >
+    ««
+  </button>
 
-      {/* Previous Page */}
-      <button
-        className="join-item btn btn-sm md:btn-md"
-        onClick={() => setPage(currentPage - 1)}
-        disabled={currentPage === 1}
-        aria-label="Previous page"
-      >
-        «
-      </button>
+  {/* Previous Page */}
+  <button
+    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
+    onClick={() => setPage(currentPage - 1)}
+    disabled={currentPage === 1}
+    aria-label="Previous page"
+  >
+    «
+  </button>
 
-      {/* Page Numbers */}
-      {pageNumbers.map((num) => (
-        <button
-          key={num}
-          className={`join-item btn btn-sm md:btn-md ${
-            num === currentPage ? "btn-active" : ""
-          }`}
-          onClick={() => setPage(num)}
-          aria-label={`Page ${num}`}
-          aria-current={num === currentPage ? "page" : undefined}
-        >
-          {num}
-        </button>
-      ))}
+  {/* Page Numbers */}
+  {pageNumbers.map((num) => (
+    <button
+      key={num}
+      className={`join-item btn btn-sm md:btn-md ${
+        num === currentPage
+          ? "bg-primary text-white shadow-md scale-105"
+          : "bg-gray-100 dark:bg-gray-600 hover:bg-primary hover:text-white transition-transform"
+      }`}
+      onClick={() => setPage(num)}
+      aria-label={`Page ${num}`}
+      aria-current={num === currentPage ? "page" : undefined}
+    >
+      {num}
+    </button>
+  ))}
 
-      {/* Next Page */}
-      <button
-        className="join-item btn btn-sm md:btn-md"
-        onClick={() => setPage(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        aria-label="Next page"
-      >
-        »
-      </button>
+  {/* Next Page */}
+  <button
+    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
+    onClick={() => setPage(currentPage + 1)}
+    disabled={currentPage === totalPages}
+    aria-label="Next page"
+  >
+    »
+  </button>
 
-      {/* Last Page */}
-      <button
-        className="join-item btn btn-sm md:btn-md"
-        onClick={() => setPage(totalPages)}
-        disabled={currentPage === totalPages}
-        aria-label="Last page"
-      >
-        »»
-      </button>
-    </div>
+  {/* Last Page */}
+  <button
+    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
+    onClick={() => setPage(totalPages)}
+    disabled={currentPage === totalPages}
+    aria-label="Last page"
+  >
+    »»
+  </button>
+</div>
+
   );
 };
 

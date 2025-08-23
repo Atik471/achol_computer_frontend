@@ -65,7 +65,7 @@ const ProductsPage = () => {
                 <title>Achol Computer | Products</title>
                 <meta name="description" content="Trusted electronics store in Bangladesh." />
             </Helmet> */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
                 <Breadcrumbs />
 
                 {/* Top controls */}

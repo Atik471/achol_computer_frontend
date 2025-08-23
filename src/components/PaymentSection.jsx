@@ -1,4 +1,4 @@
-import { FaFacebook, FaWhatsapp, FaStore } from "react-icons/fa";
+import { FaFacebook, FaWhatsapp, FaStore, FaPhone } from "react-icons/fa";
 
 const PaymentSection = () => {
   return (
@@ -6,7 +6,7 @@ const PaymentSection = () => {
       <h2 className="text-3xl font-bold mb-4 text-center">🛒 How to Buy</h2>
       <p className="text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
         {/* We currently don’t support direct online payments.   */}
-        To purchase this product, please reach us through Facebook or WhatsApp,  
+        To purchase this product, please reach us through Facebook or WhatsApp,
         or visit one of our physical shops.
       </p>
 
@@ -31,6 +31,37 @@ const PaymentSection = () => {
           <FaWhatsapp className="w-5 h-5" /> Chat on WhatsApp
         </a>
       </div>
+
+      {/* Direct Contact */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6">
+        {/* Phone Numbers */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-base-100 dark:bg-base-300 shadow-sm hover:shadow-md transition-shadow">
+            <FaPhone className="text-green-500" />
+            <span className="font-medium">01712076011</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-base-100 dark:bg-base-300 shadow-sm hover:shadow-md transition-shadow">
+            <FaPhone className="text-green-500" />
+            <span className="font-medium">01868944455</span>
+          </div>
+        </div>
+
+        {/* WhatsApp Numbers */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <a
+            // href="https://wa.me/01712076011"
+            // href=""
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2  rounded-lg bg-green-50 dark:bg-green-900/30 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <FaWhatsapp className="text-green-600" />
+            <span className="font-medium">01712076011</span>
+          </a>
+        </div>
+      </div>
+
+
 
       <div className="mt-10">
         <h3 className="text-xl font-semibold mb-3 text-center">📍 Visit Our Shops</h3>

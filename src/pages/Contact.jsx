@@ -9,7 +9,7 @@ export default function ContactUs() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-base-200 py-10 px-4">
+    <div className="min-h-screen bg-base-100 py-10 px-4">
       {/* <Helmet>
         <title>Achol Computer | Contact</title>
         <meta name="description" content="Trusted electronics store in Bangladesh." />

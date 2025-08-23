@@ -1,5 +1,5 @@
-import { useParams } from "react-router";
-import { FaWhatsapp, FaFacebook, FaStar, FaShare, FaHeart } from "react-icons/fa";
+import { Link, useParams } from "react-router";
+import { FaWhatsapp, FaFacebook, FaStar, FaShare, FaHeart, FaPhone } from "react-icons/fa";
 import { useProduct } from "../hooks/useProducts";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -38,9 +38,9 @@ const ProductDetails = () => {
                 <div className="space-y-4">
                     {/* Main Image */}
                     <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-50 flex items-center justify-center p-8">
-                        <img 
-                            src={getImageUrl(product.images[0])} 
-                            alt={product.name} 
+                        <img
+                            src={getImageUrl(product.images[0])}
+                            alt={product.name}
                             className="w-full h-80 object-contain"
                             onError={(e) => {
                                 e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
@@ -53,9 +53,9 @@ const ProductDetails = () => {
                         <div className="grid grid-cols-4 gap-4">
                             {product.images.map((img, idx) => (
                                 <div key={idx} className="cursor-pointer border-2 border-transparent hover:border-primary rounded-lg overflow-hidden bg-gray-50 p-2">
-                                    <img 
-                                        src={getImageUrl(img)} 
-                                        alt={`${product.name} view ${idx + 1}`} 
+                                    <img
+                                        src={getImageUrl(img)}
+                                        alt={`${product.name} view ${idx + 1}`}
                                         className="h-20 w-full object-contain"
                                         onError={(e) => {
                                             e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80' viewBox='0 0 100 80' fill='none'%3E%3Crect width='100' height='80' fill='%23F3F4F6'/%3E%3Cpath d='M35 30H65V50H35V30Z' fill='%23E5E7EB'/%3E%3Cpath d='M42 36V46H58V36H42Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
@@ -85,9 +85,9 @@ const ProductDetails = () => {
                     <div className="flex items-center gap-2">
                         <div className="flex">
                             {Array.from({ length: 5 }, (_, i) => (
-                                <FaStar 
-                                    key={i} 
-                                    className={i < Math.floor(product.ratings.average) ? "text-yellow-400" : "text-gray-300"} 
+                                <FaStar
+                                    key={i}
+                                    className={i < Math.floor(product.ratings.average) ? "text-yellow-400" : "text-gray-300"}
                                     size={18}
                                 />
                             ))}
@@ -126,23 +126,80 @@ const ProductDetails = () => {
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <a
-                            href={`https://wa.me/01712076011?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="btn btn-success gap-2 flex-1"
-                        >
-                            <FaWhatsapp size={20} /> WhatsApp Inquiry
-                        </a>
-                        <a
-                            href="https://www.facebook.com/sabuz.ahme?rdid=HtJGhBuogmOv8Lde&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F16oADisM53%2F#"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="btn btn-primary gap-2 flex-1"
-                        >
-                            <FaFacebook size={20} /> Message on Facebook
-                        </a>
+                    <div className="rounded-2xl bg-base-100 pt-4">
+                        <p className="text-gray-600 dark:text-gray-300 mb-6">
+                            Interested in <span className="font-semibold">{product.name}</span>?
+                            Reach us via WhatsApp, Facebook, or call directly.
+                        </p>
+
+                        {/* CTA Buttons */}
+                        <div className="flex flex-wrap gap-4 justify-between mb-6">
+                            <a
+                                href={`https://wa.me/01712076011?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-success gap-2 flex-1 sm:flex-none sm:w-60"
+                            >
+                                <FaWhatsapp size={20} /> WhatsApp Inquiry
+                            </a>
+                            <a
+                                href="https://www.facebook.com/sabuz.ahme?rdid=HtJGhBuogmOv8Lde&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F16oADisM53%2F#"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-primary gap-2 flex-1 sm:flex-none sm:w-60"
+                            >
+                                <FaFacebook size={20} /> Message on Facebook
+                            </a>
+                        </div>
+
+                        {/* Direct Contact */}
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6">
+                            {/* Phone Numbers */}
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-base-100 dark:bg-base-300 shadow-sm hover:shadow-md transition-shadow">
+                                    <FaPhone className="text-green-500" />
+                                    <span className="font-medium">01712076011</span>
+                                </div>
+                                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-base-100 dark:bg-base-300 shadow-sm hover:shadow-md transition-shadow">
+                                    <FaPhone className="text-green-500" />
+                                    <span className="font-medium">01868944455</span>
+                                </div>
+                            </div>
+
+                            {/* WhatsApp Numbers */}
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <a
+                                    // href="https://wa.me/01712076011"
+                                    // href=""
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="flex items-center gap-2 px-4 py-2  rounded-lg bg-green-50 dark:bg-green-900/20 shadow-sm hover:shadow-md transition-shadow"
+                                >
+                                    <FaWhatsapp className="text-green-600 " />
+                                    <span className="font-medium">01712076011</span>
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-300">
+                            Visit our physical shops at{" "}
+                            <Link
+                                to="/madhupur"
+                                className="underline decoration-primary hover:text-primary transition-colors duration-200"
+                            >
+                                Madhupur
+                            </Link>{" "}
+                            or{" "}
+                            <Link
+                                to="/dhanbari"
+                                className="underline decoration-primary hover:text-primary transition-colors duration-200"
+                            >
+                                Dhanbari
+                            </Link>{" "}
+                            for direct purchase
+                        </p>
+
                     </div>
                 </div>
             </div>
