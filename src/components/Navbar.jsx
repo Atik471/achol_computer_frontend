@@ -50,14 +50,17 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-200 text-base-content rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <NavLink to="/products">Products</NavLink>
+              <NavLink to="/home">Home</NavLink>
             </li>
             <li>
+              <NavLink to="/products">Products</NavLink>
+            </li>
+            <li className="z-30">
               <details>
                 <summary>Our Shops</summary>
                 <ul className="p-2">
-                  <li><NavLink to="/products">Submenu 1</NavLink></li>
-                  <li><NavLink to="/products">Submenu 2</NavLink></li>
+                  <li><NavLink to="/madhupur">Madhupur</NavLink></li>
+                  <li><NavLink to="/dhanbari">Dhanbari</NavLink></li>
                 </ul>
               </details>
             </li>
@@ -74,19 +77,19 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <NavLink to="/products">Products</NavLink>
+            <NavLink to="/home">Home</NavLink>
           </li>
           <li>
+            <NavLink to="/products">Products</NavLink>
+          </li>
+          <li className="z-30">
             <details>
               <summary>Our Shops</summary>
               <ul className="p-2 text-black dark:text-white shadow-lg">
-                <li><NavLink to="/products">Submenu 1</NavLink></li>
-                <li><NavLink to="/products">Submenu 2</NavLink></li>
+                <li><NavLink to="/madhupur">Madhupur</NavLink></li>
+                <li><NavLink to="/dhanbari">Dhanbari</NavLink></li>
               </ul>
             </details>
-          </li>
-          <li>
-            <NavLink to="/about">About Us</NavLink>
           </li>
           <li>
             <NavLink to="/contact">Contact</NavLink>

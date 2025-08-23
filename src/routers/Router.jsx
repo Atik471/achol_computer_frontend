@@ -11,6 +11,8 @@ import Orders from '../pages/Orders';
 import Users from '../pages/Users';
 import Transactions from '../pages/Transactions';
 import Products from '../pages/Products';
+import MadhupurBranch from '../pages/MadhupurBranch';
+import DhanbariBranch from '../pages/DhanbariBranch';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
       {
         path: 'products',
         element: <Products />,
+      },
+      {
+        path: 'madhupur',
+        element: <MadhupurBranch />,
+      },
+      {
+        path: 'dhanbari',
+        element: <DhanbariBranch />
       }
     ],
   },
