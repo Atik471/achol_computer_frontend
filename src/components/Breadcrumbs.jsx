@@ -61,7 +61,7 @@ const Breadcrumb = ({ categoryslug, subcategoryslug, productNameslug }) => {
 
         {/* Product */}
         {productName && (
-          <li className="text-primary font-semibold">
+          <li className="text-gray-600 dark:text-gray-300 hover:text-blue-500">
             {formatName(productName)}
           </li>
         )}

@@ -68,10 +68,10 @@ const Product = ({ product }) => {
           {discountPrice ? (
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold dark:text-gray-200 text-black">
-                ${discountPrice}
+                ৳{discountPrice}
               </span>
               <span className="line-through text-gray-500 dark:text-gray-400">
-                ${price}
+                ৳{price}
               </span>
             </div>
           ) : (

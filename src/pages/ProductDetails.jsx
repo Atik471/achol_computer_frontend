@@ -28,7 +28,6 @@ const ProductDetails = () => {
         return Object.entries(specs);
     };
 
-    console.log(product);
     return (
         <div className="max-w-6xl mx-auto p-4 lg:p-8">
             {/* Breadcrumb */}
@@ -71,7 +70,7 @@ const ProductDetails = () => {
                 {/* Right: Product Info */}
                 <div className="space-y-6">
                     <div className="flex justify-between items-start">
-                        <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">{product.name}</h1>
                         <div className="flex space-x-2">
                             {/* <button className="btn btn-ghost btn-circle">
                                 <FaHeart className="text-gray-500 hover:text-red-500" />
@@ -103,8 +102,8 @@ const ProductDetails = () => {
                         <div className="flex items-center space-x-3">
                             {product.discountPrice ? (
                                 <>
-                                    <span className="text-3xl font-bold text-primary">${product.discountPrice}</span>
-                                    <span className="line-through text-gray-400 text-xl">${product.price}</span>
+                                    <span className="text-3xl font-bold text-blue-500 dark:text-yellow-200">৳{product.discountPrice}</span>
+                                    <span className="line-through text-gray-400 text-xl">৳{product.price}</span>
                                     <span className="badge badge-success">
                                         {Math.round((1 - product.discountPrice / product.price) * 100)}% OFF
                                     </span>
@@ -123,7 +122,7 @@ const ProductDetails = () => {
                     {/* Description */}
                     <div className="pt-4">
                         <h3 className="font-semibold text-lg mb-2">Description</h3>
-                        <p className="text-gray-600 leading-relaxed">{product.description}</p>
+                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{product.description}</p>
                     </div>
 
                     {/* CTA Buttons */}
