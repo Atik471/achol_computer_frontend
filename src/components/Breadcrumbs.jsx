@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router";
 
-const Breadcrumb = () => {
+const Breadcrumb = ({ categoryslug, subcategoryslug, productNameslug }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const category = searchParams.get("category");
-  const subcategory = searchParams.get("subcategory");
-  const productName = searchParams.get("product");
+  const category = searchParams.get("category") || categoryslug;
+  const subcategory = searchParams.get("subcategory") || subcategoryslug;
+  const productName = searchParams.get("product") || productNameslug;
 
   // Helper: convert slug to readable text
   const formatName = (str) =>

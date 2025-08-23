@@ -106,7 +106,7 @@ export default function ContactUs() {
                       <h2 className="card-title text-gray-800 dark:text-white mb-2">Facebook</h2>
                       <p className="text-gray-700 dark:text-gray-300 mb-3">Follow us for updates, offers & more</p>
                       <a
-                        href="https://www.facebook.com/share/16m3MctQ6g/"
+                        href="https://www.facebook.com/sabuz.ahme?rdid=HtJGhBuogmOv8Lde&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F16oADisM53%2F#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm bg-[#1877F2] hover:bg-[#166FE5] text-white border-0 transition-colors"
