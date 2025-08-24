@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { useProducts } from "../hooks/useProducts.js";
 import Pagination from "../components/Pagination.jsx";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { Helmet } from "react-helmet-async";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
-  const { data: products, isLoading, error } = useProducts();
+  const { data, isLoading, error } = useProducts();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (error) return <div className="text-error">Failed to load products</div>;
+
+  const products = data.data;
+  const totalCount = data.totalCount;
+  // const minPrice = data.minPrice;
+  const maxPrice = data.maxPrice;
 
   // search filter
   const filteredProducts = products?.filter((p) =>

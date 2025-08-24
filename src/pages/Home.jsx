@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import HeroBanner from "../components/HeroBanner";
 
 const Home = () => {
 
@@ -8,15 +9,12 @@ const Home = () => {
     }, []);
 
     return (
-        <div>
-            <Helmet>
+        <div className="">
+            {/* <Helmet>
                 <title>Achol Computer | Home</title>
                 <meta name="description" content="Trusted electronics store in Bangladesh." />
-            </Helmet>
-            <h1 className="text-3xl font-bold underline">
-                Home
-            </h1>
-            <div className="text-3xl font-bold dark:p-20">Hello im dark</div>
+            </Helmet> */}
+            <HeroBanner />
         </div>
     );
 };
