@@ -7,7 +7,7 @@ import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
 import { useSearchParams } from "react-router";
 import SearchInput from "../components/SearchInput";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 
 const Products = () => {

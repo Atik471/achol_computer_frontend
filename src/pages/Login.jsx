@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const {

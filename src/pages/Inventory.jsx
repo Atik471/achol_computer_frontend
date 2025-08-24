@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useProducts } from "../hooks/useProducts.js";
 import Pagination from "../components/Pagination.jsx";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
