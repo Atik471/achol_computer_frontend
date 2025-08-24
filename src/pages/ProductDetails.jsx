@@ -4,10 +4,15 @@ import { useProduct } from "../hooks/useProducts";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PaymentSection from "../components/PaymentSection";
+import { useEffect } from "react";
 
 const ProductDetails = () => {
     const { slug } = useParams();
     const { data, isLoading, isError } = useProduct(slug);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
 
     if (isLoading) return <LoadingSpinner />;
     if (isError) return <div className="flex justify-center py-20 text-red-500">Error loading product.</div>;
