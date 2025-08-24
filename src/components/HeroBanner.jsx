@@ -3,7 +3,7 @@ import { FaBolt, FaArrowRight } from "react-icons/fa";
 
 export default function HeroBanner() {
     return (
-        <section className="px-4 md:px-12 relative bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-base-200 dark:via-base-100 dark:to-base-200">
+        <section className="overflow-hidden px-4 md:px-12 relative bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-base-200 dark:via-base-100 dark:to-base-200">
             <div className="container mx-auto flex flex-col md:flex-row items-center gap-8 px-6 py-12 md:py-20">
 
                 {/* Left: Text Content */}

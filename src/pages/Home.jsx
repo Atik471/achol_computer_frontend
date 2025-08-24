@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import HeroBanner from "../components/HeroBanner";
+import FAQSection from "../components/FAQSection";
 
 const Home = () => {
 
@@ -15,6 +16,7 @@ const Home = () => {
                 <meta name="description" content="Trusted electronics store in Bangladesh." />
             </Helmet> */}
             <HeroBanner />
+            <FAQSection />
         </div>
     );
 };
