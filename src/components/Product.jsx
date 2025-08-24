@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import productimg from "../assets/product.png";
+import { FaStar } from "react-icons/fa";
 import { useEffect } from "react";
 
 const Product = ({ product }) => {
@@ -11,54 +11,70 @@ const Product = ({ product }) => {
     ratings = { average: 0, count: 0 },
     price,
     discountPrice,
-    specifications = {}, // expecting { key: value }
+    specifications = [],
+    slug
   } = product;
 
-  // Pick only 2–3 specs to show in card
-  const previewSpecs = Object.entries(specifications).slice(0, 3);
+  // Handle placeholder image if not available
+  const getImageUrl = (img) => {
+    if (!img || img === "") {
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
+    }
+    return img;
+  };
+
+  // Extract preview specifications (first 2-3 specs)
+  const getPreviewSpecs = () => {
+    if (!specifications || specifications.length === 0) return [];
+    
+    // Get the first specification with object values to show as preview
+    const firstSpec = specifications[0];
+    if (firstSpec.value && typeof firstSpec.value === 'object') {
+      return Object.entries(firstSpec.value).slice(0, 3);
+    }
+    
+    return [];
+  };
+
+  const previewSpecs = getPreviewSpecs();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
-    <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
       {/* Product Image */}
-      <figure className="bg-base-200 h-48 flex items-center justify-center">
+      <figure className="bg-base-200 h-48 flex items-center justify-center p-4">
         <img
-          src={productimg}
+          src={getImageUrl(images[0])}
           alt={name}
-          className="object-cover w-full h-full"
+          className="object-contain w-full h-full"
+          onError={(e) => {
+            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
+          }}
         />
       </figure>
 
-      <div className="card-body">
+      <div className="card-body flex-grow">
         {/* Category + Subcategory */}
         <p className="text-sm text-gray-500">
           {category?.name} • {subcategory?.name}
         </p>
 
         {/* Product Name */}
-        <h2 className="card-title text-lg font-bold">{name}</h2>
+        <h2 className="card-title text-lg font-bold line-clamp-2 h-14 overflow-hidden" title={name}>
+          {name}
+        </h2>
 
         {/* Ratings */}
         <div className="flex items-center gap-1">
           {Array.from({ length: 5 }, (_, i) => (
-            <svg
+            <FaStar
               key={i}
-              xmlns="http://www.w3.org/2000/svg"
-              fill={i < Math.round(ratings.average) ? "gold" : "none"}
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-5 h-5 text-yellow-400"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.005 6.174h6.49c.97 0 1.371 1.24.588 1.81l-5.25 3.815 2.004 6.174c.3.921-.755 1.688-1.54 1.118l-5.25-3.815-5.25 3.815c-.784.57-1.838-.197-1.539-1.118l2.004-6.174-5.25-3.815c-.784-.57-.383-1.81.588-1.81h6.49l2.005-6.174z"
-              />
-            </svg>
+              className={i < Math.floor(ratings.average) ? "text-yellow-400" : "text-gray-300"}
+              size={16}
+            />
           ))}
           <span className="ml-1 text-sm text-gray-500">({ratings.count})</span>
         </div>
@@ -67,23 +83,26 @@ const Product = ({ product }) => {
         <div className="mt-2">
           {discountPrice ? (
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold dark:text-gray-200 text-black">
-                ৳{discountPrice}
+              <span className="text-xl font-bold text-blue-600">
+                ৳{discountPrice.toLocaleString()}
               </span>
-              <span className="line-through text-gray-500 dark:text-gray-400">
-                ৳{price}
+              <span className="line-through text-gray-500">
+                ৳{price.toLocaleString()}
+              </span>
+              <span className="badge badge-success badge-sm">
+                {Math.round((1 - discountPrice / price) * 100)}% OFF
               </span>
             </div>
           ) : (
-            <span className="text-xl font-bold text-primary">${price}</span>
+            <span className="text-xl font-bold text-blue-600">৳{price.toLocaleString()}</span>
           )}
         </div>
 
         {/* Specifications Preview */}
         {previewSpecs.length > 0 && (
-          <ul className="mt-2 text-sm text-black-300 dark:text-gray-300 space-y-1">
-            {previewSpecs.map(([key, value]) => (
-              <li key={key}>
+          <ul className="mt-2 text-sm text-gray-600 space-y-1">
+            {previewSpecs.map(([key, value], index) => (
+              <li key={index} className="truncate">
                 <span className="font-medium">{key}:</span> {value}
               </li>
             ))}
@@ -91,14 +110,12 @@ const Product = ({ product }) => {
         )}
 
         {/* Action */}
-        <div className="card-actions mt-2 grid grid-cols-1 gap-2 w-full">
-          <Link to={`/products/${product.slug}`}>
+        <div className="card-actions mt-4 grid grid-cols-1 gap-2 w-full">
+          <Link to={`/products/${slug}`} className="w-full">
             <button className="btn btn-outline w-full">View Details</button>
           </Link>
           {/* <button className="btn btn-primary w-full">Add to Cart</button> */}
         </div>
-
-
       </div>
     </div>
   );

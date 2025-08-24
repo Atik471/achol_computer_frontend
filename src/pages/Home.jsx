@@ -17,8 +17,8 @@ const Home = () => {
                 <meta name="description" content="Trusted electronics store in Bangladesh." />
             </Helmet> */}
             <HeroBanner />
-            <FeaturedSection name="Smartphones" slug="smartphones" />
-            <FeaturedSection name="Computer Parts" slug="computer-parts" />
+            {/* <FeaturedSection name="Smartphones" slug="smartphones" /> */}
+            <FeaturedSection name="Laptops" slug="laptop" />
             <FAQSection />
         </div>
     );

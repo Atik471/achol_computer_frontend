@@ -10,7 +10,7 @@ import SearchInput from "../components/SearchInput";
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 
-const ProductsPage = () => {
+const Products = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     // convert search params to object
     const params = Object.fromEntries([...searchParams]);
@@ -65,11 +65,11 @@ const ProductsPage = () => {
                 <title>Achol Computer | Products</title>
                 <meta name="description" content="Trusted electronics store in Bangladesh." />
             </Helmet> */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex md:flex-row flex-col items-center justify-between mb-4">
                 <Breadcrumbs />
 
                 {/* Top controls */}
-                <div className="flex  items-center justify-end mb-4 gap-2">
+                <div className="flex md:flex-row flex-col items-center justify-end mb-4 gap-2">
                     <SearchInput />
 
                     {/* Sort */}
@@ -111,4 +111,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default Products;

@@ -37,7 +37,7 @@ const SearchInput = ({ onSearch }) => {
   };
 
   return (
-    <div className="w-[30rem] flex gap-2">
+    <div className="w-full md:w-[30rem] flex gap-2">
       <input
         type="text"
         placeholder="Search products..."
