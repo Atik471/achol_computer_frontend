@@ -17,6 +17,8 @@ import ContactUs from '../pages/Contact';
 import ProductDetails from '../pages/ProductDetails';
 // import PrivacyPolicy from '../pages/PrivacyPolicy';
 import Privacy from '../pages/Privacy';
+import TermsOfUse from '../pages/TermsOfUse';
+import Cookie from '../pages/Cookie';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
       {
         path: 'privacy-policy',
         element: <Privacy />
+      },
+      {
+        path: 'terms-of-use',
+        element: <TermsOfUse />
+      },
+      {
+        path: 'cookie-policy',
+        element: <Cookie />
       }
     ],
   },
