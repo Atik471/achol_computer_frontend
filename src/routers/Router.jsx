@@ -15,7 +15,6 @@ import MadhupurBranch from '../pages/MadhupurBranch';
 import DhanbariBranch from '../pages/DhanbariBranch';
 import ContactUs from '../pages/Contact';
 import ProductDetails from '../pages/ProductDetails';
-// import PrivacyPolicy from '../pages/PrivacyPolicy';
 import Privacy from '../pages/Privacy';
 import TermsOfUse from '../pages/TermsOfUse';
 import Cookie from '../pages/Cookie';
