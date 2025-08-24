@@ -3,6 +3,7 @@ import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import { Link, NavLink } from "react-router";
+import logo from '../assets/logo.png'
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
@@ -72,7 +73,13 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a className="cursor-pointer font-bold text-xl">Achol Computer</a>
+        <a className="cursor-pointer flex flex-row items-start md:items-center gap-3 md:gap-3">
+          <img src={logo} alt="Achol Computer" className="w-9 md:w-8" />
+          <span className="translate-y-1 md:translate-y-1.5 font-display font-light text-sm md:text-2xl tracking-wide text-white leading-tight md:leading-normal">
+            Achol Computer
+          </span>
+        </a>
+
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">

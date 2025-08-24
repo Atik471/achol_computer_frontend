@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap');
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: corporate --default, business --prefersdark;
   root: ":root";
@@ -9,3 +11,7 @@
 }
 
 @custom-variant dark (&:where([data-theme=business], [data-theme=business] *));
+
+@theme {
+  --font-display: "STIX Two Text", serif;
+}
