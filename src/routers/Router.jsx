@@ -15,6 +15,8 @@ import MadhupurBranch from '../pages/MadhupurBranch';
 import DhanbariBranch from '../pages/DhanbariBranch';
 import ContactUs from '../pages/Contact';
 import ProductDetails from '../pages/ProductDetails';
+// import PrivacyPolicy from '../pages/PrivacyPolicy';
+import Privacy from '../pages/Privacy';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <ContactUs />
+      },
+      {
+        path: 'privacy-policy',
+        element: <Privacy />
       }
     ],
   },
