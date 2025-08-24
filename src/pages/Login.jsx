@@ -34,7 +34,7 @@ const Login = () => {
       // show toast for 2s then redirect
       const timer = setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [loginMutation.isSuccess, navigate]);

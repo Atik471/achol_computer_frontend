@@ -1,14 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import { Link, NavLink } from "react-router";
 import logo from '../assets/logo.png'
+import { useLogout } from "../hooks/useAuth";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
-  const { user, logout } = useContext(AuthContext);
   const [showToast, setShowToast] = useState(false);
+  const { user } = useContext(AuthContext);
+  const logoutMutation = useLogout();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -16,17 +18,28 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
-      setShowToast(true); // show toast
-      setTimeout(() => setShowToast(false), 3000); // hide after 3s
+      await logoutMutation.mutateAsync();      // call API / clear session
+      setShowToast(true);
     } catch (err) {
       console.error(err);
     }
   };
 
+  // Redirect + toast on success
+    useEffect(() => {
+      if (logoutMutation.isSuccess) {
+        // show toast for 2s then redirect
+        const timer = setTimeout(() => {
+          setShowToast(false);
+          // navigate("/");
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
+    }, [logoutMutation.isSuccess]);
+
 
   return (
-    <div className="navbar bg-[#468A9A] dark:bg-[#393E46] text-white shadow-sm px-2 md:px-8 flex justify-between items-center fixed top-0 z-100">
+    <div className="navbar bg-[#468A9A] dark:bg-[#393E46] text-white shadow-sm px-2 md:px-8 flex justify-between items-center fixed top-0 z-40">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -139,10 +152,14 @@ const Navbar = () => {
 
         }
       </div>
-      {showToast && (
-        <div className="toast toast-top toast-end">
+      {/* Toasts on success */}
+      {(logoutMutation.isSuccess && showToast) && (
+        <div className="toast toast-top toast-end z-50">
+          <div className="alert alert-info">
+            <span>Goodbye!</span>
+          </div>
           <div className="alert alert-success">
-            <span>Logout successful</span>
+            <span>Logged out successfully.</span>
           </div>
         </div>
       )}

@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   
 
   const [user, setUser] = useState(null);
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       setAccessToken(null);
-      queryClient.clear();
+      // queryClient.clear();
     }
   };
 

@@ -23,7 +23,7 @@ const Footer = () => {
                             <span className="text-xl font-bold ml-2">Achol Computer</span>
                         </div>
                         <p className="mb-4">
-                            Your one-stop solution for all computer needs. Quality products and services since 2010.
+                            Your one-stop solution for all computer needs. Quality products and solutions.
                         </p>
                         <div className="flex space-x-4">
                             <a
@@ -78,9 +78,9 @@ const Footer = () => {
 
                 {/* Copyright and Developer Credit */}
                 <div className=" pt-6 flex flex-col md:flex-row justify-between items-center">
-                    <p className="text-xs text-gray-500 font-medium">© {new Date().getFullYear()} Achol Computer. All rights reserved.</p>
+                    <p className="text-xs text-gray-500 font-medium">© {new Date().getFullYear()} Achol Computer. All rights reserved. </p>
                     <div className="flex items-center mt-2 md:mt-0 space-x-1">
-                        <span className="text-xs text-gray-500 font-medium"> Crafted by</span>
+                        <span className="text-xs text-gray-500 font-medium inline-block pl-1"> Crafted by</span>
                         <a
                             href="https://github.com/Atik471"
                             target="_blank"

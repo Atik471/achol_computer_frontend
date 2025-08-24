@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     FiHome,
     FiBox,
@@ -12,15 +12,19 @@ import {
     FiX
 } from 'react-icons/fi';
 import ThemeComponent from '../components/ThemeComponent';
-import { Link, NavLink, useLocation } from 'react-router';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router';
 import { Outlet } from "react-router";
 import { AuthContext } from '../contexts/AuthProvider';
+import { useLogout } from '../hooks/useAuth';
 
 const DashboardLayout = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
-    const { user, logout } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
+    // const [showToast, setShowToast] = useState(false);
+    const logoutMutation = useLogout();
+    const navigate = useNavigate();
 
     // Simple mapping of routes to page titles
     const pageTitles = {
@@ -37,13 +41,24 @@ const DashboardLayout = () => {
 
     const handleLogout = async () => {
         try {
-            await logout();
-            setShowToast(true); // show toast
-            setTimeout(() => setShowToast(false), 3000); // hide after 3s
+            await logoutMutation.mutateAsync();      // call API / clear session
+            // setShowToast(true);
         } catch (err) {
             console.error(err);
         }
     };
+
+    // Redirect + toast on success
+    useEffect(() => {
+        if (logoutMutation.isSuccess) {
+            // show toast for 2s then redirect
+            const timer = setTimeout(() => {
+                // setShowToast(false);
+                navigate("/");
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [logoutMutation.isSuccess, navigate]);
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -64,7 +79,7 @@ const DashboardLayout = () => {
                             <nav className="mt-8 flex-1 px-4 space-y-1">
                                 <NavLink
                                     to="/dashboard"
-                                    end 
+                                    end
                                     className={({ isActive }) =>
                                         `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
@@ -150,7 +165,7 @@ const DashboardLayout = () => {
                             <nav className="px-4 space-y-1">
                                 <NavLink
                                     to="/dashboard"
-                                    end 
+                                    end
                                     className={({ isActive }) =>
                                         `font-semibold flex items-center px-4 py-2 rounded-lg group duration-200 transition-all hover:dark:text-black hover:text-black hover:bg-gray-200 ${isActive ? "bg-gray-200 text-black font-semibold" : " text-white dark:text-gray-300"
                                         }`
@@ -207,9 +222,18 @@ const DashboardLayout = () => {
                             </nav>
                         </div>
                         <div className="p-4 border-t border-base-300">
-                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-black hover:bg-gray-200 font-semibold transition-all duration-200" onClick={handleLogout}>
-                                <FiLogOut className="mr-2" />
-                                Logout
+                            <button className="cursor-pointer w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-black hover:bg-gray-200 font-semibold transition-all duration-200" onClick={handleLogout} disabled={logoutMutation.isPending}>
+                                {logoutMutation.isPending ? (
+                                    <>
+                                        <span className="loading loading-spinner loading-sm"></span>
+                                        <span className="ml-2">Logging out...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiLogOut className="mr-2" />
+                                        Logout
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -258,6 +282,18 @@ const DashboardLayout = () => {
                     </div>
                 </main>
             </div>
+
+            {/* Toasts on success */}
+            {(logoutMutation.isSuccess) && (
+                <div className="toast toast-top toast-end z-50">
+                    <div className="alert alert-info">
+                        <span>Logged out successfully.</span>
+                    </div>
+                    <div className="alert alert-success">
+                        <span>Redirecting to Home Page...</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

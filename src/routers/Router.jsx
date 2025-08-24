@@ -18,6 +18,7 @@ import ProductDetails from '../pages/ProductDetails';
 import Privacy from '../pages/Privacy';
 import TermsOfUse from '../pages/TermsOfUse';
 import Cookie from '../pages/Cookie';
+import PrivateRoute from './PrivateRouter';
 
 const router = createBrowserRouter([
   {
@@ -68,11 +69,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <DashboardLayout />,
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
     children: [
       {
         path: "",
-        element: <Dashboard />
+        element: <Dashboard />,
       },
       {
         path: 'inventory',
