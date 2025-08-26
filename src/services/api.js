@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'https://api.acholcomputer.com';
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'https://api.acholcomputer.com/api';
 
 const accessToken = localStorage.getItem("accessToken");
 
