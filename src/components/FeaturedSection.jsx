@@ -14,7 +14,7 @@ function FeaturedSection({ name, slug }) {
     const products = data.data;
 
     return (
-        <section className="py-12 px-6 bg-gradient-to-b from-[#f7fafc] to-[#edf2f7] dark:from-[#202121] dark:to-[#181919]">
+        <section className="md:px-[6%] py-12 px-6 bg-gradient-to-b from-[#f7fafc] to-[#edf2f7] dark:from-[#202121] dark:to-[#181919]">
             {/* Header */}
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">

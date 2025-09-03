@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function FAQSection() {
   const faqs = [
     {
@@ -96,9 +98,9 @@ export default function FAQSection() {
             <a href="https://wa.me/8801712076011" className="px-4 py-2 bg-green-500 text-white rounded font-medium hover:bg-green-600 transition-colors">
               WhatsApp
             </a>
-            <a href="/contact" className="px-4 py-2 bg-transparent border border-white text-white rounded font-medium hover:bg-white hover:text-[#468a9a] transition-colors">
+            <Link to="/contact" className="px-4 py-2 bg-transparent border border-white text-white rounded font-medium hover:bg-white hover:text-[#468a9a] transition-colors">
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
       </div>
