@@ -3,10 +3,10 @@ import { useSearchParams } from "react-router";
 
 const SearchInput = ({ onSearch }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // Get current search query from URL params
   const currentSearch = searchParams.get("search") || "";
-  
+
   // Local state to handle input typing
   const [search, setSearch] = useState(currentSearch);
 
@@ -41,12 +41,15 @@ const SearchInput = ({ onSearch }) => {
       <input
         type="text"
         placeholder="Search products..."
-        className="input input-bordered w-full"
+        className="input input-bordered w-full text-sm md:text-base px-2 md:px-4 py-2"
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyPress}
       />
-      <button className="btn btn-primary" onClick={handleSearchSubmit}>
+      <button
+        className="btn btn-primary px-3 md:px-6 text-sm md:text-base"
+        onClick={handleSearchSubmit}
+      >
         Search
       </button>
     </div>

@@ -13,7 +13,7 @@ const Breadcrumb = ({ categoryslug, subcategoryslug, productNameslug }) => {
     str ? str.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
 
   return (
-    <div className="text-sm breadcrumbs mb-4">
+    <div className="text-sm breadcrumbs md:mb-4">
       <ul className="flex items-center space-x-2">
         {/* Home */}
         <li>

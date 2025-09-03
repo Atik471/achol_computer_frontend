@@ -7,108 +7,126 @@ import ProductList from "../components/ProductList";
 import Pagination from "../components/Pagination";
 import { useSearchParams } from "react-router";
 import SearchInput from "../components/SearchInput";
-// import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FiFilter } from "react-icons/fi";
+import { IoClose } from "react-icons/io5";
 
 const Products = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    // convert search params to object
-    const params = Object.fromEntries([...searchParams]);
-    const currentSort = searchParams.get("sort") || "";
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterOpen, setFilterOpen] = useState(false);
 
-    const { data, isLoading, error } = useProducts(params);
+  // convert search params to object
+  const params = Object.fromEntries([...searchParams]);
+  const currentSort = searchParams.get("sort") || "";
 
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }, []);
+  const { data, isLoading, error } = useProducts(params);
 
-    if (isLoading) return <LoadingSpinner />;
-    if (error) return <ErrorState />;
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-    const products = data.data;
-    const totalCount = data.totalCount;
-    // const minPrice = data.minPrice;
-    const maxPrice = data.maxPrice;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorState />;
 
-    const handleSortChange = (e) => {
-        const value = e.target.value;
+  const products = data.data;
+  const totalCount = data.totalCount;
+  const maxPrice = data.maxPrice;
 
-        if (value === "") {
-            searchParams.delete("sort");
-        } else {
-            // Map human-readable to backend sort query
-            let sortParam = "";
-            switch (value) {
-                case "Price: Low to High":
-                    sortParam = "price";
-                    break;
-                case "Price: High to Low":
-                    sortParam = "-price";
-                    break;
-                case "Newest":
-                    sortParam = "-createdAt";
-                    break;
-                default:
-                    sortParam = "";
-            }
-            searchParams.set("sort", sortParam);
-        }
+  const handleSortChange = (e) => {
+    const value = e.target.value;
 
-        setSearchParams(searchParams);
-    };
+    if (value === "") {
+      searchParams.delete("sort");
+    } else {
+      let sortParam = "";
+      switch (value) {
+        case "price":
+          sortParam = "price";
+          break;
+        case "-price":
+          sortParam = "-price";
+          break;
+        case "-createdAt":
+          sortParam = "-createdAt";
+          break;
+        default:
+          sortParam = "";
+      }
+      searchParams.set("sort", sortParam);
+    }
 
-    
+    setSearchParams(searchParams);
+  };
 
-    return (
-        <div className="p-4 lg:p-6 ">
-            {/* <Helmet>
-                <title>Achol Computer | Products</title>
-                <meta name="description" content="Trusted electronics store in Bangladesh." />
-            </Helmet> */}
-            <div className="flex md:flex-row flex-col items-center justify-between mb-4">
-                <Breadcrumbs />
+  return (
+    <div className="p-4 lg:p-6">
+      {/* Top Panel */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 mb-4">
+        <Breadcrumbs />
 
-                {/* Top controls */}
-                <div className="flex md:flex-row flex-col items-center justify-end mb-4 gap-2">
-                    <SearchInput />
+        <div className="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
+          <SearchInput />
 
-                    {/* Sort */}
-                    <select
-                        className="select select-bordered max-w-[16rem]"
-                        value={
-                            currentSort === "price" ? "Price: Low to High" :
-                                currentSort === "-price" ? "Price: High to Low" :
-                                    currentSort === "-createdAt" ? "Newest" : ""
-                        }
-                        onChange={handleSortChange}
-                    >
-                        <option disabled value="">Sort by</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                        <option>Newest</option>
-                    </select>
-                </div>
-            </div>
+          <div className="flex w-full sm:w-auto items-center gap-2">
+            {/* Sort */}
+            <select
+              className="select select-bordered flex-1 sm:flex-none max-w-[12rem] sm:max-w-[16rem]"
+              value={currentSort}
+              onChange={handleSortChange}
+            >
+              <option disabled value="">
+                Sort by
+              </option>
+              <option value="price">Price: Low to High</option>
+              <option value="-price">Price: High to Low</option>
+              <option value="-createdAt">Newest</option>
+            </select>
 
-            <div className="flex gap-6">
-                {/* Sidebar */}
-                <FilterSidebar
-                    maxPrice={maxPrice}
-                />
-
-                {/* Products */}
-                <main className="flex-1">
-                    <ProductList products={products} />
-                    {
-                        products?.length > 0 && <Pagination totalCount={totalCount}
-                            limit={12}
-                            maxButtons={7} />
-                    }
-                </main>
-            </div>
-
+            {/* Mobile Filter Drawer Button */}
+            <label
+              htmlFor="filter-drawer"
+              className="btn btn-outline sm:hidden p-2"
+              title="Filters"
+            >
+              <FiFilter className="text-lg" />
+            </label>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* Drawer Wrapper for mobile */}
+      <div className="drawer drawer-end sm:hidden">
+        <input id="filter-drawer" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content"></div>
+        <div className="drawer-side z-50">
+          <label htmlFor="filter-drawer" className="drawer-overlay"></label>
+          <div className="menu p-4 w-72 bg-base-200 min-h-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold">Filters</h2>
+              <label htmlFor="filter-drawer" className="btn btn-sm btn-ghost">
+                <IoClose className="text-xl" />
+              </label>
+            </div>
+            <FilterSidebar maxPrice={maxPrice} variant="mobile" />
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="flex gap-6">
+        <aside className="hidden md:block w-64 shrink-0">
+          <FilterSidebar maxPrice={maxPrice} variant="desktop" />
+        </aside>
+
+        <main className="flex-1">
+          <ProductList products={products} />
+          {products?.length > 0 && (
+            <Pagination totalCount={totalCount} limit={12} maxButtons={7} />
+          )}
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default Products;

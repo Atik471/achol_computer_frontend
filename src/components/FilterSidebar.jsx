@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCategories } from "../hooks/useCategories";
 import { useSearchParams } from "react-router";
 
-const FilterSidebar = ({ maxPrice }) => {
+const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
   const { data: categories = [], isLoading } = useCategories();
   const [price, setPrice] = useState([0, maxPrice]);
 
@@ -66,7 +66,13 @@ const FilterSidebar = ({ maxPrice }) => {
   };
 
   return (
-    <aside className="w-64 hidden lg:block p-4 bg-base-200 rounded-2xl shadow-sm h-screen sticky top-6">
+    <aside
+      className={
+        variant === "desktop"
+          ? "w-64 hidden lg:block p-4 bg-base-200 rounded-2xl shadow-sm h-screen sticky top-6"
+          : "w-full p-4 bg-base-200"
+      }
+    >
       {/* Categories */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Categories</h3>
@@ -77,10 +83,11 @@ const FilterSidebar = ({ maxPrice }) => {
             {/* All Categories */}
             <li>
               <button
-                className={`w-full text-left rounded-md p-1 text-sm ${selectedCategory === "all"
-                  ? "bg-primary text-white"
-                  : "hover:bg-base-300"
-                  }`}
+                className={`w-full text-left rounded-md p-1 text-sm ${
+                  selectedCategory === "all"
+                    ? "bg-primary text-white"
+                    : "hover:bg-base-300"
+                }`}
                 onClick={() => handleCategorySelect("all")}
               >
                 All Categories
@@ -92,25 +99,26 @@ const FilterSidebar = ({ maxPrice }) => {
               return (
                 <li key={cat._id}>
                   <button
-                    className={`w-full text-left rounded-md p-1 text-sm ${isCategorySelected
-                      ? "bg-primary text-white"
-                      : "hover:bg-base-300"
-                      }`}
+                    className={`w-full text-left rounded-md p-1 text-sm ${
+                      isCategorySelected
+                        ? "bg-primary text-white"
+                        : "hover:bg-base-300"
+                    }`}
                     onClick={() => handleCategorySelect(cat.slug)}
                   >
                     {cat.name}
                   </button>
 
-                  {/* Keep subcategories open if parent is selected */}
                   {isCategorySelected && cat.subcategories?.length > 0 && (
                     <ul className="pl-4 space-y-1">
                       {cat.subcategories.map((sub) => (
                         <li key={sub._id}>
                           <button
-                            className={`w-full text-left rounded-md p-1 text-xs ${selectedSubcategory === sub.slug
-                              ? "bg-primary text-white"
-                              : "hover:bg-base-300"
-                              }`}
+                            className={`w-full text-left rounded-md p-1 text-xs ${
+                              selectedSubcategory === sub.slug
+                                ? "bg-primary text-white"
+                                : "hover:bg-base-300"
+                            }`}
                             onClick={() =>
                               handleSubcategorySelect(cat.slug, sub.slug)
                             }
@@ -132,30 +140,28 @@ const FilterSidebar = ({ maxPrice }) => {
       <div>
         <h3 className="font-semibold mb-2">Price Range</h3>
 
-        {/* Number inputs */}
         <div className="flex items-center gap-2">
           <input
             type="number"
             className="input input-bordered w-20 text-sm"
-            value={tempPrice[0]} // <-- bind to tempPrice
+            value={tempPrice[0]}
             onChange={(e) => handlePriceChange(e, 0)}
           />
           <span>-</span>
           <input
             type="number"
             className="input input-bordered w-20 text-sm"
-            value={tempPrice[1]} // <-- bind to tempPrice
+            value={tempPrice[1]}
             onChange={(e) => handlePriceChange(e, 1)}
           />
         </div>
 
-        {/* Range sliders */}
         <input
           type="range"
           min="0"
           max={maxPrice}
           step="100"
-          value={tempPrice[0]} // <-- bind to tempPrice
+          value={tempPrice[0]}
           onChange={(e) => handlePriceChange(e, 0)}
           className="range range-xs mt-2"
         />
@@ -164,12 +170,11 @@ const FilterSidebar = ({ maxPrice }) => {
           min="0"
           max={maxPrice}
           step="100"
-          value={tempPrice[1]} // <-- bind to tempPrice
+          value={tempPrice[1]}
           onChange={(e) => handlePriceChange(e, 1)}
           className="range range-xs"
         />
 
-        {/* Apply button */}
         <button
           className="btn btn-primary btn-sm mt-2"
           onClick={applyPriceFilter}
@@ -177,13 +182,10 @@ const FilterSidebar = ({ maxPrice }) => {
           Apply
         </button>
       </div>
-      <button
-        className="btn btn-sm btn-accent mt-2"
-        onClick={clearFilters}
-      >
+
+      <button className="btn btn-sm btn-accent mt-2" onClick={clearFilters}>
         Clear Filters
       </button>
-
     </aside>
   );
 };
