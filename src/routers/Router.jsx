@@ -19,11 +19,13 @@ import Privacy from '../pages/Privacy';
 import TermsOfUse from '../pages/TermsOfUse';
 import Cookie from '../pages/Cookie';
 import PrivateRoute from './PrivateRouter';
+import ErrorPage from '../pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
@@ -70,6 +72,7 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
@@ -96,6 +99,7 @@ const router = createBrowserRouter([
   {
     path: '/auth',
     element: <AuthLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
