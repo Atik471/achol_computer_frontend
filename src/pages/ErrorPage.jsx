@@ -1,5 +1,5 @@
 import { FiAlertTriangle } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const ErrorPage = ({ code = 404, message = "Page not found" }) => {
   return (
