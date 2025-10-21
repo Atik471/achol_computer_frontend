@@ -21,6 +21,8 @@ export default function Inventory() {
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  console.log("invenotry", data);
+
   return (
     <div className="p-6 space-y-6">
       {/* <Helmet>
@@ -48,9 +50,9 @@ export default function Inventory() {
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Inventory Value</div>
           <div className="stat-value">
-            $
+            ৳
             {products
-              ?.reduce((acc, p) => acc + p.price * p.stock, 0)
+              ?.reduce((acc, p) => acc + p.price * (p.stock?.available || 0), 0)
               .toLocaleString()}
           </div>
         </div>
@@ -88,52 +90,32 @@ export default function Inventory() {
         <table className="table">
           <thead>
             <tr>
-              <th>Image</th>
               <th>Name</th>
-              <th>SKU</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Qty</th>
+              <th>Available</th>
+              <th>Incoming</th>
+              <th>Servicing</th>
+              <th>Sold</th>
+              <th>Defective</th>
               <th>Status</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts?.map((p) => (
               <tr key={p._id}>
-                <td>
-                  <img
-                    src={p.image || `https://picsum.photos/40?random=${p._id}`}
-                    alt={p.name}
-                    className="w-10 h-10 rounded"
-                  />
-                </td>
                 <td>{p.name}</td>
-                <td>{p.sku}</td>
+                <td>{p.stock.available}</td>
+                <td>{p.stock.incoming}</td>
+                <td>{p.stock.servicing}</td>
+                <td>{p.stock.sold}</td>
+                <td>{p.stock.defective}</td>
                 <td>
-                  {p.category?.name}
-                  {p.category?.subcategory
-                    ? ` / ${p.category.subcategory.name}`
-                    : ""}
-                </td>
-                <td>${p.price}</td>
-                <td>{p.stock}</td>
-                <td>
-                  {p.quantity === 0 ? (
+                  {p.stock.available === 0 ? (
                     <span className="badge badge-error">Out of Stock</span>
-                  ) : p.quantity < 10 ? (
+                  ) : p.stock.available < 10 ? (
                     <span className="badge badge-warning">Low Stock</span>
                   ) : (
                     <span className="badge badge-success">In Stock</span>
                   )}
-                </td>
-                <td className="space-x-2">
-                  <button className="btn btn-sm btn-outline btn-info">
-                    Update
-                  </button>
-                  <button className="btn btn-sm btn-outline btn-error">
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}

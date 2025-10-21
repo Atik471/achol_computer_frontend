@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import Home from '../pages/Home';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Dashboard from '../pages/Dashboard';
-import Inventory from '../pages/Inventory'
+import Inventory from '../pages/Inventory';
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
