@@ -12,6 +12,8 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PaymentSection from "../components/PaymentSection";
 import { useEffect, useState } from "react";
+import bkash from "../assets/bkash-logo.jpg";
+import nagad from "../assets/nagad-logo.jpg";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -314,7 +316,7 @@ const ProductDetails = () => {
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <div className="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-700 rounded-xl px-6 py-3 flex items-center gap-3">
                   <img
-                    src="https://seeklogo.com/images/B/bkash-logo-8357890943-seeklogo.com.png"
+                    src={bkash}
                     alt="Bkash Logo"
                     className="w-7 h-7"
                   />
@@ -330,7 +332,7 @@ const ProductDetails = () => {
 
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-6 py-3 flex items-center gap-3">
                   <img
-                    src="https://seeklogo.com/images/N/nagad-logo-6C2B2A1F4A-seeklogo.com.png"
+                    src={nagad}
                     alt="Nagad Logo"
                     className="w-7 h-7"
                   />
@@ -348,7 +350,7 @@ const ProductDetails = () => {
               <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-300">
                 ⚠️ Please{" "}
                 <span className="font-semibold text-green-600 dark:text-green-400">
-                  contact us on WhatsApp
+                  contact us on WhatsApp, Facebook, or phone{" "}
                 </span>
                 before sending money to confirm product availability.
               </p>
