@@ -237,7 +237,7 @@ const ProductDetails = () => {
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 justify-between mb-6">
               <a
-                href={`https://wa.me/01712076011?text=Hi, I'm interested in ${encodeURIComponent(
+                href={`https://wa.me/+8801712076011?text=Hi, I'm interested in ${encodeURIComponent(
                   product.name
                 )}`}
                 target="_blank"
@@ -279,7 +279,7 @@ const ProductDetails = () => {
               {/* WhatsApp Numbers */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="https://wa.me/01712076011"
+                  href="https://wa.me/+8801712076011"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 shadow-sm hover:shadow-md transition-shadow"
