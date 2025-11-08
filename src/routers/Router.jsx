@@ -20,6 +20,8 @@ import TermsOfUse from '../pages/TermsOfUse';
 import Cookie from '../pages/Cookie';
 import PrivateRoute from './PrivateRouter';
 import ErrorPage from '../pages/ErrorPage';
+import ManageProducts from '../pages/ManageProducts';
+import ProductForm from '../pages/ProductForm';
 
 const router = createBrowserRouter([
   {
@@ -114,6 +116,25 @@ const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+  },
+  {
+    path: '/admin',
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'products',
+        element: <ManageProducts />
+      },
+      {
+        path: 'products/new',
+        element: <ProductForm />
+      },
+      {
+        path: 'products/:id/edit',
+        element: <ProductForm />
+      }
+    ]
   }
 ]);
 

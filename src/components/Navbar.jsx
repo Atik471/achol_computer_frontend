@@ -3,6 +3,7 @@ import ThemeComponent from "./ThemeComponent";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import { Link, NavLink } from "react-router";
+// import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useLogout } from "../hooks/useAuth";
 

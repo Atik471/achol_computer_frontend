@@ -13,7 +13,10 @@ import {
 } from 'react-icons/fi';
 import ThemeComponent from '../components/ThemeComponent';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router';
+import { Toaster } from 'react-hot-toast';
 import { Outlet } from "react-router";
+// import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+// import { Outlet } from "react-router-dom";
 import { AuthContext } from '../contexts/AuthProvider';
 import { useLogout } from '../hooks/useAuth';
 
@@ -66,6 +69,7 @@ const DashboardLayout = () => {
 
     return (
         <div className="min-h-screen bg-base-100 flex h-screen">
+            <Toaster position="top-center" reverseOrder={false} />
             {/* Sidebar for desktop */}
             <div className="hidden lg:flex lg:flex-shrink-0 bg-[#468A9A] dark:bg-[#393E46]">
                 <div className="w-64 flex flex-col">

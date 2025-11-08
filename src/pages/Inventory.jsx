@@ -1,12 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { useProducts } from "../hooks/useProducts.js";
 import Pagination from "../components/Pagination.jsx";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { updateAdminProductStock } from "../services/adminProductServices.js";
 // import { Helmet } from "react-helmet-async";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [stock, setStock] = useState({
+    available: 0,
+    incoming: 0,
+    servicing: 0,
+    sold: 0,
+    defective: 0,
+  });
+
   const { data, isLoading, error } = useProducts();
+  const queryClient = useQueryClient();
+
+  const { mutate: updateStock, isLoading: isUpdating } = useMutation({
+    mutationFn: ({ id, stockData }) => updateAdminProductStock(id, stockData),
+    onSuccess: () => {
+      toast.success("Stock updated successfully!");
+      queryClient.invalidateQueries(["products"]);
+      closeModal();
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || "Failed to update stock.");
+    },
+  });
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <div className="text-error">Failed to load products</div>;
@@ -20,6 +47,28 @@ export default function Inventory() {
   const filteredProducts = products?.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setStock(product.stock);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleStockChange = (e) => {
+    const { name, value } = e.target;
+    setStock((prev) => ({ ...prev, [name]: Number(value) }));
+  };
+
+  const handleUpdateSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedProduct) return;
+    updateStock({ id: selectedProduct._id, stockData: { stock } });
+  };
 
   console.log("invenotry", data);
 
@@ -38,13 +87,13 @@ export default function Inventory() {
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Low Stock</div>
           <div className="stat-value text-warning">
-            {products?.filter((p) => p.stock > 0 && p.stock < 10).length}
+            {products?.filter((p) => p.stock.available > 0 && p.stock.available < 10).length}
           </div>
         </div>
         <div className="stat bg-base-200 rounded-xl shadow">
           <div className="stat-title">Out of Stock</div>
           <div className="stat-value text-error">
-            {products?.filter((p) => p.quantity === 0).length}
+            {products?.filter((p) => p.stock.available === 0).length}
           </div>
         </div>
         <div className="stat bg-base-200 rounded-xl shadow">
@@ -82,7 +131,9 @@ export default function Inventory() {
             <option>Quantity</option>
           </select>
         </div>
-        <button className="btn btn-primary">+ Add Product</button>
+        <Link to="/admin/products/new">
+          <button className="btn btn-primary">+ Add Product</button>
+        </Link>
       </div>
 
       {/* Table */}
@@ -97,6 +148,7 @@ export default function Inventory() {
               <th>Sold</th>
               <th>Defective</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -110,18 +162,72 @@ export default function Inventory() {
                 <td>{p.stock.defective}</td>
                 <td>
                   {p.stock.available === 0 ? (
-                    <span className="badge badge-error">Out of Stock</span>
+                    <span className="badge badge-xs whitespace-nowrap badge-error">Out of Stock</span>
                   ) : p.stock.available < 10 ? (
-                    <span className="badge badge-warning">Low Stock</span>
+                    <span className="badge badge-xs whitespace-nowrap badge-warning">Low Stock</span>
                   ) : (
-                    <span className="badge badge-success">In Stock</span>
+                    <span className="badge badge-xs whitespace-nowrap badge-success">In Stock</span>
                   )}
+                </td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline btn-info"
+                    onClick={() => openModal(p)}
+                  >
+                    Update
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Update Stock Modal */}
+      <dialog id="stock_update_modal" className={`modal ${isModalOpen ? "modal-open" : ""}`}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Update Stock for {selectedProduct?.name}</h3>
+          <form onSubmit={handleUpdateSubmit} className="space-y-4 pt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="form-control">
+                <label className="label"><span className="label-text">Available</span></label>
+                <input type="number" name="available" value={stock.available} onChange={handleStockChange} className="input input-bordered" />
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text">Incoming</span></label>
+                <input type="number" name="incoming" value={stock.incoming} onChange={handleStockChange} className="input input-bordered" />
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text">Servicing</span></label>
+                <input type="number" name="servicing" value={stock.servicing} onChange={handleStockChange} className="input input-bordered" />
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text">Sold</span></label>
+                <input type="number" name="sold" value={stock.sold} onChange={handleStockChange} className="input input-bordered" />
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text">Defective</span></label>
+                <input type="number" name="defective" value={stock.defective} onChange={handleStockChange} className="input input-bordered" />
+              </div>
+            </div>
+            <div className="modal-action justify-between">
+              <Link to={`/admin/products/${selectedProduct?._id}/edit`} className="btn btn-outline btn-accent">
+                Edit Details
+              </Link>
+              <div>
+                <button type="button" className="btn mr-2" onClick={closeModal}>Cancel</button>
+                <button type="submit" className="btn btn-primary" disabled={isUpdating}>
+                  {isUpdating && <span className="loading loading-spinner"></span>} 
+                  {isUpdating ? "Saving..." : "Save"} 
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={closeModal}>close</button>
+        </form>
+      </dialog>
 
       <Pagination />
     </div>
