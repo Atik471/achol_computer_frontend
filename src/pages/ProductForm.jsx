@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import LoadingSpinner from '../components/LoadingSpinner';
 import toast from 'react-hot-toast';
 import {
@@ -9,6 +10,10 @@ import {
   getProductById,
   api,
 } from '../services/adminProductServices';
+import {
+  createCategory,
+  createSubcategory,
+} from '../services/categoryServices';
 
 // Fetch categories
 const useCategories = () =>
@@ -25,6 +30,12 @@ const ProductForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isEditMode = !!id;
+
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newSubcategoryName, setNewSubcategoryName] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageFiles, setImageFiles] = useState([]); // To hold File objects
+
 
   const [product, setProduct] = useState({
     name: '',
@@ -96,6 +107,38 @@ const ProductForm = () => {
     }
   }, [product.category, isEditMode]);
   
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('folder', 'acholcomputer');
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
+      return response.data.secure_url;
+    } catch (error) {
+      console.error('Cloudinary upload error:', error);
+      toast.error('Failed to upload image.');
+      return null;
+    }
+  };
+
+  const handleImageChange = async (e) => {
+    const newFiles = Array.from(e.target.files);
+    if (newFiles.length === 0) return;
+
+    const newImagePreviews = newFiles.map(file => URL.createObjectURL(file));
+    setImageFiles(prev => [...prev, ...newFiles]);
+    setProduct(prev => ({
+      ...prev,
+      // Filter out empty strings, add existing URLs and new previews
+      images: [...prev.images.filter(img => img), ...newImagePreviews],
+    }));
+  };
+
   const handleNestedChange = (parent, e) => {
     const { name, value } = e.target;
     setProduct(prev => ({ ...prev, [parent]: { ...prev[parent], [name]: value } }));
@@ -121,9 +164,15 @@ const ProductForm = () => {
   };
 
   const removeArrayItem = (field, index) => {
-    const newArray = [...product[field]];
-    newArray.splice(index, 1);
-    setProduct(prev => ({ ...prev, [field]: newArray }));
+    const updatedImages = [...product.images];
+    const updatedFiles = [...imageFiles];
+
+    const removedImage = updatedImages.splice(index, 1)[0];
+    // If the removed image is a blob URL, it means it's a new file preview
+    if (removedImage.startsWith('blob:')) {
+      setImageFiles(updatedFiles.filter(file => URL.createObjectURL(file) !== removedImage));
+    }
+    setProduct(prev => ({ ...prev, images: updatedImages.length > 0 ? updatedImages : [''] }));
   };
 
   // Specific handlers for specifications array of objects
@@ -169,22 +218,84 @@ const ProductForm = () => {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
+
     // Basic validation
     if (!product.name || !product.category || !product.subcategory || !product.brand) {
+      setIsUploading(false);
       return toast.error('Please fill all required fields.');
     }
 
+    const uploadedImageUrls = [];
+    // Upload new files to Cloudinary
+    for (const file of imageFiles) {
+      const url = await uploadToCloudinary(file);
+      if (url) {
+        uploadedImageUrls.push(url);
+      } else {
+        // Handle upload failure for a file
+        toast.error(`Failed to upload ${file.name}.`);
+        setIsUploading(false);
+        return; // Stop submission if one file fails
+      }
+    }
+
+    // Combine existing URLs (non-blob) with newly uploaded URLs
+    const finalImageUrls = product.images.filter(url => !url.startsWith('blob:') && url).concat(uploadedImageUrls);
+
     const productData = {
       ...product,
-      images: product.images.filter(img => img.trim() !== ''),
+      images: finalImageUrls,
       colors: product.colors.filter(color => color.trim() !== ''),
       keyFeatures: product.keyFeatures.filter(feature => feature.trim() !== ''),
       specifications: product.specifications.filter(spec => spec.key.trim() !== '' && spec.value.trim() !== ''),
     };
 
     mutation.mutate(productData);
+  };
+
+  const categoryMutation = useMutation({
+    mutationFn: (name) => createCategory({ name }),
+    onSuccess: (data) => {
+      toast.success('Category created successfully!');
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      // Select the new category
+      setProduct(prev => ({ ...prev, category: data.data._id, subcategory: '' }));
+      document.getElementById('add_category_modal').close();
+      setNewCategoryName('');
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to create category.');
+    },
+  });
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    if (!newCategoryName.trim()) return toast.error('Category name is required.');
+    categoryMutation.mutate(newCategoryName);
+  };
+
+  const subcategoryMutation = useMutation({
+    mutationFn: ({ categoryId, name }) => createSubcategory({ categoryId, subcategoryData: { name } }),
+    onSuccess: (data) => {
+      toast.success('Subcategory created successfully!');
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      // Select the new subcategory
+      setProduct(prev => ({ ...prev, subcategory: data.data._id }));
+      document.getElementById('add_subcategory_modal').close();
+      setNewSubcategoryName('');
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to create subcategory.');
+    },
+  });
+
+  const handleAddSubcategory = (e) => {
+    e.preventDefault();
+    if (!newSubcategoryName.trim()) return toast.error('Subcategory name is required.');
+    subcategoryMutation.mutate({ categoryId: product.category, name: newSubcategoryName });
   };
 
   if (isLoadingProduct) return <LoadingSpinner />;
@@ -249,32 +360,31 @@ const ProductForm = () => {
           {/* Categorization */}
           <div className="p-4 border border-base-300 rounded-lg">
             <h2 className="text-lg font-semibold mb-4">Categorization</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Category</span>
-                  <span className="text-red-500">*</span>
-                </label>
-                <select name="category" value={product.category} onChange={handleChange} className="select select-bordered" required>
-                  <option value="">Select Category</option>
-                  {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
-                </select>
+                <label className="label"><span className="label-text">Category</span><span className="text-red-500">*</span></label>
+                <div className="flex gap-2">
+                  <select name="category" value={product.category} onChange={handleChange} className="select select-bordered w-full" required>
+                    <option value="">Select Category</option>
+                    {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
+                  </select>
+                  <button type="button" className="btn btn-primary" onClick={() => document.getElementById('add_category_modal').showModal()}>Add</button>
+                </div>
               </div>
+
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Subcategory</span>
-                  <span className="text-red-500">*</span>
-                </label>
-                <select name="subcategory" value={product.subcategory} onChange={handleChange} className="select select-bordered" required disabled={!product.category}>
-                  <option value="">Select Subcategory</option>
-                  {categories.find(c => c._id === product.category)?.subcategories?.map(sub => <option key={sub._id} value={sub._id}>{sub.name}</option>)}
-                </select>
+                <label className="label"><span className="label-text">Subcategory</span><span className="text-red-500">*</span></label>
+                <div className="flex gap-2">
+                  <select name="subcategory" value={product.subcategory} onChange={handleChange} className="select select-bordered w-full" required disabled={!product.category}>
+                    <option value="">Select Subcategory</option>
+                    {categories.find(c => c._id === product.category)?.subcategories?.map(sub => <option key={sub._id} value={sub._id}>{sub.name}</option>)}
+                  </select>
+                  <button type="button" className="btn btn-primary" onClick={() => document.getElementById('add_subcategory_modal').showModal()} disabled={!product.category}>Add</button>
+                </div>
               </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Brand</span>
-                  <span className="text-red-500">*</span>
-                </label>
+
+              <div className="form-control md:col-span-2">
+                <label className="label"><span className="label-text">Brand</span><span className="text-red-500">*</span></label>
                 <input type="text" name="brand" value={product.brand} onChange={handleChange} className="input input-bordered" required placeholder="e.g., HP, Dell, ASUS" />
               </div>
             </div>
@@ -314,13 +424,36 @@ const ProductForm = () => {
               {/* Images */}
               <div>
                 <label className="label"><span className="label-text">Image URLs</span></label>
+                <div className="flex items-center gap-2 mb-2">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={handleImageChange}
+                    className="file-input file-input-bordered w-full"
+                    disabled={isUploading}
+                  />
+                  {isUploading && <span className="loading loading-spinner"></span>}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {product.images.filter(img => img).map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img src={image} alt={`Product image ${index + 1}`} className="w-24 h-24 object-cover rounded-lg" />
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('images', index)}
+                        className="btn btn-xs btn-circle btn-error absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {/* This part is removed as we are now using file uploads
                 {product.images.map((image, index) => (
-                  <div key={index} className="flex items-center gap-2 mb-2">
-                    <input type="text" value={image} onChange={(e) => handleArrayChange('images', index, e.target.value)} className="input input-bordered w-full" placeholder="https://example.com/image.jpg" />
-                    <button type="button" onClick={() => removeArrayItem('images', index)} className="btn btn-error btn-sm">Remove</button>
-                  </div>
+                  <div key={index} className="flex items-center gap-2 mb-2"> ... </div>
                 ))}
                 <button type="button" onClick={() => addArrayItem('images')} className="btn btn-sm btn-outline mt-2">Add Image</button>
+                */}
               </div>
               {/* Colors */}
               <div>
@@ -388,12 +521,49 @@ const ProductForm = () => {
         {/* Actions */}
         <div className="flex items-center justify-end gap-4 mt-12">
           <button type="button" onClick={() => navigate('/dashboard/inventory')} className="btn btn-ghost">Cancel</button>
-          <button type="submit" form="product-form" className="btn btn-primary" disabled={mutation.isLoading}>
-            {mutation.isLoading && <span className="loading loading-spinner"></span>} 
+          <button type="submit" form="product-form" className="btn btn-primary" disabled={mutation.isLoading || isUploading}>
+            {(mutation.isLoading || isUploading) && <span className="loading loading-spinner"></span>}
             {mutation.isLoading ? (isEditMode ? "Updating..." : "Creating...") : (isEditMode ? "Update Product" : "Create Product")}
           </button> 
         </div>
       </div>
+
+      {/* Add Category Modal */}
+      <dialog id="add_category_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add New Category</h3>
+          <form onSubmit={handleAddCategory}>
+            <div className="form-control py-4">
+              <label className="label"><span className="label-text">Category Name</span></label>
+              <input type="text" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} className="input input-bordered" placeholder="e.g., Laptop" />
+            </div>
+            <div className="modal-action">
+              <button type="button" className="btn" onClick={() => document.getElementById('add_category_modal').close()}>Cancel</button>
+              <button type="submit" className="btn btn-primary" disabled={categoryMutation.isLoading}>
+                {categoryMutation.isLoading ? 'Adding...' : 'Add'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </dialog>
+
+      {/* Add Subcategory Modal */}
+      <dialog id="add_subcategory_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add New Subcategory</h3>
+          <p className="py-2">For Category: <strong>{categories.find(c => c._id === product.category)?.name || ''}</strong></p>
+          <form onSubmit={handleAddSubcategory}>
+            <div className="form-control py-4">
+              <label className="label"><span className="label-text">Subcategory Name</span></label>
+              <input type="text" value={newSubcategoryName} onChange={(e) => setNewSubcategoryName(e.target.value)} className="input input-bordered" placeholder="e.g., Gaming Laptop" />
+            </div>
+            <div className="modal-action">
+              <button type="button" className="btn" onClick={() => document.getElementById('add_subcategory_modal').close()}>Cancel</button>
+              <button type="submit" className="btn btn-primary" disabled={subcategoryMutation.isLoading}>{subcategoryMutation.isLoading ? 'Adding...' : 'Add'}</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
     </div>
   );
 };
