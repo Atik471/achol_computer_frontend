@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../services/authServices.js";
+import { loadAccessToken, setAccessToken as setTokenInStorage, removeAccessToken } from "../services/api.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 export const AuthContext = createContext(null);
@@ -10,39 +11,48 @@ export const AuthProvider = ({ children }) => {
   
 
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessTokenState] = useState(() => loadAccessToken());
   const [loading, setLoading] = useState(true);
-  const [initialized, setInitialized] = useState(false); // to avoid double /auth/me calls
+
+  // Wrapper to set token in both state and localStorage
+  const setAccessToken = (token) => {
+    setTokenInStorage(token);
+    setAccessTokenState(token);
+  };
 
   // Init auth on mount
   useEffect(() => {
     const initAuth = async () => {
-      if (initialized) return;
-      setInitialized(true);
-      try {
-        // Try refresh token (backend should send new access token if refresh cookie is valid)
-        const data = await authService.getCurrentUser(); 
-        setUser(data.user);
-        setAccessToken(data.accessToken);
-      } catch {
-        setUser(null);
-        setAccessToken(null);
-      } finally {
-        setLoading(false);
+      // Only try to fetch user if a token exists in storage initially
+      if (accessToken) {
+        try {
+          const data = await authService.getCurrentUser();
+          setUser(data.user);
+          // The interceptor might have refreshed the token, so we update it.
+          setAccessToken(loadAccessToken()); 
+        } catch (error) {
+          // This catch block will be hit if the token is invalid/expired and refresh fails.
+          // The interceptor in api.js will handle the redirect.
+          console.error("Auth init failed, interceptor will handle redirect.");
+          setUser(null);
+          removeAccessToken();
+          setAccessTokenState(null);
+        }
       }
+      setLoading(false);
     };
 
     initAuth();
-  }, [initialized]);
+  }, []);
 
   // Logout
   const logout = async () => {
     try {
       await authService.logout(); // backend clears refresh token cookie
-      localStorage.removeItem("accessToken"); // clear local access token
     } finally {
+      removeAccessToken(); // clear local access token
       setUser(null);
-      setAccessToken(null);
+      setAccessTokenState(null);
       // queryClient.clear();
     }
   };
@@ -52,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authService.getCurrentUser(); // backend uses refresh cookie
       setUser(data.user);
-      setAccessToken(data.accessToken);
+      setAccessToken(data.accessToken); // Use the wrapper to save it
       return data.accessToken;
     } catch {
       logout();
