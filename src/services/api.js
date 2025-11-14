@@ -7,6 +7,10 @@ export const setAccessToken = (token) => {
   localStorage.setItem("accessToken", token);
 };
 
+export const removeAccessToken = () => {
+  localStorage.removeItem("accessToken");
+};
+
 export const loadAccessToken = () => {
   return localStorage.getItem("accessToken");
 };
@@ -69,8 +73,11 @@ api.interceptors.response.use(
           resolve(api(originalRequest));
         } catch (refreshErr) {
           processQueue(refreshErr, null);
-          // TODO: Handle logout on refresh failure
+          // Handle logout on refresh failure
+          removeAccessToken();
           console.error('Session expired. Please log in again.');
+          // Redirect to login page to force re-authentication
+          window.location.href = '/login'; 
           reject(refreshErr);
         } finally {
           isRefreshing = false;
