@@ -72,12 +72,18 @@ api.interceptors.response.use(
           processQueue(null, accessToken);
           resolve(api(originalRequest));
         } catch (refreshErr) {
+          // If the refresh call itself fails with 401, the refresh token is invalid.
+          // Log out the user immediately.
           processQueue(refreshErr, null);
-          // Handle logout on refresh failure
           removeAccessToken();
-          console.error('Session expired. Please log in again.');
-          // Redirect to login page to force re-authentication
-          window.location.href = '/login'; 
+          
+          // Avoid redirecting if we are already on the login page
+          if (window.location.pathname !== '/login') {
+            console.error('Session expired. Redirecting to login.');
+            // Use replace to prevent the user from navigating back to the broken page
+            window.location.replace('/login');
+          }
+          
           reject(refreshErr);
         } finally {
           isRefreshing = false;
