@@ -117,25 +117,25 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: '/admin',
-  //   element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
-  //   errorElement: <ErrorPage />,
-  //   children: [
-  //     {
-  //       path: 'products',
-  //       element: <ManageProducts />
-  //     },
-  //     {
-  //       path: 'products/new',
-  //       element: <ProductForm />
-  //     },
-  //     {
-  //       path: 'products/:id/edit',
-  //       element: <ProductForm />
-  //     }
-  //   ]
-  // }
+  {
+    path: '/admin',
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'products',
+        element: <ManageProducts />
+      },
+      {
+        path: 'products/new',
+        element: <ProductForm />
+      },
+      {
+        path: 'products/:id/edit',
+        element: <ProductForm />
+      }
+    ]
+  }
 ]);
 
 export default router;
