@@ -1,10 +1,38 @@
 import { useContext, useEffect, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
-import { FaUserCircle, FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import { Link, NavLink, useNavigate } from "react-router";
-import logo from "../assets/logo.png";
 import { useLogout } from "../hooks/useAuth";
+
+// Custom SVG Logo Component
+const AcholLogo = ({ className = "" }) => (
+  <svg
+    viewBox="0 0 40 40"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#3B82F6" />
+        <stop offset="100%" stopColor="#8B5CF6" />
+      </linearGradient>
+    </defs>
+    {/* Main circle */}
+    <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+    {/* Letter A stylized as computer/monitor */}
+    <path
+      d="M12 28L20 12L28 28M15 23H25"
+      stroke="white"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+    {/* Small dot representing power/tech */}
+    <circle cx="20" cy="17" r="1.5" fill="white" />
+  </svg>
+);
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -57,8 +85,8 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? "navbar-glass shadow-lg"
-            : "bg-white/70 dark:bg-slate-900/70 backdrop-blur-md"
+            ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg shadow-lg shadow-slate-900/5 dark:shadow-black/20 border-b border-slate-200/50 dark:border-slate-700/50"
+            : "bg-transparent"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,16 +94,23 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-2.5 group"
             >
-              <img
-                src={logo}
-                alt="Achol Computer"
-                className="w-9 h-9 transition-transform group-hover:scale-105"
-              />
-              <span className="font-bold text-xl text-slate-900 dark:text-white tracking-tight hidden sm:block">
-                Achol Computer
-              </span>
+              <AcholLogo className="w-9 h-9 transition-transform group-hover:scale-105" />
+              <div className="hidden sm:block">
+                <span className={`font-bold text-lg tracking-tight transition-colors ${scrolled
+                    ? "text-slate-900 dark:text-white"
+                    : "text-slate-900 dark:text-white"
+                  }`}>
+                  Achol
+                </span>
+                <span className={`font-bold text-lg tracking-tight transition-colors ${scrolled
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-blue-600 dark:text-blue-400"
+                  }`}>
+                  Computer
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -87,7 +122,9 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                       ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
-                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      : scrolled
+                        ? "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-white/20 dark:hover:bg-slate-800/50"
                     }`
                   }
                 >
@@ -100,11 +137,14 @@ const Navbar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 cursor-pointer"
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-1 ${scrolled
+                      ? "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      : "text-slate-700 dark:text-slate-300 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                    }`}
                 >
                   Our Shops
                   <svg
-                    className="w-4 h-4 inline-block ml-1"
+                    className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -136,18 +176,21 @@ const Navbar = () => {
             </div>
 
             {/* Right Side Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {/* Search Button */}
               <button
                 onClick={() => navigate("/products")}
-                className="p-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className={`p-2.5 rounded-lg transition-colors ${scrolled
+                    ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                  }`}
                 title="Search Products"
               >
                 <FaSearch className="w-4 h-4" />
               </button>
 
               {/* Theme Toggle */}
-              <ThemeComponent />
+              <ThemeComponent scrolled={scrolled} />
 
               {/* User Menu */}
               {user && (
@@ -158,7 +201,7 @@ const Navbar = () => {
                     className="btn btn-ghost btn-circle avatar"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
                       {user?.name?.charAt(0)?.toUpperCase() || "U"}
                     </div>
                   </div>
@@ -198,7 +241,10 @@ const Navbar = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className={`lg:hidden p-2.5 rounded-lg transition-colors ${scrolled
+                    ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                  }`}
               >
                 {mobileMenuOpen ? (
                   <FaTimes className="w-5 h-5" />
@@ -254,7 +300,7 @@ const Navbar = () => {
       {/* Logout Toast */}
       {logoutMutation.isSuccess && showToast && (
         <div className="toast toast-top toast-end z-50">
-          <div className="alert bg-green-500 text-white border-none shadow-lg">
+          <div className="alert bg-green-500 text-white border-none shadow-lg rounded-xl">
             <span>Logged out successfully!</span>
           </div>
         </div>

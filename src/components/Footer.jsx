@@ -1,6 +1,31 @@
 import { Link } from "react-router";
 import { FaFacebook, FaWhatsapp, FaGithub, FaPhone, FaEnvelope, FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
-import logo from "../assets/logo.png";
+
+// Custom SVG Logo Component
+const AcholLogo = ({ className = "" }) => (
+    <svg
+        viewBox="0 0 40 40"
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <defs>
+            <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3B82F6" />
+                <stop offset="100%" stopColor="#8B5CF6" />
+            </linearGradient>
+        </defs>
+        <circle cx="20" cy="20" r="18" fill="url(#footerLogoGradient)" />
+        <path
+            d="M12 28L20 12L28 28M15 23H25"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+        />
+        <circle cx="20" cy="17" r="1.5" fill="white" />
+    </svg>
+);
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -47,8 +72,11 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="space-y-6">
                         <Link to="/" className="flex items-center gap-3">
-                            <img src={logo} alt="Achol Computer" className="w-10 h-10" />
-                            <span className="text-xl font-bold text-white">Achol Computer</span>
+                            <AcholLogo className="w-10 h-10" />
+                            <div>
+                                <span className="text-xl font-bold text-white">Achol</span>
+                                <span className="text-xl font-bold text-blue-400">Computer</span>
+                            </div>
                         </Link>
                         <p className="text-slate-400 leading-relaxed">
                             Your one-stop solution for all computer and electronics needs.
