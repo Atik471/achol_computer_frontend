@@ -51,7 +51,7 @@ api.interceptors.response.use(
     const originalRequest = err.config;
     if (err.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });
         }).then(token => {
           originalRequest.headers['Authorization'] = 'Bearer ' + token;
@@ -76,14 +76,14 @@ api.interceptors.response.use(
           // Log out the user immediately.
           processQueue(refreshErr, null);
           removeAccessToken();
-          
+
           // Avoid redirecting if we are already on the login page
           if (window.location.pathname !== '/login') {
             console.error('Session expired. Redirecting to login.');
             // Use replace to prevent the user from navigating back to the broken page
             window.location.replace('/login');
           }
-          
+
           reject(refreshErr);
         } finally {
           isRefreshing = false;
