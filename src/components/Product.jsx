@@ -70,19 +70,19 @@ const Product = ({ product }) => {
         </div>
 
         {/* Quick Actions - Show on Hover */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end justify-center pb-6 gap-3 transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent flex items-end justify-center pb-6 gap-3 transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
           <Link
             to={`/products/${slug}`}
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-blue-500 hover:text-white transition-all duration-200 transform hover:scale-110"
+            className="p-3 bg-white text-slate-700 rounded-full shadow-xl hover:bg-blue-500 hover:text-white transition-all duration-200 transform hover:scale-110 border border-slate-200"
             title="View Details"
           >
-            <FaEye className="w-4 h-4" />
+            <FaEye className="w-5 h-5" />
           </Link>
           <button
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all duration-200 transform hover:scale-110"
+            className="p-3 bg-white text-slate-700 rounded-full shadow-xl hover:bg-red-500 hover:text-white transition-all duration-200 transform hover:scale-110 border border-slate-200"
             title="Add to Wishlist"
           >
-            <FaHeart className="w-4 h-4" />
+            <FaHeart className="w-5 h-5" />
           </button>
         </div>
       </figure>
@@ -118,8 +118,8 @@ const Product = ({ product }) => {
               <FaStar
                 key={i}
                 className={`w-3.5 h-3.5 ${i < Math.floor(ratings.average)
-                    ? "text-amber-400"
-                    : "text-slate-200 dark:text-slate-600"
+                  ? "text-amber-400"
+                  : "text-slate-200 dark:text-slate-600"
                   }`}
               />
             ))}
@@ -145,8 +145,8 @@ const Product = ({ product }) => {
         <Link
           to={`/products/${slug}`}
           className={`btn w-full mt-2 rounded-xl font-medium transition-all duration-300 ${inStock
-              ? "btn-primary shadow-md shadow-blue-500/20 hover:shadow-blue-500/40"
-              : "btn-disabled bg-slate-200 dark:bg-slate-700"
+            ? "btn-primary shadow-md shadow-blue-500/20 hover:shadow-blue-500/40"
+            : "btn-disabled bg-slate-200 dark:bg-slate-700"
             }`}
         >
           {inStock ? "View Details" : "Out of Stock"}
