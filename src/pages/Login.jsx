@@ -1,10 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useLogin } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
-import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaEnvelope, FaLock, FaShieldAlt } from "react-icons/fa";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
-// import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const {
@@ -28,10 +27,8 @@ const Login = () => {
     }
   };
 
-  // Redirect + toast on success
   useEffect(() => {
     if (loginMutation.isSuccess) {
-      // show toast for 2s then redirect
       const timer = setTimeout(() => {
         navigate("/");
       }, 1500);
@@ -40,186 +37,168 @@ const Login = () => {
   }, [loginMutation.isSuccess, navigate]);
 
   return (
-    <div className="card bg-base-100 dark:bg-base-200 shadow-xl rounded-2xl p-6 mx-auto max-w-md my-8 mb-[5rem]">
-      {/* <Helmet>
-        <title>Achol Computer | Login</title>
-        <meta name="description" content="Trusted electronics store in Bangladesh." />
-      </Helmet> */}
-      <div className="flex justify-center items-start ">
-        <div className="w-full max-w-md bg-transparent shadow-none">
-          <div className="p-6 md:p-8 flex flex-col items-center">
-            {/* Header */}
-            <div className="w-full text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-primary dark:text-primary-content">
-                Welcome Back
-              </h2>
-              <p className="text-base-content/70 mt-2 text-sm md:text-base">
-                Sign in to your corporate account
-              </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-950 px-4 py-12">
+      {/* Decorative Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative w-full max-w-md">
+        {/* Logo/Brand */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 shadow-lg shadow-blue-500/25 mb-4">
+            <FaShieldAlt className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+            Welcome Back
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">
+            Sign in to your admin account
+          </p>
+        </div>
+
+        {/* Login Card */}
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 border border-slate-100 dark:border-slate-700">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaEnvelope className="w-4 h-4 text-slate-400" />
+                </div>
+                <input
+                  type="email"
+                  className={`input w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.email ? "border-red-500 focus:border-red-500" : ""
+                    }`}
+                  placeholder="Enter your email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                      message: "Please enter a valid email",
+                    },
+                  })}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="w-full space-y-6"
-            >
-              {/* Email */}
-              <div className="form-control w-full">
-                <label className="label justify-center pb-2">
-                  <span className="label-text font-semibold text-base-content">
-                    Email Address
-                  </span>
-                </label>
-                <div
-                  className={`flex items-center gap-2 w-full ${errors.email ? "input-error" : ""
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaLock className="w-4 h-4 text-slate-400" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className={`input w-full pl-11 pr-12 py-3 rounded-xl bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.password ? "border-red-500 focus:border-red-500" : ""
                     }`}
-                >
-                  <div className="relative w-full">
-                    <FaEnvelope className="absolute z-10 left-3 top-1/2 transform -translate-y-1/2 text-base-content/60 w-4 h-4" />
-                    <input
-                      type="email"
-                      className="input input-bordered w-full pl-10 dark:bg-base-300 dark:text-base-content"
-                      placeholder="Enter your corporate email"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value:
-                            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                          message: "Please enter a valid email",
-                        },
-                      })}
-                    />
-                  </div>
-                </div>
-                {errors.email && (
-                  <label className="label pt-1 justify-center">
-                    <span className="label-text-alt text-error-content">
-                      {errors.email.message}
-                    </span>
-                  </label>
-                )}
-              </div>
-
-              {/* Password */}
-              <div className="form-control w-full">
-                <label className="label justify-center pb-2">
-                  <span className="label-text font-semibold text-base-content">
-                    Password
-                  </span>
-                </label>
-                <div
-                  className={`flex items-center gap-2 w-full ${errors.password ? "input-error" : ""
-                    }`}
-                >
-                  <div className="relative w-full">
-                    <FaLock className="absolute z-10 left-3 top-1/2 transform -translate-y-1/2 text-base-content/60 w-4 h-4" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className="input input-bordered w-full pl-10 pr-10 dark:bg-base-300 dark:text-base-content"
-                      placeholder="Enter your password"
-                      {...register("password", {
-                        required: "Password is required",
-                        minLength: {
-                          value: 6,
-                          message: "Password must be at least 6 characters",
-                        },
-                      })}
-                    />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-base-content/70 hover:text-base-content"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <FaEyeSlash className="z-10 w-4 h-4  text-base-content/70" />
-                      ) : (
-                        <FaEye className="z-10 w-4 h-4  text-base-content/70" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-                {errors.password && (
-                  <label className="label pt-1 justify-center">
-                    <span className="label-text-alt text-error-content">
-                      {errors.password.message}
-                    </span>
-                  </label>
-                )}
-                <div className="text-center mt-2">
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm link link-primary"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Error Message */}
-              {loginMutation.isError && (
-                <div className="alert alert-error dark:bg-red-800 dark:text-red-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="stroke-current shrink-0 h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span className="text-sm">
-                    {loginMutation.error.response?.data?.message ||
-                      "Login failed. Please try again."}
-                  </span>
-                </div>
-              )}
-
-              {/* Submit */}
-              <div className="form-control w-full">
+                  placeholder="Enter your password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                />
                 <button
-                  type="submit"
-                  className="btn btn-primary w-full dark:bg-primary dark:text-primary-content dark:hover:bg-primary-focus"
-                  disabled={loginMutation.isPending}
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {loginMutation.isPending ? (
-                    <>
-                      <span className="loading loading-spinner loading-sm"></span>
-                      <span className="ml-2">Logging in...</span>
-                    </>
+                  {showPassword ? (
+                    <FaEyeSlash className="w-4 h-4" />
                   ) : (
-                    "Login"
+                    <FaEye className="w-4 h-4" />
                   )}
                 </button>
               </div>
-            </form>
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              )}
+            </div>
 
-            {/* Sign up link */}
-            {/* <div className="text-center mt-8 w-full">
-              <p className="text-base-content/70 text-sm">
-                Don&apos;t have an account?{" "}
-                <Link
-                  to="/register"
-                  className="link link-primary font-semibold"
-                >
-                  Create account
-                </Link>
-              </p>
-            </div> */}
+            {/* Forgot Password Link */}
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Error Message */}
+            {loginMutation.isError && (
+              <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {loginMutation.error.response?.data?.message ||
+                    "Login failed. Please check your credentials."}
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="btn btn-primary w-full py-3 rounded-xl text-base font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all"
+              disabled={loginMutation.isPending}
+            >
+              {loginMutation.isPending ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="loading loading-spinner loading-sm" />
+                  Signing in...
+                </span>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white dark:bg-slate-800 text-slate-500">
+                Admin access only
+              </span>
+            </div>
+          </div>
+
+          {/* Back to Home */}
+          <div className="text-center">
+            <Link
+              to="/"
+              className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              ← Back to Homepage
+            </Link>
           </div>
         </div>
+
+        {/* Footer Note */}
+        <p className="text-center text-xs text-slate-400 mt-6">
+          This is a secure admin portal. Unauthorized access is prohibited.
+        </p>
       </div>
 
-      {/* Toasts on success */}
+      {/* Success Toast */}
       {loginMutation.isSuccess && (
-        <div className="toast toast-top toast-end">
-          <div className="alert alert-info">
-            <span>Welcome back!</span>
-          </div>
-          <div className="alert alert-success">
-            <span>Login successful. Redirecting...</span>
+        <div className="toast toast-top toast-end z-50">
+          <div className="alert bg-green-500 text-white border-none shadow-xl rounded-xl">
+            <span className="font-medium">Welcome back! Redirecting...</span>
           </div>
         </div>
       )}

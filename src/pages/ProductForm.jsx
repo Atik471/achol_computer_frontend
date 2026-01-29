@@ -98,7 +98,7 @@ const ProductForm = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProduct((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value, }));
-  }; 
+  };
 
   // When category changes, reset subcategory
   useEffect(() => {
@@ -106,7 +106,7 @@ const ProductForm = () => {
       setProduct(p => ({ ...p, subcategory: '' }));
     }
   }, [product.category, isEditMode]);
-  
+
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -298,7 +298,7 @@ const ProductForm = () => {
     subcategoryMutation.mutate({ categoryId: product.category, name: newSubcategoryName });
   };
 
-  if (isLoadingProduct) return <LoadingSpinner />;
+  if (isLoadingProduct) return <LoadingSpinner variant="inline" message="Loading product data..." />;
 
   return (
     <div className="p-4 md:p-8 bg-base-200 min-h-screen">
@@ -524,7 +524,7 @@ const ProductForm = () => {
           <button type="submit" form="product-form" className="btn btn-primary" disabled={mutation.isLoading || isUploading}>
             {(mutation.isLoading || isUploading) && <span className="loading loading-spinner"></span>}
             {mutation.isLoading ? (isEditMode ? "Updating..." : "Creating...") : (isEditMode ? "Update Product" : "Create Product")}
-          </button> 
+          </button>
         </div>
       </div>
 

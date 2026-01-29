@@ -1,29 +1,26 @@
 import { useSearchParams } from "react-router";
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 const Pagination = ({ totalCount, limit = 12, maxButtons = 5 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
 
-  // Handle case when totalCount is 0 or undefined
   const totalPages = totalCount > 0 ? Math.ceil(totalCount / limit) : 0;
-  
-  // Don't render pagination if there's only one page or no pages
+
   if (totalPages <= 1) return null;
 
   const setPage = (page) => {
     if (page < 1) page = 1;
     if (page > totalPages) page = totalPages;
-    
+
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("page", page);
     setSearchParams(newSearchParams);
   };
 
-  // Calculate page numbers to display
   let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
   let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-  
-  // Adjust startPage if we're near the end
+
   if (endPage - startPage + 1 < maxButtons) {
     startPage = Math.max(1, endPage - maxButtons + 1);
   }
@@ -33,67 +30,94 @@ const Pagination = ({ totalCount, limit = 12, maxButtons = 5 }) => {
     pageNumbers.push(i);
   }
 
-    
   return (
-    <div className="join flex justify-center my-6 md:my-16 rounded-lg overflow-hidden ">
-  {/* First Page */}
-  <button
-    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
-    onClick={() => setPage(1)}
-    disabled={currentPage === 1}
-    aria-label="First page"
-  >
-    ««
-  </button>
+    <div className="flex items-center justify-center gap-2">
+      {/* First & Previous */}
+      <div className="flex items-center gap-1">
+        <button
+          className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          onClick={() => setPage(1)}
+          disabled={currentPage === 1}
+          aria-label="First page"
+        >
+          <FiChevronsLeft className="w-4 h-4" />
+        </button>
+        <button
+          className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          onClick={() => setPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          aria-label="Previous page"
+        >
+          <FiChevronLeft className="w-4 h-4" />
+        </button>
+      </div>
 
-  {/* Previous Page */}
-  <button
-    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
-    onClick={() => setPage(currentPage - 1)}
-    disabled={currentPage === 1}
-    aria-label="Previous page"
-  >
-    «
-  </button>
+      {/* Page Numbers */}
+      <div className="flex items-center gap-1">
+        {startPage > 1 && (
+          <>
+            <button
+              className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 hover:border-blue-200 transition-all font-medium"
+              onClick={() => setPage(1)}
+            >
+              1
+            </button>
+            {startPage > 2 && (
+              <span className="px-1 text-slate-400">...</span>
+            )}
+          </>
+        )}
 
-  {/* Page Numbers */}
-  {pageNumbers.map((num) => (
-    <button
-      key={num}
-      className={`join-item btn btn-sm md:btn-md ${
-        num === currentPage
-          ? "bg-primary text-white shadow-md scale-105"
-          : "bg-gray-100 dark:bg-gray-600 hover:bg-primary hover:text-white transition-transform"
-      }`}
-      onClick={() => setPage(num)}
-      aria-label={`Page ${num}`}
-      aria-current={num === currentPage ? "page" : undefined}
-    >
-      {num}
-    </button>
-  ))}
+        {pageNumbers.map((num) => (
+          <button
+            key={num}
+            className={`w-10 h-10 rounded-lg font-medium transition-all ${num === currentPage
+                ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
+                : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 hover:border-blue-200"
+              }`}
+            onClick={() => setPage(num)}
+            aria-label={`Page ${num}`}
+            aria-current={num === currentPage ? "page" : undefined}
+          >
+            {num}
+          </button>
+        ))}
 
-  {/* Next Page */}
-  <button
-    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
-    onClick={() => setPage(currentPage + 1)}
-    disabled={currentPage === totalPages}
-    aria-label="Next page"
-  >
-    »
-  </button>
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && (
+              <span className="px-1 text-slate-400">...</span>
+            )}
+            <button
+              className="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 hover:border-blue-200 transition-all font-medium"
+              onClick={() => setPage(totalPages)}
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+      </div>
 
-  {/* Last Page */}
-  <button
-    className="join-item btn btn-sm md:btn-md bg-gray-200 dark:bg-gray-700 hover:bg-primary hover:text-white transition-colors"
-    onClick={() => setPage(totalPages)}
-    disabled={currentPage === totalPages}
-    aria-label="Last page"
-  >
-    »»
-  </button>
-</div>
-
+      {/* Next & Last */}
+      <div className="flex items-center gap-1">
+        <button
+          className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          onClick={() => setPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          aria-label="Next page"
+        >
+          <FiChevronRight className="w-4 h-4" />
+        </button>
+        <button
+          className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          onClick={() => setPage(totalPages)}
+          disabled={currentPage === totalPages}
+          aria-label="Last page"
+        >
+          <FiChevronsRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
   );
 };
 

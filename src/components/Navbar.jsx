@@ -1,183 +1,265 @@
 import { useContext, useEffect, useState } from "react";
 import ThemeComponent from "./ThemeComponent";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
-import { Link, NavLink } from "react-router";
-// import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router";
 import logo from "../assets/logo.png";
 import { useLogout } from "../hooks/useAuth";
 
 const Navbar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { user } = useContext(AuthContext);
   const logoutMutation = useLogout();
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await logoutMutation.mutateAsync(); // call API / clear session
+      await logoutMutation.mutateAsync();
       setShowToast(true);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Redirect + toast on success
   useEffect(() => {
     if (logoutMutation.isSuccess) {
-      // show toast for 2s then redirect
       const timer = setTimeout(() => {
         setShowToast(false);
-        // navigate("/");
       }, 2000);
       return () => clearTimeout(timer);
     }
   }, [logoutMutation.isSuccess]);
 
+  const navLinks = [
+    { to: "/home", label: "Home" },
+    { to: "/products", label: "Products" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  const shopLinks = [
+    { to: "/madhupur", label: "Madhupur Branch" },
+    { to: "/dhanbari", label: "Dhanbari Branch" },
+  ];
+
   return (
-    <div className="navbar bg-[#468A9A] dark:bg-[#393E46] text-white shadow-sm px-2 md:px-8 flex justify-between items-center fixed top-0 z-40">
-      <div className="navbar-start gap-2">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6" // slightly bigger for better tap area
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+            ? "navbar-glass shadow-lg"
+            : "bg-white/70 dark:bg-slate-900/70 backdrop-blur-md"
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center gap-3 group"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
+              <img
+                src={logo}
+                alt="Achol Computer"
+                className="w-9 h-9 transition-transform group-hover:scale-105"
               />
-            </svg>
-          </div>
+              <span className="font-bold text-xl text-slate-900 dark:text-white tracking-tight hidden sm:block">
+                Achol Computer
+              </span>
+            </Link>
 
-          <input type="checkbox" id="mobile-menu" className="hidden peer" />
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                      ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
+                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
 
-          <ul
-            tabIndex={0}
-            className="menu menu-md dropdown-content bg-base-200 text-base-content rounded-box z-50 mt-3 w-80 p-3 shadow-lg"
-          >
-            <li>
-              <NavLink to="/home" onClick={() => (document.getElementById("mobile-menu").checked = false)} >Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/products" onClick={() => (document.getElementById("mobile-menu").checked = false)} >Products</NavLink>
-            </li>
-            <li>
-              <details>
-                <summary>Our Shops</summary>
-                <ul className="p-2">
-                  <li>
-                    <NavLink to="/madhupur" onClick={() => (document.getElementById("mobile-menu").checked = false)} >Madhupur</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/dhanbari" onClick={() => (document.getElementById("mobile-menu").checked = false)} >Dhanbari</NavLink>
-                  </li>
+              {/* Shops Dropdown */}
+              <div className="dropdown dropdown-hover">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 cursor-pointer"
+                >
+                  Our Shops
+                  <svg
+                    className="w-4 h-4 inline-block ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-50 mt-2 p-2 shadow-xl bg-white dark:bg-slate-800 rounded-xl w-52 border border-slate-200 dark:border-slate-700"
+                >
+                  {shopLinks.map((link) => (
+                    <li key={link.to}>
+                      <NavLink
+                        to={link.to}
+                        className="block px-4 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        {link.label}
+                      </NavLink>
+                    </li>
+                  ))}
                 </ul>
-              </details>
-            </li>
-            <li>
-              <NavLink to="/contact" onClick={() => (document.getElementById("mobile-menu").checked = false)} >Contact</NavLink>
-            </li>
-          </ul>
-        </div>
-
-        <Link
-          to="/"
-          className="cursor-pointer flex flex-row items-start md:items-center gap-3 md:gap-3"
-        >
-          <img src={logo} alt="Achol Computer" className="w-9 md:w-8" />
-          <span className="translate-y-1 md:translate-y-1.5 font-display font-light text-sm md:text-2xl tracking-wide text-white leading-tight md:leading-normal">
-            Achol Computer
-          </span>
-        </Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <NavLink to="/home">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/products">Products</NavLink>
-          </li>
-          <li className="z-30">
-            <details>
-              <summary>Our Shops</summary>
-              <ul className="p-2 text-black dark:text-white shadow-lg">
-                <li>
-                  <NavLink to="/madhupur">Madhupur</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/dhanbari">Dhanbari</NavLink>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact</NavLink>
-          </li>
-        </ul>
-      </div>
-      <div className="navbar-end gap-3">
-        <ThemeComponent />
-        {user && (
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar placeholder"
-              onClick={toggleDropdown}
-            >
-              <div className="bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center">
-                <FaUserCircle className="w-8 h-8" />
               </div>
             </div>
 
-            {isDropdownOpen && (
-              <ul
-                tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-200 text-base-content"
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-2">
+              {/* Search Button */}
+              <button
+                onClick={() => navigate("/products")}
+                className="p-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                title="Search Products"
               >
-                <li className="menu-title text-base-content">
-                  <span className="font-semibold text-blue-500">
-                    {user?.name}
-                  </span>
-                  <span className="text-xs opacity-70">{user?.email}</span>
-                </li>
-                <li>
-                  <Link to={"/dashboard"}>Dashboard</Link>
-                </li>
-                <li
-                  className="border-t border-base-200 dark:border-gray-600 mt-2 pt-2"
-                  onClick={handleLogout}
-                >
-                  <a>Logout</a>
-                </li>
-              </ul>
-            )}
+                <FaSearch className="w-4 h-4" />
+              </button>
+
+              {/* Theme Toggle */}
+              <ThemeComponent />
+
+              {/* User Menu */}
+              {user && (
+                <div className="dropdown dropdown-end">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-ghost btn-circle avatar"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                      {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                    </div>
+                  </div>
+
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-50 mt-3 p-3 shadow-xl bg-white dark:bg-slate-800 rounded-xl w-56 border border-slate-200 dark:border-slate-700"
+                  >
+                    <li className="px-3 py-2 border-b border-slate-200 dark:border-slate-700 mb-2">
+                      <p className="font-semibold text-slate-900 dark:text-white">
+                        {user?.name}
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {user?.email}
+                      </p>
+                    </li>
+                    <li>
+                      <Link
+                        to="/dashboard"
+                        className="block px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                    <li className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                {mobileMenuOpen ? (
+                  <FaTimes className="w-5 h-5" />
+                ) : (
+                  <FaBars className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
-        )}
-      </div>
-      {/* Toasts on success */}
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`lg:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"
+            }`}
+        >
+          <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={() => setMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive
+                    ? "bg-blue-500 text-white"
+                    : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <p className="px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                Our Shops
+              </p>
+              {shopLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Logout Toast */}
       {logoutMutation.isSuccess && showToast && (
         <div className="toast toast-top toast-end z-50">
-          <div className="alert alert-info">
-            <span>Goodbye!</span>
-          </div>
-          <div className="alert alert-success">
-            <span>Logged out successfully.</span>
+          <div className="alert bg-green-500 text-white border-none shadow-lg">
+            <span>Logged out successfully!</span>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

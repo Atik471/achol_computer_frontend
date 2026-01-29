@@ -35,7 +35,7 @@ export default function Inventory() {
     },
   });
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner variant="inline" message="Loading inventory..." />;
   if (error) return <div className="text-error">Failed to load products</div>;
 
   const products = data.data;
@@ -217,8 +217,8 @@ export default function Inventory() {
               <div>
                 <button type="button" className="btn mr-2" onClick={closeModal}>Cancel</button>
                 <button type="submit" className="btn btn-primary" disabled={isUpdating}>
-                  {isUpdating && <span className="loading loading-spinner"></span>} 
-                  {isUpdating ? "Saving..." : "Save"} 
+                  {isUpdating && <span className="loading loading-spinner"></span>}
+                  {isUpdating ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

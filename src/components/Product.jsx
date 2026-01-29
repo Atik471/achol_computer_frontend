@@ -1,8 +1,10 @@
 import { Link } from "react-router";
-import { FaStar } from "react-icons/fa";
-import { useEffect } from "react";
+import { FaStar, FaEye, FaHeart } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 const Product = ({ product }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   const {
     name,
     images = [],
@@ -12,111 +14,150 @@ const Product = ({ product }) => {
     price,
     discountPrice,
     specifications = [],
-    slug
+    slug,
+    stock = 0
   } = product;
 
-  // Handle placeholder image if not available
+  // Handle placeholder image
   const getImageUrl = (img) => {
     if (!img || img === "") {
-      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F1F5F9'/%3E%3Cpath d='M175 120L225 120L225 180L175 180Z' fill='%23CBD5E1'/%3E%3Ccircle cx='200' cy='130' r='15' fill='%2394A3B8'/%3E%3C/svg%3E";
     }
     return img;
   };
 
-  // Extract preview specifications (first 2-3 specs)
-  const getPreviewSpecs = () => {
-    if (!specifications || specifications.length === 0) return [];
-    
-    // Get the first specification with object values to show as preview
-    const firstSpec = specifications[0];
-    if (firstSpec.value && typeof firstSpec.value === 'object') {
-      return Object.entries(firstSpec.value).slice(0, 3);
-    }
-    
-    return [];
-  };
+  // Calculate discount percentage
+  const discountPercent = discountPrice
+    ? Math.round((1 - discountPrice / price) * 100)
+    : 0;
 
-  const previewSpecs = getPreviewSpecs();
+  // Check if product is in stock
+  const inStock = stock > 0;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
-    <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
-      {/* Product Image */}
-      <figure className="bg-base-200 h-48 flex items-center justify-center p-4">
+    <div
+      className="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 dark:border-slate-700 card-hover"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Image Container */}
+      <figure className="relative h-56 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 overflow-hidden">
         <img
           src={getImageUrl(images[0])}
           alt={name}
-          className="object-contain w-full h-full"
+          className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-110"
           onError={(e) => {
-            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
+            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F1F5F9'/%3E%3Cpath d='M175 120L225 120L225 180L175 180Z' fill='%23CBD5E1'/%3E%3Ccircle cx='200' cy='130' r='15' fill='%2394A3B8'/%3E%3C/svg%3E";
           }}
         />
-      </figure>
 
-      <div className="card-body flex-grow">
-        {/* Category + Subcategory */}
-        <p className="text-sm text-gray-500">
-          {category?.name} • {subcategory?.name}
-        </p>
-
-        {/* Product Name */}
-        <h2 className="card-title text-lg font-bold line-clamp-2 h-14 overflow-hidden" title={name}>
-          {name}
-        </h2>
-
-        {/* Ratings */}
-        <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }, (_, i) => (
-            <FaStar
-              key={i}
-              className={i < Math.floor(ratings.average) ? "text-yellow-400" : "text-gray-300"}
-              size={16}
-            />
-          ))}
-          <span className="ml-1 text-sm text-gray-500">({ratings.count})</span>
-        </div>
-
-        {/* Price */}
-        <div className="mt-2">
-          {discountPrice ? (
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-blue-600">
-                ৳{discountPrice.toLocaleString()}
-              </span>
-              <span className="line-through text-gray-500">
-                ৳{price.toLocaleString()}
-              </span>
-              <span className="badge badge-success badge-sm">
-                {Math.round((1 - discountPrice / price) * 100)}% OFF
-              </span>
-            </div>
-          ) : (
-            <span className="text-xl font-bold text-blue-600">৳{price.toLocaleString()}</span>
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {discountPercent > 0 && (
+            <span className="px-2.5 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold rounded-full shadow-lg">
+              -{discountPercent}%
+            </span>
+          )}
+          {!inStock && (
+            <span className="px-2.5 py-1 bg-slate-800 dark:bg-slate-600 text-white text-xs font-medium rounded-full">
+              Out of Stock
+            </span>
           )}
         </div>
 
-        {/* Specifications Preview */}
-        {previewSpecs.length > 0 && (
-          <ul className="mt-2 text-sm text-gray-600 space-y-1">
-            {previewSpecs.map(([key, value], index) => (
-              <li key={index} className="truncate">
-                <span className="font-medium">{key}:</span> {value}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {/* Action */}
-        <div className="card-actions mt-4 grid grid-cols-1 gap-2 w-full">
-          <Link to={`/products/${slug}`} className="w-full">
-            <button className="btn btn-outline w-full">View Details</button>
+        {/* Quick Actions - Show on Hover */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end justify-center pb-6 gap-3 transition-all duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+          <Link
+            to={`/products/${slug}`}
+            className="p-3 bg-white rounded-full shadow-lg hover:bg-blue-500 hover:text-white transition-all duration-200 transform hover:scale-110"
+            title="View Details"
+          >
+            <FaEye className="w-4 h-4" />
           </Link>
-          {/* <button className="btn btn-primary w-full">Add to Cart</button> */}
+          <button
+            className="p-3 bg-white rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all duration-200 transform hover:scale-110"
+            title="Add to Wishlist"
+          >
+            <FaHeart className="w-4 h-4" />
+          </button>
         </div>
+      </figure>
+
+      {/* Content */}
+      <div className="p-5 space-y-3">
+        {/* Category */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
+            {category?.name || "Category"}
+          </span>
+          {subcategory?.name && (
+            <span className="text-xs text-slate-400">
+              • {subcategory.name}
+            </span>
+          )}
+        </div>
+
+        {/* Product Name */}
+        <h3
+          className="font-semibold text-slate-900 dark:text-white line-clamp-2 h-12 leading-6 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          title={name}
+        >
+          <Link to={`/products/${slug}`}>
+            {name}
+          </Link>
+        </h3>
+
+        {/* Ratings */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
+            {Array.from({ length: 5 }, (_, i) => (
+              <FaStar
+                key={i}
+                className={`w-3.5 h-3.5 ${i < Math.floor(ratings.average)
+                    ? "text-amber-400"
+                    : "text-slate-200 dark:text-slate-600"
+                  }`}
+              />
+            ))}
+          </div>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            ({ratings.count} reviews)
+          </span>
+        </div>
+
+        {/* Price */}
+        <div className="flex items-baseline gap-2 pt-1">
+          <span className="text-xl font-bold text-blue-600 dark:text-blue-400 price-tag">
+            ৳{(discountPrice || price)?.toLocaleString()}
+          </span>
+          {discountPrice && (
+            <span className="text-sm text-slate-400 line-through price-tag">
+              ৳{price?.toLocaleString()}
+            </span>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <Link
+          to={`/products/${slug}`}
+          className={`btn w-full mt-2 rounded-xl font-medium transition-all duration-300 ${inStock
+              ? "btn-primary shadow-md shadow-blue-500/20 hover:shadow-blue-500/40"
+              : "btn-disabled bg-slate-200 dark:bg-slate-700"
+            }`}
+        >
+          {inStock ? "View Details" : "Out of Stock"}
+        </Link>
       </div>
+
+      {/* Subtle Shine Effect on Hover */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full transition-transform duration-700 ${isHovered ? 'translate-x-full' : ''}`}
+        style={{ pointerEvents: 'none' }}
+      />
     </div>
   );
 };

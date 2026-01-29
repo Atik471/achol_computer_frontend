@@ -1,80 +1,100 @@
 import { Link } from "react-router";
+import { FaQuestionCircle, FaChevronDown } from "react-icons/fa";
 
 export default function FAQSection() {
   const faqs = [
     {
       question: "Do you provide warranty on products?",
       answer:
-        "Yes, all our products are covered by a warranty. This means if you face any issues due to manufacturing defects or unexpected faults, you can reach out to us and we’ll assist with repair, replacement, or service depending on the situation. We always aim to make the process as hassle-free as possible, so that you can shop with peace of mind knowing your purchase is protected."
+        "Yes, all our products are covered by warranty. If you face any issues due to manufacturing defects or unexpected faults, reach out to us and we'll assist with repair, replacement, or service. We aim to make the process hassle-free so you can shop with peace of mind."
     },
     {
       question: "How can I buy products from your shop?",
       answer:
-        "Purchasing from us is very simple. You can contact us directly through WhatsApp or phone to confirm your order, and our team will guide you step by step. Once you select the product you want, we will explain the available payment options, arrange delivery, and keep you updated throughout the process. If you prefer, you can also visit our physical shops and buy in person. Just reach out to us and we’ll help finalize everything smoothly."
+        "Purchasing from us is simple! Contact us through WhatsApp or phone to confirm your order. We'll guide you through payment options, arrange delivery, and keep you updated. You can also visit our physical shops in Madhupur or Dhanbari for in-person purchases."
     },
     {
       question: "Where are your physical shops located?",
       answer:
-        "We currently operate from two physical locations, one in Madhupur and another in Dhanbari. Both stores are fully equipped to showcase our products, answer your questions, and help with after-sales support. For your convenience, we have included detailed addresses and directions on our Shop Locations page so you can easily find us. Whether you want to see the products before buying or need face-to-face assistance, visiting our shops is always a good option."
+        "We operate from two locations: Madhupur and Dhanbari in Tangail district. Both stores are fully equipped to showcase products, answer questions, and provide after-sales support. Check our Shop Locations page for detailed addresses and directions."
     },
     {
       question: "How can I contact customer service?",
       answer:
-        "Our customer service team is always ready to help. You can get in touch with us through the Contact page on our website, or directly via WhatsApp at 01712-076011. If you prefer calling, you can reach us at our primary number (01712-076011) or our secondary number (01868-944455). Whether you have a question about products, delivery, warranty, or just need guidance before making a purchase, we’ll make sure you get a helpful and timely response."
+        "Our customer service team is always ready to help! Reach us through WhatsApp at 01712-076011 or call our primary number (01712-076011) or secondary number (01868-944455). You can also visit our Contact page for more options."
     }
   ];
 
-
   return (
-    <section id="faq" className="py-16 px-6 lg:px-20 bg-gradient-to-b from-[#f7fafc] to-[#edf2f7] dark:from-[#202121] dark:to-[#181919]">
-      <div className="max-w-4xl mx-auto">
-        {/* Heading */}
+    <section className="py-16 lg:py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-800 dark:to-slate-900">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-[#468a9a] dark:text-[#88a0b8]">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium mb-4">
+            <FaQuestionCircle />
+            <span>Got Questions?</span>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-[#4a5568] dark:text-[#cbd5e0] max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Find answers to common questions about our products, services, and policies.
           </p>
         </div>
 
-        {/* FAQ Accordion - DaisyUI Style */}
+        {/* FAQ Accordion */}
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="collapse collapse-arrow border border-[#468a9a]/20 dark:border-[#88a0b8]/30 bg-white dark:bg-[#383f46]">
+            <div
+              key={idx}
+              className="collapse collapse-arrow bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow duration-300"
+            >
               <input
                 type="radio"
                 name="faq-accordion"
                 defaultChecked={idx === 0}
               />
-              <div className="collapse-title font-semibold text-[#2d3748] dark:text-white">
+              <div className="collapse-title text-lg font-semibold text-slate-900 dark:text-white pr-12">
                 {faq.question}
               </div>
-              <div className="collapse-content text-sm text-[#4a5568] dark:text-[#cbd5e0]">
-                <p>{faq.answer}</p>
+              <div className="collapse-content">
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed pt-2">
+                  {faq.answer}
+                </p>
 
-                {/* Add links for specific answers */}
+                {/* Contextual Links */}
                 {faq.question.includes("physical shops") && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <a href="/madhupur" className="px-3 py-1 bg-[#468a9a] text-white rounded text-sm hover:bg-[#3a7583] transition-colors">
-                      Madhupur Shop
-                    </a>
-                    <a href="/dhanbari" className="px-3 py-1 bg-[#468a9a] text-white rounded text-sm hover:bg-[#3a7583] transition-colors">
-                      Dhanbari Shop
-                    </a>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link
+                      to="/madhupur"
+                      className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                    >
+                      Madhupur Branch
+                    </Link>
+                    <Link
+                      to="/dhanbari"
+                      className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                    >
+                      Dhanbari Branch
+                    </Link>
                   </div>
                 )}
 
                 {faq.question.includes("contact customer service") && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <a href="/contact" className="px-3 py-1 bg-[#468a9a] text-white rounded text-sm hover:bg-[#3a7583] transition-colors">
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link
+                      to="/contact"
+                      className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                    >
                       Contact Page
-                    </a>
-                    <a href="https://wa.me/8801712076011" className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition-colors">
+                    </Link>
+                    <a
+                      href="https://wa.me/8801712076011"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-sm font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                    >
                       WhatsApp
-                    </a>
-                    <a href="https://www.facebook.com/sabuz.ahme" className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
-                      Facebook
                     </a>
                   </div>
                 )}
@@ -83,23 +103,34 @@ export default function FAQSection() {
           ))}
         </div>
 
-        {/* Additional Support */}
-        <div className="mt-12 p-6 bg-[#468a9a] dark:bg-[#383f46] rounded-lg text-center">
-          <h3 className="text-xl font-semibold text-white dark:text-[#88a0b8] mb-3">
+        {/* CTA Card */}
+        <div className="mt-12 p-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl text-center text-white shadow-xl">
+          <h3 className="text-2xl font-bold mb-3">
             Still have questions?
           </h3>
-          <p className="text-white dark:text-[#cbd5e0] mb-4">
-            Contact us directly for personalized assistance
+          <p className="text-blue-100 mb-6 max-w-md mx-auto">
+            Contact us directly for personalized assistance. We're here to help!
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a href="tel:01712076011" className="px-4 py-2 bg-white text-[#468a9a] rounded font-medium hover:bg-gray-100 transition-colors">
+            <a
+              href="tel:01712076011"
+              className="px-6 py-3 rounded-xl bg-white text-blue-600 font-semibold hover:bg-blue-50 transition-colors"
+            >
               Call: 01712-076011
             </a>
-            <a href="https://wa.me/8801712076011" className="px-4 py-2 bg-green-500 text-white rounded font-medium hover:bg-green-600 transition-colors">
-              WhatsApp
+            <a
+              href="https://wa.me/8801712076011"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-colors"
+            >
+              WhatsApp Us
             </a>
-            <Link to="/contact" className="px-4 py-2 bg-transparent border border-white text-white rounded font-medium hover:bg-white hover:text-[#468a9a] transition-colors">
-              Contact Us
+            <Link
+              to="/contact"
+              className="px-6 py-3 rounded-xl bg-transparent border-2 border-white text-white font-semibold hover:bg-white hover:text-blue-600 transition-all"
+            >
+              Contact Page
             </Link>
           </div>
         </div>

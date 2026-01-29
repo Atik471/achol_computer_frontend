@@ -8,7 +8,7 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   // const queryClient = useQueryClient();
-  
+
 
   const [user, setUser] = useState(null);
   const [accessToken, setAccessTokenState] = useState(() => loadAccessToken());
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
           const data = await authService.getCurrentUser();
           setUser(data.user);
           // The interceptor might have refreshed the token, so we update it.
-          setAccessToken(loadAccessToken()); 
+          setAccessToken(loadAccessToken());
         } catch (error) {
           // This catch block will be hit if the token is invalid/expired and refresh fails.
           // The interceptor in api.js will handle the redirect.
@@ -67,11 +67,11 @@ export const AuthProvider = ({ children }) => {
     } catch {
       logout();
       throw new Error("Refresh failed");
-    } 
+    }
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner variant="overlay" message="Initializing..." />;
   }
 
   return (

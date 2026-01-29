@@ -23,7 +23,7 @@ const ManageProducts = () => {
     setFilters((prev) => ({ ...prev, page: newPage }));
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner variant="inline" message="Loading products..." />;
   if (isError) return <div className="text-red-500 text-center py-10">Error loading products.</div>;
 
   return (

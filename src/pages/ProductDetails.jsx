@@ -24,7 +24,7 @@ const ProductDetails = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner variant="inline" message="Loading product details..." />;
   if (isError)
     return (
       <div className="flex justify-center py-20 text-red-500">
@@ -73,11 +73,10 @@ const ProductDetails = () => {
               {product.images.map((img, idx) => (
                 <div
                   key={idx}
-                  className={`cursor-pointer border-2 rounded-lg overflow-hidden bg-gray-50 p-2 transition-all ${
-                    selectedImage === idx
+                  className={`cursor-pointer border-2 rounded-lg overflow-hidden bg-gray-50 p-2 transition-all ${selectedImage === idx
                       ? "border-primary"
                       : "border-transparent hover:border-primary"
-                  }`}
+                    }`}
                   onClick={() => setSelectedImage(idx)}
                 >
                   <img

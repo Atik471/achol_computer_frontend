@@ -6,9 +6,9 @@ import { AuthContext } from "../contexts/AuthProvider";
 const PrivateRoute = ({ children }) => {
     const { user, loading } = useContext(AuthContext)
 
-    if(!user && !loading) return  <Navigate to="/" replace />
+    if (!user && !loading) return <Navigate to="/" replace />
 
-    if(loading) return <LoadingSpinner />
+    if (loading) return <LoadingSpinner variant="overlay" message="Checking authentication..." />
 
     return (
         children
