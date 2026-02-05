@@ -30,6 +30,7 @@ import Wishlist from '../pages/Wishlist';
 import Checkout from '../pages/Checkout';
 import OrderConfirmation from '../pages/OrderConfirmation';
 import MyOrders from '../pages/MyOrders';
+import StripePayment from '../pages/StripePayment';
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
       {
         path: 'order-confirmation',
         element: <PrivateRoute><OrderConfirmation /></PrivateRoute>
+      },
+      {
+        path: 'payment/stripe',
+        element: <PrivateRoute><StripePayment /></PrivateRoute>
       }
     ],
   },
