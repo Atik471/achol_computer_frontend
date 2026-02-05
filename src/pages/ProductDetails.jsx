@@ -1,28 +1,48 @@
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import {
   FaWhatsapp,
   FaFacebook,
   FaStar,
-  FaHeart,
   FaPhone,
-  FaShare,
 } from "react-icons/fa";
 import { useProduct } from "../hooks/useProducts";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PaymentSection from "../components/PaymentSection";
+import AddToCartButton from "../components/AddToCartButton";
+import AddToWishlistButton from "../components/AddToWishlistButton";
+import { useCart } from "../hooks/useCart";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import bkash from "../assets/bkash-logo.jpg";
 import nagad from "../assets/nagad-logo.jpg";
 
 const ProductDetails = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const { data, isLoading, isError } = useProduct(slug);
+  const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [buyNowLoading, setBuyNowLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const handleBuyNow = async () => {
+    setBuyNowLoading(true);
+    try {
+      const success = await addItem(data._id, quantity);
+      if (success) {
+        navigate('/checkout');
+      }
+    } catch (error) {
+      toast.error("Failed to proceed to checkout");
+    } finally {
+      setBuyNowLoading(false);
+    }
+  };
 
   if (isLoading) return <LoadingSpinner variant="inline" message="Loading product details..." />;
   if (isError)
@@ -64,7 +84,7 @@ const ProductDetails = () => {
               className="w-full h-80 object-contain"
               onError={(e) => {
                 e.target.src =
-                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
+                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400'height='300' viewBox='0 0 400 300' fill='none'%3E%3Crect width='400' height='300' fill='%23F3F4F6'/%3E%3Cpath d='M150 100H250V200H150V100Z' fill='%23E5E7EB'/%3E%3Cpath d='M175 125V175H225V125H175Z' fill='%23D1D5DB'/%3E%3C/svg%3E";
               }}
             />
           </div>
@@ -102,14 +122,6 @@ const ProductDetails = () => {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">
               {product.name}
             </h1>
-            <div className="flex space-x-2">
-              {/* <button className="btn btn-ghost btn-circle">
-                                <FaHeart className="text-gray-500 hover:text-red-500" />
-                            </button>
-                            <button className="btn btn-ghost btn-circle">
-                                <FaShare className="text-gray-500 hover:text-blue-500" />
-                            </button> */}
-            </div>
           </div>
 
           {/* Brand and Category */}
@@ -181,7 +193,6 @@ const ProductDetails = () => {
                 }
               >
                 {product.stock.available > 0 ? `In Stock` : "Out of Stock"}
-                {console.log(product.stock.available)}
               </span>
             </div>
             {product.stock.incoming > 0 && (
@@ -224,6 +235,75 @@ const ProductDetails = () => {
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {/* Action Buttons Section */}
+          {product.stock.available > 0 && (
+            <div className="border-t pt-6 mt-6">
+              <h3 className="font-semibold text-lg mb-4">Purchase Options</h3>
+
+              {/* Quantity Selector */}
+              <div className="flex items-center gap-4 mb-4">
+                <label className="font-medium">Quantity:</label>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="btn btn-sm btn-circle btn-outline"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    max={product.stock.available}
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, Math.min(product.stock.available, parseInt(e.target.value) || 1)))}
+                    className="input input-bordered w-20 text-center"
+                  />
+                  <button
+                    onClick={() => setQuantity(Math.min(product.stock.available, quantity + 1))}
+                    className="btn btn-sm btn-circle btn-outline"
+                  >
+                    +
+                  </button>
+                  <span className="text-sm text-base-content/60">
+                    ({product.stock.available} available)
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3">
+                <AddToCartButton
+                  productId={product._id}
+                  quantity={quantity}
+                  className="flex-1 min-w-[200px]"
+                  text="Add to Cart"
+                  showIcon={true}
+                />
+
+                <AddToWishlistButton
+                  productId={product._id}
+                  className="btn-lg"
+                />
+
+                <button
+                  onClick={handleBuyNow}
+                  disabled={buyNowLoading}
+                  className="btn btn-secondary flex-1 min-w-[200px]"
+                >
+                  {buyNowLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    'Buy Now'
+                  )}
+                </button>
+              </div>
+
+              <p className="text-sm text-base-content/60 mt-3">
+                ✓ Free shipping on orders over ৳5000
+              </p>
             </div>
           )}
 
