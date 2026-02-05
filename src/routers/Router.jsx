@@ -31,6 +31,7 @@ import Checkout from '../pages/Checkout';
 import OrderConfirmation from '../pages/OrderConfirmation';
 import MyOrders from '../pages/MyOrders';
 import StripePayment from '../pages/StripePayment';
+import OrderDetails from '../pages/OrderDetails';
 
 const router = createBrowserRouter([
   {
@@ -122,6 +123,10 @@ const router = createBrowserRouter([
       {
         path: 'payment/stripe',
         element: <PrivateRoute><StripePayment /></PrivateRoute>
+      },
+      {
+        path: 'orders/:id',
+        element: <PrivateRoute><OrderDetails /></PrivateRoute>
       }
     ],
   },
