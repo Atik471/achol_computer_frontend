@@ -45,11 +45,13 @@ const ProductDetails = () => {
   return (
     <div className="max-w-6xl mx-auto p-4 lg:p-8">
       {/* Breadcrumb */}
-      <Breadcrumbs
-        categoryslug={product.category.slug}
-        subcategoryslug={product.subcategory.slug}
-        productNameslug={product.name}
-      />
+      <div className="mb-6 mt-3">
+        <Breadcrumbs
+          categoryslug={product.category.slug}
+          subcategoryslug={product.subcategory.slug}
+          productNameslug={product.name}
+        />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Left: Product Images */}
@@ -74,8 +76,8 @@ const ProductDetails = () => {
                 <div
                   key={idx}
                   className={`cursor-pointer border-2 rounded-lg overflow-hidden bg-gray-50 p-2 transition-all ${selectedImage === idx
-                      ? "border-primary"
-                      : "border-transparent hover:border-primary"
+                    ? "border-primary"
+                    : "border-transparent hover:border-primary"
                     }`}
                   onClick={() => setSelectedImage(idx)}
                 >
@@ -307,8 +309,8 @@ const ProductDetails = () => {
               for direct purchase
             </p>
 
-            {/* Payment Instructions */}
-            <div className="mt-8 border-t pt-6">
+            {/* Payment Instructions - HIDDEN FOR NOW (using new integrated payment gateways) */}
+            <div className="mt-8 border-t pt-6 hidden">
               <h3 className="text-lg font-semibold mb-3 text-center">
                 Send Money Payment Options
               </h3>

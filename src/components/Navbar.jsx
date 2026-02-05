@@ -4,6 +4,8 @@ import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useLogout } from "../hooks/useAuth";
+import CartIcon from "./CartIcon";
+import WishlistIcon from "./WishlistIcon";
 
 // Custom SVG Logo Component
 const AcholLogo = ({ className = "" }) => (
@@ -189,22 +191,27 @@ const Navbar = () => {
                 <FaSearch className="w-4 h-4" />
               </button>
 
+              {/* Wishlist Icon */}
+              {user && <WishlistIcon />}
+
+              {/* Cart Icon */}
+              {user && <CartIcon />}
+
               {/* Theme Toggle */}
               <ThemeComponent scrolled={scrolled} />
 
               {/* User Menu or Auth Buttons */}
               {user ? (
                 <div className="dropdown dropdown-end">
-                  <div
+                  <button
                     tabIndex={0}
-                    role="button"
-                    className="btn btn-ghost btn-circle avatar"
+                    className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 hover:from-blue-700 hover:via-blue-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
+                    <span className="text-white font-bold text-lg leading-none select-none">
                       {user?.name?.charAt(0)?.toUpperCase() || "U"}
-                    </div>
-                  </div>
+                    </span>
+                  </button>
 
                   <ul
                     tabIndex={0}
@@ -217,6 +224,14 @@ const Navbar = () => {
                       <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                         {user?.email}
                       </p>
+                    </li>
+                    <li>
+                      <Link
+                        to="/orders"
+                        className="block px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        My Orders
+                      </Link>
                     </li>
                     <li>
                       <Link

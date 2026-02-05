@@ -1,27 +1,4 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
-
-// Create axios instance with default config
-const api = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
-    headers: {
-        "Content-Type": "application/json"
-    }
-});
-
-// Add token to requests
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("accessToken");
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+import api from "./api.js";
 
 /**
  * Get user's wishlist

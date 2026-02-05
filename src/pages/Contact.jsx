@@ -98,7 +98,7 @@ export default function ContactUs() {
             return (
               <div
                 key={index}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-100 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all duration-300"
               >
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${colorClasses[method.color]} flex items-center justify-center shadow-lg mb-4`}>
                   <Icon className="w-6 h-6 text-white" />
@@ -122,10 +122,10 @@ export default function ContactUs() {
                   target={method.action.type === "link" ? "_blank" : undefined}
                   rel={method.action.type === "link" ? "noopener noreferrer" : undefined}
                   className={`inline-flex items-center gap-2 text-sm font-medium transition-colors ${method.color === "green"
-                      ? "text-green-600 dark:text-green-400 hover:text-green-700"
-                      : method.color === "purple"
-                        ? "text-purple-600 dark:text-purple-400 hover:text-purple-700"
-                        : "text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                    ? "text-green-600 dark:text-green-400 hover:text-green-700"
+                    : method.color === "purple"
+                      ? "text-purple-600 dark:text-purple-400 hover:text-purple-700"
+                      : "text-blue-600 dark:text-blue-400 hover:text-blue-700"
                     }`}
                 >
                   {method.action.label}
@@ -139,7 +139,7 @@ export default function ContactUs() {
         {/* Two Column Layout */}
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {/* Why Choose Us */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 border border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/25">
                 <FaShoppingCart className="w-5 h-5 text-white" />
@@ -179,7 +179,7 @@ export default function ContactUs() {
           </div>
 
           {/* Purchase Guide */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 border border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/25">
                 <FaCreditCard className="w-5 h-5 text-white" />
@@ -237,7 +237,7 @@ export default function ContactUs() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Madhupur Branch */}
-            <div className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-700 hover:shadow-2xl transition-all duration-300">
+            <div className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600" />
               <div className="p-6">
                 <div className="flex items-start gap-4">
@@ -270,7 +270,7 @@ export default function ContactUs() {
             </div>
 
             {/* Dhanbari Branch */}
-            <div className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-700 hover:shadow-2xl transition-all duration-300">
+            <div className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all duration-300">
               <div className="h-2 bg-gradient-to-r from-green-500 to-green-600" />
               <div className="p-6">
                 <div className="flex items-start gap-4">
