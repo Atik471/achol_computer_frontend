@@ -28,16 +28,20 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (loginMutation.isSuccess) {
+    if (loginMutation.isSuccess && user) {
       const timer = setTimeout(() => {
-        navigate("/");
+        if (user.role === 'admin') {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [loginMutation.isSuccess, navigate]);
+  }, [loginMutation.isSuccess, navigate, user]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-950 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-950 px-4 py-12">
       {/* Decorative Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl" />
@@ -59,8 +63,13 @@ const Login = () => {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 border border-slate-100 dark:border-slate-700">
+        <div className="bg-[#FEFCF9] dark:bg-slate-800 rounded-3xl shadow-2xl p-8 border border-amber-100/50 dark:border-slate-700">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
+            {/* ... fields ... */}
+
+            {/* ... existing form fields ... */}
+
             {/* Email Field */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -72,7 +81,7 @@ const Login = () => {
                 </div>
                 <input
                   type="email"
-                  className={`input w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.email ? "border-red-500 focus:border-red-500" : ""
+                  className={`input w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-slate-700 border-amber-100 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.email ? "border-red-500 focus:border-red-500" : ""
                     }`}
                   placeholder="Enter your email"
                   {...register("email", {
@@ -100,7 +109,7 @@ const Login = () => {
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className={`input w-full pl-11 pr-12 py-3 rounded-xl bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.password ? "border-red-500 focus:border-red-500" : ""
+                  className={`input w-full pl-11 pr-12 py-3 rounded-xl bg-white dark:bg-slate-700 border-amber-100 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all ${errors.password ? "border-red-500 focus:border-red-500" : ""
                     }`}
                   placeholder="Enter your password"
                   {...register("password", {
@@ -168,17 +177,30 @@ const Login = () => {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+              <div className="w-full border-t border-amber-100 dark:border-slate-700" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white dark:bg-slate-800 text-slate-500">
-                Admin access only
+              <span className="px-4 bg-[#FEFCF9] dark:bg-slate-800 text-slate-500">
+                Or continue with
               </span>
             </div>
           </div>
 
-          {/* Back to Home */}
+          {/* Register Link */}
           <div className="text-center">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+              >
+                Register
+              </Link>
+            </p>
+          </div>
+
+          {/* Back to Home */}
+          <div className="text-center mt-4">
             <Link
               to="/"
               className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"

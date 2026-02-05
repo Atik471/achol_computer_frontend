@@ -6,6 +6,12 @@ const ThemeComponent = () => {
 
   const applyTheme = (newTheme) => {
     document.documentElement.setAttribute("data-theme", newTheme);
+    // Also toggle the 'dark' class for Tailwind's dark: modifier
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
     localStorage.setItem("theme", newTheme);
     setTheme(newTheme);
   };

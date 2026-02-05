@@ -18,10 +18,18 @@ import ProductDetails from '../pages/ProductDetails';
 import Privacy from '../pages/Privacy';
 import TermsOfUse from '../pages/TermsOfUse';
 import Cookie from '../pages/Cookie';
-import PrivateRoute from './PrivateRouter';
+import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import ErrorPage from '../pages/ErrorPage';
 import ManageProducts from '../pages/ManageProducts';
 import ProductForm from '../pages/ProductForm';
+import Cart from '../pages/Cart';
+import Wishlist from '../pages/Wishlist';
+import Checkout from '../pages/Checkout';
+import OrderConfirmation from '../pages/OrderConfirmation';
+import MyOrders from '../pages/MyOrders';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +44,27 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Home />,
+      },
+      // Auth Routes at root level
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: 'reset-password/:resettoken',
+        element: <ResetPassword />,
+      },
+      {
+        path: 'users',
+        element: <Users />,
       },
       {
         path: 'products',
@@ -68,12 +97,32 @@ const router = createBrowserRouter([
       {
         path: 'cookie-policy',
         element: <Cookie />
+      },
+      {
+        path: 'cart',
+        element: <PrivateRoute><Cart /></PrivateRoute>
+      },
+      {
+        path: 'wishlist',
+        element: <PrivateRoute><Wishlist /></PrivateRoute>
+      },
+      {
+        path: 'checkout',
+        element: <PrivateRoute><Checkout /></PrivateRoute>
+      },
+      {
+        path: 'orders',
+        element: <PrivateRoute><MyOrders /></PrivateRoute>
+      },
+      {
+        path: 'order-confirmation',
+        element: <PrivateRoute><OrderConfirmation /></PrivateRoute>
       }
     ],
   },
   {
     path: '/dashboard',
-    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    element: <AdminRoute><DashboardLayout /></AdminRoute>,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -99,27 +148,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/auth',
-    element: <AuthLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <Login />,
-      },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'register',
-        element: <Register />,
-      },
-    ],
-  },
-  {
     path: '/admin',
-    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    element: <AdminRoute><DashboardLayout /></AdminRoute>,
     errorElement: <ErrorPage />,
     children: [
       {

@@ -85,8 +85,8 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg shadow-lg shadow-slate-900/5 dark:shadow-black/20 border-b border-slate-200/50 dark:border-slate-700/50"
-            : "bg-transparent"
+          ? "bg-[#FEFCF9]/95 dark:bg-slate-900/95 backdrop-blur-lg shadow-lg shadow-slate-900/5 dark:shadow-black/20 border-b border-amber-100/50 dark:border-slate-700/50"
+          : "bg-transparent"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,14 +99,14 @@ const Navbar = () => {
               <AcholLogo className="w-9 h-9 transition-transform group-hover:scale-105" />
               <div className="hidden sm:block">
                 <span className={`font-bold text-lg tracking-tight transition-colors ${scrolled
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-900 dark:text-white"
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-900 dark:text-white"
                   }`}>
                   Achol
                 </span>
                 <span className={`font-bold text-lg tracking-tight transition-colors ${scrolled
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-blue-600 dark:text-blue-400"
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-blue-600 dark:text-blue-400"
                   }`}>
                   Computer
                 </span>
@@ -138,8 +138,8 @@ const Navbar = () => {
                   tabIndex={0}
                   role="button"
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-1 ${scrolled
-                      ? "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                      : "text-slate-700 dark:text-slate-300 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                    ? "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-white/20 dark:hover:bg-slate-800/50"
                     }`}
                 >
                   Our Shops
@@ -159,7 +159,7 @@ const Navbar = () => {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content z-50 mt-2 p-2 shadow-xl bg-white dark:bg-slate-800 rounded-xl w-52 border border-slate-200 dark:border-slate-700"
+                  className="dropdown-content z-50 mt-2 p-2 shadow-xl bg-[#FEFCF9] dark:bg-slate-800 rounded-xl w-52 border border-amber-100 dark:border-slate-700"
                 >
                   {shopLinks.map((link) => (
                     <li key={link.to}>
@@ -181,8 +181,8 @@ const Navbar = () => {
               <button
                 onClick={() => navigate("/products")}
                 className={`p-2.5 rounded-lg transition-colors ${scrolled
-                    ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                  ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
                   }`}
                 title="Search Products"
               >
@@ -192,8 +192,8 @@ const Navbar = () => {
               {/* Theme Toggle */}
               <ThemeComponent scrolled={scrolled} />
 
-              {/* User Menu */}
-              {user && (
+              {/* User Menu or Auth Buttons */}
+              {user ? (
                 <div className="dropdown dropdown-end">
                   <div
                     tabIndex={0}
@@ -208,9 +208,9 @@ const Navbar = () => {
 
                   <ul
                     tabIndex={0}
-                    className="dropdown-content z-50 mt-3 p-3 shadow-xl bg-white dark:bg-slate-800 rounded-xl w-56 border border-slate-200 dark:border-slate-700"
+                    className="dropdown-content z-50 mt-3 p-3 shadow-xl bg-[#FEFCF9] dark:bg-slate-800 rounded-xl w-56 border border-amber-100 dark:border-slate-700"
                   >
-                    <li className="px-3 py-2 border-b border-slate-200 dark:border-slate-700 mb-2">
+                    <li className="px-3 py-2 border-b border-amber-100 dark:border-slate-700 mb-2">
                       <p className="font-semibold text-slate-900 dark:text-white">
                         {user?.name}
                       </p>
@@ -236,14 +236,29 @@ const Navbar = () => {
                     </li>
                   </ul>
                 </div>
+              ) : (
+                <div className="hidden sm:flex items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm shadow-blue-500/25"
+                  >
+                    Register
+                  </Link>
+                </div>
               )}
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`lg:hidden p-2.5 rounded-lg transition-colors ${scrolled
-                    ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
+                  ? "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  : "text-slate-600 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/50"
                   }`}
               >
                 {mobileMenuOpen ? (
@@ -261,7 +276,7 @@ const Navbar = () => {
           className={`lg:hidden transition-all duration-300 overflow-hidden ${mobileMenuOpen ? "max-h-screen" : "max-h-0"
             }`}
         >
-          <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+          <div className="px-4 py-4 space-y-2 bg-[#FEFCF9] dark:bg-slate-900 border-t border-amber-100 dark:border-slate-700">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}

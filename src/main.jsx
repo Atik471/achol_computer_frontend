@@ -7,13 +7,19 @@ import router from "./routers/Router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./services/queryClient";
 import { AuthProvider } from "./contexts/AuthProvider";
+import { CartProvider } from "./contexts/CartProvider";
+import { WishlistProvider } from "./contexts/WishlistProvider";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </WishlistProvider>
+      </CartProvider>
     </AuthProvider>
   </StrictMode>
 );

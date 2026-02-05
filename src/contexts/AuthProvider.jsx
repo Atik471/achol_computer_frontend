@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       if (accessToken) {
         try {
           const data = await authService.getCurrentUser();
-          setUser(data.user);
+          setUser(data.user); // data.user includes role from backend
           // The interceptor might have refreshed the token, so we update it.
           setAccessToken(loadAccessToken());
         } catch (error) {

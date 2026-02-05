@@ -40,12 +40,12 @@ const Product = ({ product }) => {
 
   return (
     <div
-      className="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 dark:border-slate-700 card-hover"
+      className="group relative bg-[#FEFCF9] dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-amber-100/50 dark:border-slate-700 card-hover"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <figure className="relative h-56 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 overflow-hidden">
+      <figure className="relative h-56 bg-gradient-to-br from-amber-50/50 to-orange-50/30 dark:from-slate-700 dark:to-slate-800 overflow-hidden">
         <img
           src={getImageUrl(images[0])}
           alt={name}

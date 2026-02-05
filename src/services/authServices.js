@@ -26,4 +26,16 @@ export const authService = {
     return response.data;
   },
 
+  // Get all users (admin)
+  getAllUsers: async () => {
+    const response = await api.get('/users');
+    return response.data;
+  },
+
+  // Update user role (admin)
+  updateUserRole: async (userId, role) => {
+    const response = await api.put(`/users/${userId}/role`, { role });
+    return response.data;
+  },
+
 };

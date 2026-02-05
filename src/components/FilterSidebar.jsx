@@ -63,7 +63,7 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
     <aside
       className={
         variant === "desktop"
-          ? "bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-700"
+          ? "bg-[#FEFCF9] dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-amber-100/50 dark:border-slate-700"
           : "w-full"
       }
     >
@@ -107,8 +107,8 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
                 {/* All Categories */}
                 <button
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === "all"
-                      ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
                     }`}
                   onClick={() => handleCategorySelect("all")}
                 >
@@ -121,8 +121,8 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
                     <div key={cat._id}>
                       <button
                         className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${isCategorySelected
-                            ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
-                            : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                          ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
+                          : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
                           }`}
                         onClick={() => handleCategorySelect(cat.slug)}
                       >
@@ -136,8 +136,8 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
                             <button
                               key={sub._id}
                               className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedSubcategory === sub.slug
-                                  ? "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300"
-                                  : "text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                ? "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300"
+                                : "text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
                                 }`}
                               onClick={() => handleSubcategorySelect(cat.slug, sub.slug)}
                             >
@@ -179,7 +179,7 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
                 <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Min</label>
                 <input
                   type="number"
-                  className="input input-bordered input-sm w-full bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg"
+                  className="input input-bordered input-sm w-full bg-white dark:bg-slate-700 border-amber-100 dark:border-slate-600 rounded-lg"
                   value={tempPrice[0]}
                   onChange={(e) => handlePriceChange(e, 0)}
                   placeholder="0"
@@ -190,7 +190,7 @@ const FilterSidebar = ({ maxPrice, variant = "desktop" }) => {
                 <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Max</label>
                 <input
                   type="number"
-                  className="input input-bordered input-sm w-full bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg"
+                  className="input input-bordered input-sm w-full bg-white dark:bg-slate-700 border-amber-100 dark:border-slate-600 rounded-lg"
                   value={tempPrice[1]}
                   onChange={(e) => handlePriceChange(e, 1)}
                   placeholder={maxPrice}

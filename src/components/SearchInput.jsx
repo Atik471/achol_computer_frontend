@@ -47,7 +47,7 @@ const SearchInput = ({ onSearch }) => {
         <input
           type="text"
           placeholder="Search products..."
-          className="input w-full pl-11 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
+          className="input w-full pl-11 pr-10 py-2.5 rounded-xl bg-white dark:bg-slate-700 border-amber-100 dark:border-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
           value={search}
           onChange={handleSearchChange}
           onKeyDown={handleKeyPress}
